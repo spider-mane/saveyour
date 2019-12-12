@@ -1,0 +1,68 @@
+<?php
+
+namespace WebTheory\Saveyour;
+
+use Psr\Http\Message\ServerRequestInterface;
+
+class Request
+{
+    /**
+     *
+     */
+    public static function var(ServerRequestInterface $request, $param)
+    {
+        $request = static::find($request);
+
+        return $request[$param] ?? null;
+    }
+
+    /**
+     *
+     */
+    public static function has(ServerRequestInterface $request, $param): bool
+    {
+        $request = static::find($request);
+
+        return isset($request[$param]);
+    }
+
+    /**
+     *
+     */
+    public static function attr(ServerRequestInterface $request, $attribute)
+    {
+        return $request->getAttribute($attribute);
+    }
+
+    /**
+     *
+     */
+    public static function hasAttr(ServerRequestInterface $request, $attribute)
+    {
+        $attributes = $request->getAttributes();
+
+        return isset($attributes[$attribute]);
+    }
+
+    /**
+     *
+     */
+    protected static function find(ServerRequestInterface $request)
+    {
+        switch ($request->getMethod()) {
+            case 'GET':
+                $request = $request->getQueryParams();
+                break;
+
+            case 'POST':
+                $request = $request->getParsedBody();
+                break;
+
+            default:
+                $request = $request->getParsedBody();
+                break;
+        }
+
+        return (array) $request;
+    }
+}

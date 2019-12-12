@@ -1,0 +1,21 @@
+{
+    "name": "@webtheory/saveyour",
+    "version": "0.1.0",
+    "description": "Form building and processing library",
+    "author": "Chris Williams",
+    "homepage": "https://github.com/spider-mane/saveyour",
+    "license": "MIT",
+
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/spider-mane/saveyour.git"
+    },
+
+    "bugs": {
+        "url": "https://github.com/spider-mane/saveyour/issues"
+    },
+
+    "devDependencies": {
+        "gulp": "^4.0"
+    }
+}
