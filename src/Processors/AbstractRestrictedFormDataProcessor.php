@@ -4,7 +4,7 @@ namespace WebTheory\Saveyour\Processors;
 
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 
-class AbstractRestrictedFormDataProcessor extends AbstractFormDataProcessor implements FormDataProcessorInterface
+abstract class AbstractRestrictedFormDataProcessor extends AbstractFormDataProcessor implements FormDataProcessorInterface
 {
     /**
      *

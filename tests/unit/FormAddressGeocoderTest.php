@@ -11,6 +11,7 @@ use GuzzleHttp\Psr7\ServerRequest;
 use Http\Adapter\Guzzle6\Client;
 use PHPUnit\Framework\TestCase;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
+use WebTheory\Saveyour\Controllers\FieldOperationCacheBuilder;
 use WebTheory\Saveyour\Processors\FormAddressGeocoder;
 
 class FormAddressGeocoderTest extends TestCase
@@ -18,8 +19,10 @@ class FormAddressGeocoderTest extends TestCase
     /**
      *
      */
-    protected function generateDummyDataManager() {
-        return new class implements FieldDataManagerInterface {
+    protected function generateDummyDataManager()
+    {
+        return new class implements FieldDataManagerInterface
+        {
             public function getCurrentData(\Psr\Http\Message\ServerRequestInterface $request)
             {
                 return '';
@@ -29,7 +32,7 @@ class FormAddressGeocoderTest extends TestCase
             {
                 return true;
             }
-        }
+        };
     }
 
     /**
@@ -37,17 +40,28 @@ class FormAddressGeocoderTest extends TestCase
      */
     public function testGetsProperGeoData()
     {
-        $values = include '../values.php';
+        $values = include dirname(__DIR__) . '/values.php';
         $address = $values['dummy_address'];
 
-        $request = ServerRequest::fromGlobals()
-            ->withMethod('POST')
-            ->withParsedBody([
-                'street' => $address['street'],
-                'city' => $address['city'],
-                'state' => $address['state'],
-                'zip' => $address['zip'],
-            ]);
+        $request = ServerRequest::fromGlobals();
+
+        $results = [
+            'street' => (new FieldOperationCacheBuilder)
+                ->withSanitizedInputValue($address['street'])
+                ->withUpdateSuccessful(true),
+
+            'city' => (new FieldOperationCacheBuilder)
+                ->withSanitizedInputValue($address['city'])
+                ->withUpdateSuccessful(true),
+
+            'state' => (new FieldOperationCacheBuilder)
+                ->withSanitizedInputValue($address['state'])
+                ->withUpdateSuccessful(true),
+
+            'zip' => (new FieldOperationCacheBuilder)
+                ->withSanitizedInputValue($address['zip'])
+                ->withUpdateSuccessful(true),
+        ];
 
         $address = (new Address)
             ->withAddressLine1($address['street'])
@@ -56,22 +70,17 @@ class FormAddressGeocoderTest extends TestCase
             ->withPostalCode($address['zip'])
             ->withCountryCode('US');
 
-        $options = [
-            'html' => false,
-        ];
-
-        $display = new DefaultFormatter(
+        $formatter = new DefaultFormatter(
             new AddressFormatRepository,
             new CountryRepository,
             new SubdivisionRepository,
-            $options
+            ['html' => false]
         );
 
-        $formatted = str_replace("\n", ', ', $display->format($address));
         $client = new Client();
         $geocoder = new GoogleMaps($client, null, $values['google_maps']);
 
-        $collection = $geocoder->geocodeQuery(GeocodeQuery::create($display->format($address)));
+        $collection = $geocoder->geocodeQuery(GeocodeQuery::create($formatter->format($address)));
         $coordinates = $collection->get(0)->getCoordinates();
 
         $coordinates = [
@@ -81,12 +90,14 @@ class FormAddressGeocoderTest extends TestCase
 
         $manager = $this->generateDummyDataManager();
 
-        $processor = (new FormAddressGeocoder($manager, $geocoder))
-        ->addField('street', 'street')
-        ->addField('city', 'city')
-        ->addField('state', 'state')
-        ->addField('zip', 'zip');
+        $processor = (new FormAddressGeocoder($geocoder, $manager))
+            ->addField('street', 'street')
+            ->addField('city', 'city')
+            ->addField('state', 'state')
+            ->addField('zip', 'zip');
 
-        $results = $processor->process($re)
+        $results = $processor->process($request, $results)->getResultOf('coordinates');
+
+        $this->assertEquals($coordinates, $results);
     }
 }

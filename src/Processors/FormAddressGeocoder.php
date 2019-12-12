@@ -24,13 +24,7 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
     /**
      * @var array
      */
-    protected $fields = [
-        'street' => null,
-        'city' => null,
-        'state' => null,
-        'zip' => null,
-        'country' => null,
-    ];
+    protected $fields = [];
 
     /**
      * @var string
@@ -161,7 +155,11 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
         return (new InputPurifier())
             ->addRule('float', Validator::floatType())
             ->addFilter(function ($input) {
-                return filter_var($input, FILTER_SANITIZE_NUMBER_FLOAT);
+                return filter_var(
+                    $input,
+                    FILTER_SANITIZE_NUMBER_FLOAT,
+                    FILTER_FLAG_ALLOW_FRACTION
+                );
             });
     }
 
@@ -208,6 +206,6 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
         return (new FormDataProcessingCache)
             ->withResult('coordinates', $coordinates)
             ->withResult('coordinates_updated', $geoUpdated)
-            ->withResult('address_updated', $addressUpdated);
+            ->withResult('address_updated', $addressUpdated ?? false);
     }
 }
