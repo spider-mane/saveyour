@@ -203,7 +203,7 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
             );
         }
 
-        return (new FormDataProcessingCache)
+        return (new FormDataProcessingCache())
             ->withResult('coordinates', $coordinates)
             ->withResult('coordinates_updated', $geoUpdated)
             ->withResult('address_updated', $addressUpdated ?? false);
