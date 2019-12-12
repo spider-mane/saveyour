@@ -20,8 +20,6 @@ abstract class AbstractRestrictedFormDataProcessor extends AbstractFormDataProce
             throw new \InvalidArgumentException("{$field} is not an accepted value");
         }
 
-        $this->fields[$field] = $param;
-
-        return $this;
+        return parent::addField($field, $param);
     }
 }

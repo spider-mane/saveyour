@@ -4,9 +4,9 @@ namespace WebTheory\Saveyour\Factories;
 
 use WebTheory\GuctilityBelt\Traits\SmartFactoryTrait;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
+use WebTheory\Saveyour\Contracts\FieldDataManagerResolverFactoryInterface as iDataManagerFactory;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
-use WebTheory\Saveyour\Contracts\FieldDataManagerResolverFactoryInterface as iDataManagerFactory;
 use WebTheory\Saveyour\Contracts\FormFieldResolverFactoryInterface as iFormFieldFactory;
 use WebTheory\Saveyour\Controllers\FormFieldController;
 
@@ -47,11 +47,11 @@ class FieldFactory
      */
     public function create(array $args): FormFieldControllerInterface
     {
-        if ($args['type']) {
+        if (isset($args['type'])) {
             $args['form_field'] = $this->createFormField($args['type']);
         }
 
-        if ($args['data']) {
+        if (isset($args['data'])) {
             $args['data_manager'] = $this->createDataManager($args['data']);
         }
 
@@ -88,5 +88,16 @@ class FieldFactory
         unset($args['@create']);
 
         return $this->dataManagerFactory->create($manager, $args);
+    }
+
+    /**
+     *
+     */
+    public function __call($name, $args)
+    {
+        $args = $args[0];
+        $args['type']['@create'] = $this->getArg($name);
+
+        return $this->create($args);
     }
 }

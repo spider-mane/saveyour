@@ -65,4 +65,61 @@ class FieldFactoryTest extends TestCase
 
         $this->assertEquals($expected, $test);
     }
+
+    /**
+     *
+     */
+    public function testCreatesFormFieldWithMagicMethod()
+    {
+        $factory = new FieldFactory(
+            new FormFieldFactory(),
+            new DataManagerFactory()
+        );
+
+        $args = [
+            'request_var' => 'foobar',
+
+            'type' => [
+                '@create' => 'select',
+                'id' => 'foo',
+                'name' => 'bar',
+                'classlist' => ['foo', 'bar', 'baz'],
+            ],
+
+            'data' => [
+                '@create' => 'callback',
+                'get_data_callback' => function () { },
+                'handle_data_callback' => function () { },
+            ],
+
+            'rules' => [
+                'phone' => Validator::phone(),
+                'email' => [
+                    'validator' => Validator::email(),
+                    'alert' => 'enter foobar'
+                ]
+            ]
+        ];
+
+        $field = $args['type'];
+        $field = (new Select)
+            ->setName($field['name'])
+            ->setId($field['id'])
+            ->setClasslist($field['classlist']);
+
+        $manager = $args['data'];
+        $manager = new FieldDataManagerCallback(
+            $manager['get_data_callback'],
+            $manager['handle_data_callback']
+        );
+
+        $expected = new FormFieldController($args['request_var'], $field, $manager);
+        $expected->setRules($args['rules']);
+
+        unset($args['type']['@create']);
+
+        $test = $factory->select($args);
+
+        $this->assertEquals($expected, $test);
+    }
 }
