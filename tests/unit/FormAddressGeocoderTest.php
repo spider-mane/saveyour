@@ -10,6 +10,7 @@ use Geocoder\Query\GeocodeQuery;
 use GuzzleHttp\Psr7\ServerRequest;
 use Http\Adapter\Guzzle6\Client;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Controllers\FieldOperationCacheBuilder;
 use WebTheory\Saveyour\Processors\FormAddressGeocoder;
@@ -23,12 +24,12 @@ class FormAddressGeocoderTest extends TestCase
     {
         return new class implements FieldDataManagerInterface
         {
-            public function getCurrentData(\Psr\Http\Message\ServerRequestInterface $request)
+            public function getCurrentData(ServerRequestInterface $request)
             {
                 return '';
             }
 
-            public function handleSubmittedData(\Psr\Http\Message\ServerRequestInterface $request, $data): bool
+            public function handleSubmittedData(ServerRequestInterface $request, $data): bool
             {
                 return true;
             }
@@ -40,8 +41,16 @@ class FormAddressGeocoderTest extends TestCase
      */
     public function testGetsProperGeoData()
     {
-        $values = include dirname(__DIR__) . '/values.php';
-        $address = $values['dummy_address'];
+        if (file_exists($env = dirname(__DIR__) . '/env.php')) {
+            require $env;
+        }
+
+        $address = [
+            'street' => 'One Microsoft Way',
+            'city' => 'Redmond',
+            'state' => 'WA',
+            'zip' => '98052',
+        ];
 
         $request = ServerRequest::fromGlobals();
 
@@ -78,7 +87,7 @@ class FormAddressGeocoderTest extends TestCase
         );
 
         $client = new Client();
-        $geocoder = new GoogleMaps($client, null, $values['google_maps']);
+        $geocoder = new GoogleMaps($client, null, getenv('GOOGLE_MAPS'));
 
         $collection = $geocoder->geocodeQuery(GeocodeQuery::create($formatter->format($address)));
         $coordinates = $collection->get(0)->getCoordinates();

@@ -23,7 +23,7 @@ require "../../vendor/autoload.php";
 # filp/whoops error handling
 (new Run)->prependHandler(new PrettyPageHandler)->register();
 
-$values = include '../values.php';
+include '../env.php';
 
 ################################################################################
 # start
@@ -53,7 +53,13 @@ $request = ServerRequest::fromGlobals()
         'test' => '5'
     ]);
 
-$address = $values['dummy_address'];
+$address = [
+    'street' => 'One Microsoft Way',
+    'city' => 'Redmond',
+    'state' => 'WA',
+    'zip' => '98052',
+];
+
 $address = (new Address)
     ->withAddressLine1($address['street'])
     ->withLocality($address['city'])
@@ -75,7 +81,7 @@ $display = new DefaultFormatter(
 $formatted = str_replace("\n", ', ', $display->format($address));
 
 $client = new Client();
-$geocoder = new GoogleMaps($client, null, $values['google_maps']);
+$geocoder = new GoogleMaps($client, null, getenv('GOOGLE_MAPS'));
 
 $collection = $geocoder->geocodeQuery(GeocodeQuery::create($display->format($address)));
 $coordinates = $collection->get(0)->getCoordinates();

@@ -20,4 +20,4 @@ phpunit.xml
 # misc
 coverage
 build
-tests/values.php
+tests/env.php

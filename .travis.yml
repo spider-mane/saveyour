@@ -10,12 +10,12 @@ php:
 
 cache:
   directories:
-    - $HOME/.composer/cache
+    - "$HOME/.composer/cache"
 
 matrix:
   include:
     - php: 7.1
-      env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
+      env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
 
   allow_failures:
     - php: 7.1
@@ -37,3 +37,7 @@ after_script:
       wget https://scrutinizer-ci.com/ocular.phar
       php ocular.phar code-coverage:upload --format=php-clover coverage.clover
     fi
+
+env:
+  global:
+    - secure: Qt1aXRSYlO5SE15UlCDkWbyvZDz/er3GEqF/3q8ptNcTzwltdRAqIeAJyisbyLs9dsAqSP4D1n4pdhTfw/sVv69N0vFVJ/FY35fUmq14hqjUwNYUzp3HVOMxts9Af9O0m4Lhs60+eHij0ET+9R7+albKwtzwOElb9SD3arvX9bfncr0+R6LfMqbts+0dpjJ3SEpfpJe9whWyX4jNKmzAWgSzQ+aL/6u7PrUbCCNJx6K+EMV6er69TxXqQyjPU0qfNIbM8BGbYWSMVju/0AA8v1MwQiFBmjfjZiuO6Vu13gO65w7mi8QCGVTP5eFae0VZS9dYbU7QtAIpEE9j6SWaTR91IQYAONikX6EMnIKlXoBhywIXCY7MfMNzvBDurCbot1guKpcDkjOtb8MT2NuxOZWX9RAcMi+doi0cpKi+XDXWcbQ96gwLLxx7dw8SLaKLp3esfiueUY9kMJZfIIMIXLNjenDvWZSyfD/HTnstheJOAUwvR+5UYNY9imtK+M6+ub5DFzRgx4X3QHZlm3yDCwDXRS4705D1OUdiGjAtupp931Tx57+swE/dKl//p542QHCRQ3r4FRVyLSDmssILhAG/iiLt6PIOzv9xY2Bvd4UcsVu6Ni+NkgDVxHHQWySH80QI7Q3txiZC11lPYeavln2NfohGqz6v0zjvPpoH6a0=
