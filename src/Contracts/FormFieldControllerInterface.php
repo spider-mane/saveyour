@@ -34,6 +34,11 @@ interface FormFieldControllerInterface
     /**
      *
      */
+    public function hasDataManager(): bool;
+
+    /**
+     *
+     */
     public function canProcessInput(): bool;
 
     /**
