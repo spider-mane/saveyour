@@ -12,7 +12,7 @@ interface FormFieldControllerInterface
      *
      * @return FormFieldInterface
      */
-    public function render(ServerRequestInterface $request): FormFieldInterface;
+    public function render(ServerRequestInterface $request): ?FormFieldInterface;
 
     /**
      * @param ServerRequestInterface $request
@@ -25,6 +25,11 @@ interface FormFieldControllerInterface
      *
      */
     public function getRequestVar(): string;
+
+    /**
+     *
+     */
+    public function getPresetValue(ServerRequestInterface $request);
 
     /**
      *
