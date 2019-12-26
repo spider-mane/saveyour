@@ -243,7 +243,7 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
      */
     public function getPresetValue(ServerRequestInterface $request)
     {
-        $data = $this->dataManager->getCurrentData($request);
+        $data = $this->hasDataManager() ? $this->dataManager->getCurrentData($request) : '';
 
         return $this->escapeValue($this->transformData($data));
     }
@@ -325,9 +325,7 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
      */
     public function setFormFieldValue(ServerRequestInterface $request)
     {
-        if ($this->hasDataManager()) {
-            $this->formField->setValue($this->getPresetValue($request));
-        }
+        $this->formField->setValue($this->getPresetValue($request));
 
         return $this;
     }
