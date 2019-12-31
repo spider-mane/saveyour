@@ -218,7 +218,8 @@ class InputPurifier
      */
     protected function sanitizeInput($input)
     {
-        $input = (array) $input;
+        $array = is_array($input); // check whether original input is an array
+        $input = (array) $input; // cast input to array for simplicity
 
         foreach ($this->filters as $filter) {
 
@@ -228,7 +229,7 @@ class InputPurifier
             unset($value);
         }
 
-        return count($input) === 1 ? $input[0] : $input;
+        return $array ? $input : $input[0]; // return single item if original input was not an array
     }
 
     /**
