@@ -17,9 +17,9 @@
   }],
 
   "require": {
-    "php": "^7.1",
+    "php": ">=7.2",
     "psr/http-message": "^1.0",
-    "respect/validation": "^1.1",
+    "respect/validation": "^2.0",
     "webtheory/guctilitybelt": "^0.2.0",
     "webtheory/html": "^0.1.0"
   },
