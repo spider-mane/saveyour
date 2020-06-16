@@ -3,9 +3,8 @@
 namespace WebTheory\Saveyour\Contracts;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Respect\Validation\Validatable;
 
-interface FormFieldControllerInterface extends InputPurifierInterface
+interface FieldInterface
 {
     /**
      * @param ServerRequestInterface $request
@@ -35,9 +34,4 @@ interface FormFieldControllerInterface extends InputPurifierInterface
      *
      */
     public function canProcessInput(): bool;
-
-    /**
-     *
-     */
-    public function getFormField(): ?FormFieldInterface;
 }

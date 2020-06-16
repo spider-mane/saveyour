@@ -3,8 +3,9 @@
 namespace WebTheory\Saveyour;
 
 use Respect\Validation\Validatable;
+use WebTheory\Saveyour\Contracts\InputPurifierInterface;
 
-class InputPurifier
+class InputPurifier implements InputPurifierInterface
 {
     /**
      * Validation rules
@@ -14,7 +15,7 @@ class InputPurifier
     protected $rules = [];
 
     /**
-     * Callback function(s) to sanitize incoming data before saving to database
+     * Callback function(s) to sanitize incoming data
      *
      * @var array
      */

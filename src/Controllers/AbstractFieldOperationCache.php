@@ -2,9 +2,10 @@
 
 namespace WebTheory\Saveyour\Controllers;
 
+use JsonSerializable;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 
-abstract class AbstractFieldOperationCache implements FieldOperationCacheInterface
+abstract class AbstractFieldOperationCache implements FieldOperationCacheInterface, JsonSerializable
 {
     /**
      *
@@ -16,6 +17,31 @@ abstract class AbstractFieldOperationCache implements FieldOperationCacheInterfa
         'update_successful' => false,
         'rule_violations' => [],
     ];
+
+    /**
+     * @var bool
+     */
+    protected $requestVarPresent = false;
+
+    /**
+     * @var mixed
+     */
+    protected $sanitizedInputValue;
+
+    /**
+     * @var bool
+     */
+    protected $updateAttempted = false;
+
+    /**
+     * @var bool
+     */
+    protected $updateSuccessful = false;
+
+    /**
+     * @var array
+     */
+    protected $ruleViolations = [];
 
     /**
      *
@@ -55,5 +81,29 @@ abstract class AbstractFieldOperationCache implements FieldOperationCacheInterfa
     public function ruleViolations(): array
     {
         return $this->results['rule_violations'];
+    }
+
+    /**
+     *
+     */
+    public function toArray()
+    {
+        return (array) $this;
+    }
+
+    /**
+     *
+     */
+    public function toJson()
+    {
+        return json_encode($this);
+    }
+
+    /**
+     *
+     */
+    public function jsonSerialize()
+    {
+        return $this;
     }
 }

@@ -6,9 +6,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
+use WebTheory\Saveyour\Contracts\FormFieldRepositoryInterface;
 use WebTheory\Saveyour\Contracts\FormProcessingCacheInterface;
 use WebTheory\Saveyour\Contracts\FormSubmissionManagerInterface;
 use WebTheory\Saveyour\Contracts\FormValidatorInterface;
+use WebTheory\Saveyour\Request;
 
 class FormSubmissionManager implements FormSubmissionManagerInterface
 {
@@ -18,6 +20,11 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
      * @var FormFieldControllerInterface[]
      */
     protected $fields = [];
+
+    /**
+     * @var FormFieldRepositoryInterface
+     */
+    protected $fieldRepository;
 
     /**
      * Array of FormDataProcessorInterface instances
@@ -172,6 +179,30 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
     }
 
     /**
+     * Get the value of fieldRepository
+     *
+     * @return FormFieldRepositoryInterface
+     */
+    public function getFieldRepository(): FormFieldRepositoryInterface
+    {
+        return $this->fieldRepository;
+    }
+
+    /**
+     * Set the value of fieldRepository
+     *
+     * @param FormFieldRepositoryInterface $fieldRepository
+     *
+     * @return self
+     */
+    public function setFieldRepository(FormFieldRepositoryInterface $fieldRepository)
+    {
+        $this->fieldRepository = $fieldRepository;
+
+        return $this;
+    }
+
+    /**
      * Get the value of groups
      *
      * @return array
@@ -217,6 +248,9 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         $cache = new FormProcessingCache();
 
         if ($this->isSafe($request, $cache)) {
+            // $args = Request::getArgs($request);
+            // uksort($args, [$this, 'sortFields']);
+
             $this->processFields($request, $cache);
             $this->runProcessors($request, $cache);
             $this->processResults($request, $cache);
@@ -240,7 +274,54 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
 
         $cache->withRequestViolations($violations);
 
-        return !empty($violations) ? false : true;
+        return empty($violations) ? true : false;
+    }
+
+    /**
+     *
+     */
+    protected function sortFields($a, $b)
+    {
+        $a = $this->fields[$a] ?? $this->fieldRepository->getField($a);
+        $b = $this->fields[$b] ?? $this->fieldRepository->getField($b);
+
+        return in_array($a->getRequestVar(), $b->getDependencies()) ? 1 : 0;
+    }
+
+    /**
+     *
+     */
+    protected function processFieldsByRequest(ServerRequestInterface $request, FormProcessingCache $cache)
+    {
+        $inputResults = [];
+        $inputViolations = [];
+
+        foreach (array_keys(Request::getArgs($request)) as $param) {
+            $controller = $this->fields[$param] ?? $this->fieldRepository->getField($param);
+
+            if (!$controller) {
+                $this->handleInvalidRequestParameter($request);
+                continue;
+            }
+
+            $operations = $controller->process($request);
+
+            $operations = new FieldOperationCache(
+                $operations->requestVarPresent(),
+                $operations->sanitizedInputValue(),
+                $operations->updateAttempted(),
+                $operations->updateSuccessful(),
+                $operations->ruleViolations()
+            );
+
+            $inputResults[$param] = $operations;
+            $inputViolations[$param] = $operations->ruleViolations();
+        }
+
+        $cache->withInputResults($inputResults);
+        $cache->withInputViolations(array_filter($inputViolations));
+
+        return $this;
     }
 
     /**
@@ -294,6 +375,14 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         $cache->withProcessingResults(array_filter($responses));
 
         return $this;
+    }
+
+    /**
+     *
+     */
+    protected function handleInvalidRequestParameter(ServerRequestInterface $request)
+    {
+        return true;
     }
 
     /**

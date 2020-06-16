@@ -165,9 +165,12 @@ class FormSubmissionManagerTest extends TestCase
         $manager  = new FormSubmissionManager;
 
         $fields = [
-            $this->createMock(FormFieldControllerInterface::class),
-            $this->createMock(FormFieldControllerInterface::class),
-            $this->createMock(FormFieldControllerInterface::class),
+            new FormFieldController('test1'),
+            new FormFieldController('test2'),
+            new FormFieldController('test3'),
+            // $this->createMock(FormFieldControllerInterface::class),
+            // $this->createMock(FormFieldControllerInterface::class),
+            // $this->createMock(FormFieldControllerInterface::class),
         ];
 
         $manager->setFields(...$fields);
@@ -179,8 +182,8 @@ class FormSubmissionManagerTest extends TestCase
     {
         $manager = new FormSubmissionManager;
 
-        $field1 = $this->createMock(FormFieldControllerInterface::class);
-        $field2 = $this->createMock(FormFieldControllerInterface::class);
+        $field1 = new FormFieldController('test1');
+        $field2 = new FormFieldController('test2');
 
         $manager->addField($field1);
         $manager->addField($field2);

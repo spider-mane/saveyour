@@ -11,7 +11,7 @@ class Request
      */
     public static function var(ServerRequestInterface $request, $param)
     {
-        $request = static::find($request);
+        $request = static::getArgs($request);
 
         return $request[$param] ?? null;
     }
@@ -21,7 +21,7 @@ class Request
      */
     public static function has(ServerRequestInterface $request, $param): bool
     {
-        $request = static::find($request);
+        $request = static::getArgs($request);
 
         return isset($request[$param]);
     }
@@ -47,7 +47,7 @@ class Request
     /**
      *
      */
-    protected static function find(ServerRequestInterface $request)
+    public static function getArgs(ServerRequestInterface $request)
     {
         switch ($request->getMethod()) {
             case 'GET':

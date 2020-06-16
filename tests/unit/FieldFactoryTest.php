@@ -14,7 +14,17 @@ class FieldFactoryTest extends TestCase
     /**
      *
      */
-    public function testCreatesFormFieldController()
+    protected function dummyCallback()
+    {
+        return function ($data) {
+            return $data;
+        };
+    }
+
+    /**
+     *
+     */
+    public function testCreates_FormFieldController()
     {
         $factory = new FieldFactory(
             new FormFieldFactory(),
@@ -33,8 +43,8 @@ class FieldFactoryTest extends TestCase
 
             'data' => [
                 '@create' => 'callback',
-                'get_data_callback' => function () { },
-                'handle_data_callback' => function () { },
+                'get_data_callback' => $this->dummyCallback(),
+                'handle_data_callback' => $this->dummyCallback(),
             ],
 
             'rules' => [
@@ -88,8 +98,10 @@ class FieldFactoryTest extends TestCase
 
             'data' => [
                 '@create' => 'callback',
-                'get_data_callback' => function () { },
-                'handle_data_callback' => function () { },
+                'get_data_callback' => function () {
+                },
+                'handle_data_callback' => function () {
+                },
             ],
 
             'rules' => [
