@@ -232,7 +232,7 @@ class BaseFormFieldController extends InputPurifier implements FormFieldControll
      */
     public function getSanitizedInput(ServerRequestInterface $request)
     {
-        return $this->filterInput($this->transformInput($this->getRawInput($request)));
+        return $this->filterInput($this->getRawInput($request));
     }
 
     /**
