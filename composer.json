@@ -3,27 +3,25 @@
   "description": "Modular form building and processing library",
   "homepage": "https://github.com/spider-mane/saveyour",
   "license": "MIT",
-
   "keywords": [
     "webtheory",
     "saveyour"
   ],
-
-  "authors": [{
-    "name": "Chris Williams",
-    "email": "spider.mane.web@gmail.com",
-    "homepage": "https://github.com/spider-mane",
-    "role": "Developer"
-  }],
-
+  "authors": [
+    {
+      "name": "Chris Williams",
+      "email": "spider.mane.web@gmail.com",
+      "homepage": "https://github.com/spider-mane",
+      "role": "Developer"
+    }
+  ],
   "require": {
     "php": ">=7.2",
     "psr/http-message": "^1.0",
     "respect/validation": "^2.0",
     "webtheory/guctilitybelt": "^0.2.0",
-    "webtheory/html": "^0.1.0"
+    "webtheory/html": "^0.1.3"
   },
-
   "require-dev": {
     "commerceguys/addressing": "^1.0",
     "egulias/email-validator": "^2.1",
@@ -49,25 +47,21 @@
     "symfony/validator": "^4.3",
     "symfony/var-dumper": "^4.3"
   },
-
   "autoload": {
     "psr-4": {
       "WebTheory\\Saveyour\\": "src"
     }
   },
-
   "autoload-dev": {
     "psr-4": {
       "WebTheory\\Saveyour\\Tests\\": "tests/unit"
     }
   },
-
   "suggest": {
     "frontpack/composer-assets-plugin": "Copy assets from vendor directory to pubic web folder",
     "swiftmailer/swiftmailer": "Send email based on form submission values",
     "commerceguys/addressing": "Required to use FormAddressGeocoder form processor"
   },
-
   "scripts": {
     "test": "vendor/bin/phpunit",
     "watch": "phpunit-watcher watch",
@@ -76,12 +70,10 @@
     "fix": "vendor/bin/phpcbf src",
     "bench": "vendor/bin/phpbench"
   },
-
   "config": {
     "sort-packages": true,
     "process-timeout": 0
   },
-
   "extra": {
     "branch-alias": {
       "dev-master": "1.0-dev"
