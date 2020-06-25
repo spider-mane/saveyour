@@ -2,6 +2,7 @@
 
 namespace WebTheory\Saveyour\Fields;
 
+use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 abstract class AbstractStandardFormControl extends AbstractFormField implements FormFieldInterface
@@ -9,7 +10,7 @@ abstract class AbstractStandardFormControl extends AbstractFormField implements 
     /**
      * {@inheritDoc}
      */
-    protected function resolveAttributes()
+    protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
             ->addAttribute('name', $this->name)

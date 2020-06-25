@@ -2,6 +2,7 @@
 
 namespace WebTheory\Saveyour\Fields;
 
+use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 abstract class AbstractInput extends AbstractStandardFormControl implements FormFieldInterface
@@ -29,7 +30,7 @@ abstract class AbstractInput extends AbstractStandardFormControl implements Form
     /**
      *
      */
-    protected function resolveAttributes()
+    protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
             ->addAttribute('type', $this->type)
@@ -40,10 +41,8 @@ abstract class AbstractInput extends AbstractStandardFormControl implements Form
     /**
      *
      */
-    public function toHtml(): string
+    public function renderHtmlMarkup(): string
     {
-        return $this
-            ->resolveAttributes()
-            ->open('input', $this->attributes);
+        return $this->open('input', $this->attributes);
     }
 }

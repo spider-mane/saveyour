@@ -2,6 +2,7 @@
 
 namespace WebTheory\Saveyour\Fields;
 
+use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Textarea extends AbstractStandardFormControl implements FormFieldInterface
@@ -38,7 +39,7 @@ class Textarea extends AbstractStandardFormControl implements FormFieldInterface
     /**
      *
      */
-    protected function resolveAttributes()
+    protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
             ->addAttribute('rows', $this->rows);
@@ -47,10 +48,8 @@ class Textarea extends AbstractStandardFormControl implements FormFieldInterface
     /**
      *
      */
-    public function toHtml(): string
+    public function renderHtmlMarkup(): string
     {
-        return $this
-            ->resolveAttributes()
-            ->tag('textarea', $this->value, $this->attributes);
+        return $this->tag('textarea', $this->value, $this->attributes);
     }
 }

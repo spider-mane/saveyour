@@ -1,11 +1,8 @@
 <?php
 
-namespace WebTheory\Saveyour\Fields;
+namespace WebTheory\Saveyour\Concerns;
 
-use WebTheory\Saveyour\Concerns\LabelMaker;
-use WebTheory\Saveyour\Contracts\FormFieldInterface;
-
-abstract class AbstractCompositeField extends AbstractFormField implements FormFieldInterface
+trait HasLabelsTrait
 {
     use LabelMaker;
 

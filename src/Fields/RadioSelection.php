@@ -2,10 +2,15 @@
 
 namespace WebTheory\Saveyour\Fields;
 
+use WebTheory\Saveyour\Concerns\HasLabelsTrait;
+use WebTheory\Saveyour\Concerns\IsSelectionFieldTrait;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
-class RadioSelection extends AbstractCompositeField implements FormFieldInterface
+class RadioSelection extends AbstractFormField implements FormFieldInterface
 {
+    use HasLabelsTrait;
+    use IsSelectionFieldTrait;
+
     /**
      *
      */
@@ -26,11 +31,35 @@ class RadioSelection extends AbstractCompositeField implements FormFieldInterfac
     }
 
     /**
+     * Get the value of items
+     *
+     * @return mixed
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * Set the value of items
+     *
+     * @param mixed $items
+     *
+     * @return self
+     */
+    public function setItems($items)
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    /**
      * Get the value of isInline
      *
      * @return bool
      */
-    public function getIsInline(): bool
+    public function isInline(): bool
     {
         return $this->isInline;
     }
@@ -52,14 +81,32 @@ class RadioSelection extends AbstractCompositeField implements FormFieldInterfac
     /**
      *
      */
-    public function toHtml(): string
+    protected function getItemsToRender(): array
+    {
+        return $this->selectionProvider
+            ? $this->selectionProvider->getSelection()
+            : $this->items;
+    }
+
+    /**
+     *
+     */
+    protected function isItemSelected(string $item)
+    {
+        return $item === $this->value;
+    }
+
+    /**
+     *
+     */
+    public function renderHtmlMarkup(): string
     {
         $html = '';
 
-        foreach ($this->items as $item => $label) {
+        foreach ($this->getItemsToRender() as $item => $label) {
 
             $radio = (new Radio())
-                ->setChecked($this->value !== $item ? false : true)
+                ->setChecked($this->isItemSelected($item))
                 ->setValue($item)
                 ->setName($this->name)
                 ->setClasslist(explode(' ', $this->classlist->parse()));

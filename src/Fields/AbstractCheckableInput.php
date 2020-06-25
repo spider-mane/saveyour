@@ -2,6 +2,7 @@
 
 namespace WebTheory\Saveyour\Fields;
 
+use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 use WebTheory\Saveyour\Fields\AbstractInput;
 
@@ -40,7 +41,7 @@ abstract class AbstractCheckableInput extends AbstractInput implements FormField
     /**
      * {@inheritDoc}
      */
-    protected function resolveAttributes()
+    protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
             ->addAttribute('checked', $this->checked);

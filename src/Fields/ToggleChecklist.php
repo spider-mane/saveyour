@@ -4,35 +4,35 @@ namespace WebTheory\Saveyour\Fields;
 
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
-class Checklist extends AbstractChecklist implements FormFieldInterface
+class ToggleChecklist extends AbstractChecklist implements FormFieldInterface
 {
     /**
-     * Value for hidden input that facilitates unsetting all values on the server
+     * Value for hidden input that facilitates unsetting single value on the server
      *
-     * @var string
+     * @var mixed
      */
-    protected $clearControl = '0';
+    protected $toggleControl = '0';
 
     /**
-     * Get value for hidden input that facilitates unsetting all values on the server
+     * Get value for hidden input that facilitates unsetting single value on the server
      *
-     * @return string
+     * @return mixed
      */
-    public function getClearControl(): string
+    public function getToggleControl()
     {
-        return $this->clearControl;
+        return $this->toggleControl;
     }
 
     /**
-     * Set value for hidden input that facilitates unsetting all values on the server
+     * Set value for hidden input that facilitates unsetting single value on the server
      *
-     * @param string
+     * @param mixed $toggleControl
      *
      * @return self
      */
-    public function setClearControl(string $clearControl)
+    public function setToggleControl($toggleControl)
     {
-        $this->clearControl = $clearControl;
+        $this->toggleControl = $toggleControl;
 
         return $this;
     }
@@ -40,11 +40,13 @@ class Checklist extends AbstractChecklist implements FormFieldInterface
     /**
      *
      */
-    protected function createClearControl(): Hidden
+    protected function createItemToggleControl(array $values): Hidden
     {
+        $basename = $values['name'] ?? '';
+
         return (new Hidden())
-            ->setName($this->name . "[]")
-            ->setValue($this->clearControl);
+            ->setName($this->name . "[{$basename}]")
+            ->setValue($this->toggleControl);
     }
 
     /**
@@ -52,10 +54,12 @@ class Checklist extends AbstractChecklist implements FormFieldInterface
      */
     protected function createItemCheckBox(array $values): Checkbox
     {
+        $basename = $values['name'];
+
         return (new Checkbox())
             ->setId($values['id'] ?? '')
             ->setValue($values['value'] ?? '')
-            ->setName($this->name . '[]');
+            ->setName($this->name . "[{$basename}]");
     }
 
     /**
@@ -64,6 +68,7 @@ class Checklist extends AbstractChecklist implements FormFieldInterface
     protected function defineChecklistItem(string $item, array $values)
     {
         $html = '';
+        $html .= $this->createItemToggleControl($values);
         $html .= $this->createItemCheckBox($values)->setChecked($this->isItemChecked($item));
         $html .= $this->createItemLabel($values)->setFor($values['id'] ?? '');
 
@@ -77,7 +82,6 @@ class Checklist extends AbstractChecklist implements FormFieldInterface
     {
         $html = '';
         $html .= $this->open('div', $this->attributes ?? null);
-        $html .= $this->createClearControl();
         $html .= $this->open('ul');
 
         foreach ($this->getItemsToRender() as $item => $values) {

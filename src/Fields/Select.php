@@ -2,10 +2,14 @@
 
 namespace WebTheory\Saveyour\Fields;
 
+use WebTheory\Html\AbstractHtmlElement;
+use WebTheory\Saveyour\Concerns\IsSelectionFieldTrait;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Select extends AbstractStandardFormControl implements FormFieldInterface
 {
+    use IsSelectionFieldTrait;
+
     /**
      *
      */
@@ -91,7 +95,7 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     /**
      *
      */
-    protected function resolveAttributes()
+    protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
             ->addAttribute('multiple', $this->multiple);
@@ -100,10 +104,18 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     /**
      *
      */
-    public function toHtml(): string
+    protected function getItemsToRender(): array
     {
-        $this->resolveAttributes();
+        return $this->selectionProvider
+            ? $this->selectionProvider->getSelection()
+            : $this->options;
+    }
 
+    /**
+     *
+     */
+    public function renderHtmlMarkup(): string
+    {
         $html = '';
 
         $html .= $this->open('select', $this->attributes);
@@ -112,7 +124,7 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
             $html .= $this->open('option') . $this->placeholder . $this->close('option');
         }
 
-        foreach ($this->options as $value => $option) {
+        foreach ($this->getItemsToRender() as $value => $option) {
             $optionAttr = ['value' => $value];
 
             if (in_array($value, $this->value)) {
