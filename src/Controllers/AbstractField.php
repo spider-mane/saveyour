@@ -3,6 +3,7 @@
 namespace WebTheory\Saveyour\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Respect\Validation\Validatable;
 use WebTheory\Saveyour\Contracts\DataTransformerInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
@@ -17,17 +18,11 @@ abstract class AbstractField implements FormFieldControllerInterface
     protected $controller;
 
     /**
-     * @var string
-     */
-    protected $requestVar;
-
-    /**
      *
      */
     public function __construct(string $requestVar)
     {
-        $this->requestVar = $requestVar;
-        $this->controller = $this->createFormFieldController();
+        $this->controller = $this->createFormFieldController($requestVar);
     }
 
     /**
@@ -37,9 +32,49 @@ abstract class AbstractField implements FormFieldControllerInterface
      */
     public function getRequestVar(): string
     {
-        return $this->requestVar;
+        return $this->controller->getRequestVar();
     }
 
+    /**
+     * @return Validatable[]
+     */
+    public function getRules(): array
+    {
+        return $this->controller->getRules();
+    }
+
+    /**
+     * @return Validatable
+     */
+    public function getRule(string $rule): Validatable
+    {
+        return $this->controller->getRule($rule);
+    }
+
+    /**
+     * @return callable[]
+     */
+    public function getFilters(): array
+    {
+        return $this->controller->getFilters();
+    }
+
+
+    /**
+     * @return bool|mixed
+     */
+    public function filterInput($input)
+    {
+        return $this->controller->filterInput($input);
+    }
+
+    /**
+     * @return array
+     */
+    public function getViolations(): array
+    {
+        return $this->controller->getViolations();
+    }
     /**
      *
      */
@@ -75,10 +110,10 @@ abstract class AbstractField implements FormFieldControllerInterface
     /**
      *
      */
-    protected function createFormFieldController(): FormFieldControllerInterface
+    protected function createFormFieldController(string $requestVar): FormFieldControllerInterface
     {
         return new BaseFormFieldController(
-            $this->getRequestVar(),
+            $requestVar,
             $this->createFormField(),
             $this->createDataManager(),
             $this->createDataTransformer(),
