@@ -35,9 +35,4 @@ interface FormFieldControllerInterface extends InputPurifierInterface
      *
      */
     public function canProcessInput(): bool;
-
-    /**
-     *
-     */
-    public function getFormField(): ?FormFieldInterface;
 }
