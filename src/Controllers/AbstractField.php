@@ -15,14 +15,14 @@ abstract class AbstractField implements FormFieldControllerInterface
     /**
      * @var FormFieldControllerInterface
      */
-    protected $controller;
+    protected $__coreController;
 
     /**
      *
      */
     public function __construct(string $requestVar)
     {
-        $this->controller = $this->createFormFieldController($requestVar);
+        $this->__coreController = $this->createFormFieldController($requestVar);
     }
 
     /**
@@ -32,7 +32,15 @@ abstract class AbstractField implements FormFieldControllerInterface
      */
     public function getRequestVar(): string
     {
-        return $this->controller->getRequestVar();
+        return $this->__coreController->getRequestVar();
+    }
+
+    /**
+     *
+     */
+    public function getFormField(): ?FormFieldInterface
+    {
+        return $this->__coreController->getFormField();
     }
 
     /**
@@ -40,7 +48,7 @@ abstract class AbstractField implements FormFieldControllerInterface
      */
     public function getRules(): array
     {
-        return $this->controller->getRules();
+        return $this->__coreController->getRules();
     }
 
     /**
@@ -48,7 +56,7 @@ abstract class AbstractField implements FormFieldControllerInterface
      */
     public function getRule(string $rule): Validatable
     {
-        return $this->controller->getRule($rule);
+        return $this->__coreController->getRule($rule);
     }
 
     /**
@@ -56,7 +64,7 @@ abstract class AbstractField implements FormFieldControllerInterface
      */
     public function getFilters(): array
     {
-        return $this->controller->getFilters();
+        return $this->__coreController->getFilters();
     }
 
 
@@ -65,7 +73,7 @@ abstract class AbstractField implements FormFieldControllerInterface
      */
     public function filterInput($input)
     {
-        return $this->controller->filterInput($input);
+        return $this->__coreController->filterInput($input);
     }
 
     /**
@@ -73,14 +81,14 @@ abstract class AbstractField implements FormFieldControllerInterface
      */
     public function getViolations(): array
     {
-        return $this->controller->getViolations();
+        return $this->__coreController->getViolations();
     }
     /**
      *
      */
     public function getPresetValue(ServerRequestInterface $request)
     {
-        return $this->controller->getPresetValue($request);
+        return $this->__coreController->getPresetValue($request);
     }
 
     /**
@@ -88,7 +96,7 @@ abstract class AbstractField implements FormFieldControllerInterface
      */
     public function canProcessInput(): bool
     {
-        return $this->controller->canProcessInput();
+        return $this->__coreController->canProcessInput();
     }
 
     /**
@@ -96,7 +104,7 @@ abstract class AbstractField implements FormFieldControllerInterface
      */
     public function render(ServerRequestInterface $request): ?FormFieldInterface
     {
-        return $this->controller->render($request);
+        return $this->__coreController->render($request);
     }
 
     /**
@@ -104,7 +112,7 @@ abstract class AbstractField implements FormFieldControllerInterface
      */
     public function process(ServerRequestInterface $request): FieldOperationCacheInterface
     {
-        return $this->controller->process($request);
+        return $this->__coreController->process($request);
     }
 
     /**

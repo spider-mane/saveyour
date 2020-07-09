@@ -3,7 +3,6 @@
 namespace WebTheory\Saveyour\Contracts;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Respect\Validation\Validatable;
 
 interface FormFieldControllerInterface extends InputPurifierInterface
 {
@@ -25,6 +24,11 @@ interface FormFieldControllerInterface extends InputPurifierInterface
      *
      */
     public function getRequestVar(): string;
+
+    /**
+     *
+     */
+    public function getFormField(): ?FormFieldInterface;
 
     /**
      *

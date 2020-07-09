@@ -2,10 +2,14 @@
 
 namespace WebTheory\Saveyour\Fields;
 
+use WebTheory\Saveyour\Concerns\IsBasicallyChecklistTrait;
+use WebTheory\Saveyour\Contracts\CheckableFieldInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Checklist extends AbstractChecklist implements FormFieldInterface
 {
+    use IsBasicallyChecklistTrait;
+
     /**
      * Value for hidden input that facilitates unsetting all values on the server
      *
@@ -50,7 +54,7 @@ class Checklist extends AbstractChecklist implements FormFieldInterface
     /**
      *
      */
-    protected function createItemCheckBox(array $values): Checkbox
+    protected function createItemCheckBox(array $values): CheckableFieldInterface
     {
         return (new Checkbox())
             ->setId($values['id'] ?? '')
@@ -73,12 +77,35 @@ class Checklist extends AbstractChecklist implements FormFieldInterface
     /**
      *
      */
-    public function renderHtmlMarkup(): string
+    protected function renderItemsFromProvider(): string
     {
         $html = '';
-        $html .= $this->open('div', $this->attributes ?? null);
-        $html .= $this->createClearControl();
-        $html .= $this->open('ul');
+        $provider = $this->checklistItemProvider;
+
+        foreach ($provider->provideItemsAsRawData() as $item) {
+            $values = [
+                'id' => $provider->provideItemId($item),
+                'value' => $provider->provideItemValue($item),
+                'label' => $provider->provideItemLabel($item)
+            ];
+
+            $checked = $this->isItemChecked($values['value']);
+
+            $html .= $this->open('li');
+            $html .= $this->createItemCheckBox($values)->setChecked($checked);
+            $html .= $this->createItemLabel($values)->setFor($values['id']);
+            $html .= $this->close('li');
+        }
+
+        return $html;
+    }
+
+    /**
+     *
+     */
+    protected function renderItemsFromSelection(): string
+    {
+        $html = '';
 
         foreach ($this->getItemsToRender() as $item => $values) {
             $html .= $this->open('li');
@@ -86,9 +113,45 @@ class Checklist extends AbstractChecklist implements FormFieldInterface
             $html .= $this->close('li');
         }
 
-        $html .= $this->close('ul');
-        $html .= $this->close('div');
-
         return $html;
+    }
+
+    /**
+     *
+     */
+    protected function renderItems()
+    {
+        return isset($this->checklistItemProvider)
+            ? $this->renderItemsFromProvider()
+            : $this->renderItemsFromSelection();
+    }
+
+    // /**
+    //  *
+    //  */
+    // public function renderHtmlMarkup(): string
+    // {
+    //     $html = '';
+    //     $html .= $this->open('div', $this->attributes ?? null);
+    //     $html .= $this->createClearControl();
+    //     $html .= $this->open('ul');
+    //     $html .= $this->renderItems();
+    //     $html .= $this->close('ul');
+    //     $html .= $this->close('div');
+
+    //     return $html;
+    // }
+
+    /**
+     *
+     */
+    public function renderHtmlMarkup(): string
+    {
+        return $this->open('div', $this->attributes ?? null)
+            . $this->createClearControl()
+            . $this->open('ul')
+            . $this->renderItems()
+            . $this->close('ul')
+            . $this->close('div');
     }
 }

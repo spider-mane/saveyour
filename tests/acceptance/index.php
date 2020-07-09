@@ -9,6 +9,8 @@ use Geocoder\Provider\GoogleMaps\GoogleMaps;
 use Geocoder\Query\GeocodeQuery;
 use GuzzleHttp\Psr7\ServerRequest;
 use Http\Adapter\Guzzle6\Client;
+use WebTheory\Saveyour\Contracts\ChecklistItemsInterface;
+use WebTheory\Saveyour\Fields\Checklist;
 use WebTheory\Saveyour\Fields\RadioSelection;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -92,3 +94,56 @@ $coordinates = [
 ];
 
 var_dump($coordinates);
+
+$selection = [
+    'test-1' => [
+        'label' => 'Test 1',
+        'id' => 'test-1'
+    ],
+    'test-2' => [
+        'label' => 'Test 2',
+        'id' => 'test-2'
+    ]
+];
+
+$provider = new class implements ChecklistItemsInterface
+{
+    public function provideItemsAsRawData(): array
+    {
+        return [
+            [
+                'value' => 'test-3',
+                'label' => 'Test 3',
+                'id' => 'test-3'
+            ],
+            [
+                'value' => 'test-4',
+                'label' => 'Test 4',
+                'id' => 'test-4'
+            ]
+        ];
+    }
+
+    public function provideItemValue($item): string
+    {
+        return $item['value'];
+    }
+
+    public function provideItemId($item): string
+    {
+        return $item['id'];
+    }
+
+    public function provideItemLabel($item): string
+    {
+        return $item['label'];
+    }
+};
+
+$checklist = new Checklist;
+$checklist->setItems($selection);
+
+echo $checklist->toHtml();
+
+$checklist->setChecklistItemProvider($provider);
+echo $checklist->toHtml();

@@ -3,10 +3,10 @@
 namespace WebTheory\Saveyour\Fields;
 
 use WebTheory\Html\AbstractHtmlElement;
-use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\CheckableFieldInterface;
 use WebTheory\Saveyour\Fields\AbstractInput;
 
-abstract class AbstractCheckableInput extends AbstractInput implements FormFieldInterface
+abstract class AbstractCheckableInput extends AbstractInput implements CheckableFieldInterface
 {
 
     /**
@@ -15,7 +15,7 @@ abstract class AbstractCheckableInput extends AbstractInput implements FormField
     protected $checked;
 
     /**
-     * Get the value of selected
+     * Get the value of checked
      *
      * @return bool
      */
@@ -25,15 +25,15 @@ abstract class AbstractCheckableInput extends AbstractInput implements FormField
     }
 
     /**
-     * Set the value of selected
+     * Set the value of checked
      *
-     * @param bool $selected
+     * @param bool $checked
      *
      * @return self
      */
-    public function setChecked(bool $selected)
+    public function setChecked(bool $checked): CheckableFieldInterface
     {
-        $this->checked = $selected;
+        $this->checked = $checked;
 
         return $this;
     }

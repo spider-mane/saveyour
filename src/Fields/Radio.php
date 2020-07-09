@@ -2,9 +2,9 @@
 
 namespace WebTheory\Saveyour\Fields;
 
-use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\CheckableFieldInterface;
 
-class Radio extends AbstractCheckableInput implements FormFieldInterface
+class Radio extends AbstractCheckableInput implements CheckableFieldInterface
 {
     /**
      *
