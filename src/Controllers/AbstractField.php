@@ -141,7 +141,7 @@ abstract class AbstractField implements FormFieldControllerInterface
     /**
      *
      */
-    public function createDataManager(): ?FieldDataManagerInterface
+    protected function createDataManager(): ?FieldDataManagerInterface
     {
         return null;
     }
