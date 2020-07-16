@@ -37,7 +37,7 @@ class Request
     /**
      *
      */
-    public static function hasAttr(ServerRequestInterface $request, $attribute)
+    public static function hasAttr(ServerRequestInterface $request, $attribute): bool
     {
         $attributes = $request->getAttributes();
 
@@ -47,7 +47,7 @@ class Request
     /**
      *
      */
-    public static function getArgs(ServerRequestInterface $request)
+    public static function getArgs(ServerRequestInterface $request): array
     {
         switch ($request->getMethod()) {
             case 'GET':
@@ -64,5 +64,13 @@ class Request
         }
 
         return (array) $request;
+    }
+
+    /**
+     *
+     */
+    public static function getParams(ServerRequestInterface $request): array
+    {
+        return array_keys(static::getArgs($request));
     }
 }

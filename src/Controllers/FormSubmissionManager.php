@@ -248,9 +248,6 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         $cache = new FormProcessingCache();
 
         if ($this->isSafe($request, $cache)) {
-            // $args = Request::getArgs($request);
-            // uksort($args, [$this, 'sortFields']);
-
             $this->processFields($request, $cache);
             $this->runProcessors($request, $cache);
             $this->processResults($request, $cache);
@@ -274,54 +271,29 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
 
         $cache->withRequestViolations($violations);
 
-        return empty($violations) ? true : false;
+        return empty($violations);
     }
 
     /**
      *
      */
-    protected function sortFields($a, $b)
+    protected function sortFieldsForProcessing()
     {
-        $a = $this->fields[$a] ?? $this->fieldRepository->getField($a);
-        $b = $this->fields[$b] ?? $this->fieldRepository->getField($b);
-
-        return in_array($a->getRequestVar(), $b->getDependencies()) ? 1 : 0;
+        usort($this->fields, function (FormFieldControllerInterface $a, FormFieldControllerInterface $b) {
+            // because usort will not compare values that it infers from
+            // previous comparisons to be equal, 0 should never be returned. all
+            // that matters is that dependent fields are positioned after their
+            // dependencies.
+            return in_array($a->getRequestVar(), $b->mustAwait()) ? -1 : 1;
+        });
     }
 
     /**
      *
      */
-    protected function processFieldsByRequest(ServerRequestInterface $request, FormProcessingCache $cache)
+    protected function fieldPresentInRequest(FormFieldControllerInterface $field, ServerRequestInterface $request): bool
     {
-        $inputResults = [];
-        $inputViolations = [];
-
-        foreach (array_keys(Request::getArgs($request)) as $param) {
-            $controller = $this->fields[$param] ?? $this->fieldRepository->getField($param);
-
-            if (!$controller) {
-                $this->handleInvalidRequestParameter($request);
-                continue;
-            }
-
-            $operations = $controller->process($request);
-
-            $operations = new FieldOperationCache(
-                $operations->requestVarPresent(),
-                $operations->sanitizedInputValue(),
-                $operations->updateAttempted(),
-                $operations->updateSuccessful(),
-                $operations->ruleViolations()
-            );
-
-            $inputResults[$param] = $operations;
-            $inputViolations[$param] = $operations->ruleViolations();
-        }
-
-        $cache->withInputResults($inputResults);
-        $cache->withInputViolations(array_filter($inputViolations));
-
-        return $this;
+        return Request::has($request, $field->getRequestVar());
     }
 
     /**
@@ -332,26 +304,43 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         $inputResults = [];
         $inputViolations = [];
 
+        $this->sortFieldsForProcessing();
+
         foreach ($this->fields as $field) {
             $name = $field->getRequestVar();
-            $operations = $field->process($request);
+            $results = $this->processField($field, $request);
 
-            $operations = new FieldOperationCache(
-                $operations->requestVarPresent(),
-                $operations->sanitizedInputValue(),
-                $operations->updateAttempted(),
-                $operations->updateSuccessful(),
-                $operations->ruleViolations()
-            );
-
-            $inputResults[$name] = $operations;
-            $inputViolations[$name] = $operations->ruleViolations();
+            $inputResults[$name] = $results;
+            $inputViolations[$name] = $results->ruleViolations();
         }
 
         $cache->withInputResults($inputResults);
         $cache->withInputViolations(array_filter($inputViolations));
 
         return $this;
+    }
+
+    /**
+     *
+     */
+    protected function processField(FormFieldControllerInterface $field, ServerRequestInterface $request): FieldOperationCacheInterface
+    {
+        $requestVarPresent = $this->fieldPresentInRequest($field, $request);
+
+        if ($requestVarPresent) {
+            $base = $field->process($request);
+            $results = new FieldOperationCache(
+                true,
+                $base->sanitizedInputValue(),
+                $base->updateAttempted(),
+                $base->updateSuccessful(),
+                $base->ruleViolations()
+            );
+        } else {
+            $results = new FieldOperationCache(false, null, false, false, []);
+        }
+
+        return $results;
     }
 
     /**
@@ -375,14 +364,6 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         $cache->withProcessingResults(array_filter($responses));
 
         return $this;
-    }
-
-    /**
-     *
-     */
-    protected function handleInvalidRequestParameter(ServerRequestInterface $request)
-    {
-        return true;
     }
 
     /**

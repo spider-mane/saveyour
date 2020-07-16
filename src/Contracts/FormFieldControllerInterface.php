@@ -21,6 +21,11 @@ interface FormFieldControllerInterface extends InputPurifierInterface
     public function process(ServerRequestInterface $request): FieldOperationCacheInterface;
 
     /**
+     * @return string[]
+     */
+    public function mustAwait(): array;
+
+    /**
      *
      */
     public function getRequestVar(): string;
@@ -34,9 +39,4 @@ interface FormFieldControllerInterface extends InputPurifierInterface
      *
      */
     public function getPresetValue(ServerRequestInterface $request);
-
-    /**
-     *
-     */
-    public function canProcessInput(): bool;
 }

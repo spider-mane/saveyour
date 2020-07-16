@@ -118,6 +118,14 @@ abstract class AbstractField implements FormFieldControllerInterface
     /**
      *
      */
+    public function mustAwait(): array
+    {
+        return $this->__coreController->mustAwait();
+    }
+
+    /**
+     *
+     */
     protected function createFormFieldController(string $requestVar): FormFieldControllerInterface
     {
         return new BaseFormFieldController(

@@ -52,6 +52,11 @@ class BaseFormFieldController extends InputPurifier implements FormFieldControll
     protected $processingDisabled = false;
 
     /**
+     * @var string[]
+     */
+    protected $mustAwait = [];
+
+    /**
      *
      */
     public const LAZY_ESCAPE = [self::class, 'lazyEscaper'];
@@ -67,7 +72,8 @@ class BaseFormFieldController extends InputPurifier implements FormFieldControll
         ?array $filters = null,
         ?array $rules = null,
         ?callable $escaper = null,
-        ?bool $processingDisabled = null
+        ?bool $processingDisabled = null,
+        ?array $await = null
     ) {
         $this->requestVar = $requestVar;
 
@@ -80,6 +86,7 @@ class BaseFormFieldController extends InputPurifier implements FormFieldControll
 
         $filters && $this->setFilters(...$filters);
         $rules && $this->setRules($rules);
+        $await && $this->setMustAwait(...$await);
     }
 
     /**
@@ -143,6 +150,30 @@ class BaseFormFieldController extends InputPurifier implements FormFieldControll
     }
 
     /**
+     * Get the value of mustAwait
+     *
+     * @return string[]
+     */
+    public function mustAwait(): array
+    {
+        return $this->mustAwait;
+    }
+
+    /**
+     * Set the value of mustAwait
+     *
+     * @param string[] $mustAwait
+     *
+     * @return self
+     */
+    protected function setMustAwait(string ...$fields)
+    {
+        $this->mustAwait = $fields;
+
+        return $this;
+    }
+
+    /**
      * Get the value of savingDisabled
      *
      * @return bool
@@ -158,17 +189,8 @@ class BaseFormFieldController extends InputPurifier implements FormFieldControll
     public function process(ServerRequestInterface $request): FieldOperationCacheInterface
     {
         $results = new FieldOperationCacheBuilder();
-        $requestVarExists = $this->requestVarExists($request);
-        $results->withRequestVarPresent($requestVarExists);
-
-        if (!$requestVarExists) {
-            return $results;
-        }
-
         $this->processData($request, $results);
-
         $results->withRuleViolations($this->getViolations());
-
         $this->clearViolations();
 
         return $results;

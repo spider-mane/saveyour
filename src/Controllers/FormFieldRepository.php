@@ -25,9 +25,9 @@ class FormFieldRepository implements FormFieldRepositoryInterface
      *
      * @return mixed
      */
-    public function getFields()
+    public function getFields(string ...$fields): array
     {
-        return $this->fields;
+        return empty($fields) ? $this->fields : $this->getDefinedFields(...$fields);
     }
 
     /**
@@ -41,8 +41,29 @@ class FormFieldRepository implements FormFieldRepositoryInterface
     /**
      *
      */
+    public function getDefinedFields(string ...$fields): array
+    {
+        return array_filter(
+            $this->fields,
+            function (FormFieldControllerInterface $field) use ($fields) {
+                return in_array($field->getRequestVar(), $fields);
+            }
+        );
+    }
+
+    /**
+     *
+     */
     public function addField(FormFieldControllerInterface $field)
     {
         $this->fields[$field->getRequestVar()] = $field;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getFieldNames(): array
+    {
+        return array_keys($this->fields);
     }
 }

@@ -8,7 +8,6 @@ use WebTheory\Saveyour\Fields\AbstractInput;
 
 abstract class AbstractCheckableInput extends AbstractInput implements CheckableFieldInterface
 {
-
     /**
      * @var bool
      */

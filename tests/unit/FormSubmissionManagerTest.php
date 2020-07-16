@@ -8,8 +8,11 @@ use WebTheory\Saveyour\Contracts\FormDataProcessingCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormValidatorInterface;
+use WebTheory\Saveyour\Controllers\BaseFormFieldController;
+use WebTheory\Saveyour\Controllers\FieldOperationCache;
 use WebTheory\Saveyour\Controllers\FieldOperationCacheBuilder;
 use WebTheory\Saveyour\Controllers\FormFieldController;
+use WebTheory\Saveyour\Controllers\FormFieldControllerBuilder;
 use WebTheory\Saveyour\Controllers\FormSubmissionManager;
 
 class FormSubmissionManagerTest extends TestCase
@@ -256,7 +259,8 @@ class FormSubmissionManagerTest extends TestCase
 
         $manager->addField($controller);
 
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = new ServerRequest('post', 'https://test.test');
+        $request = $request->withParsedBody([$param => 'test-param']);
 
         $manager->process($request);
 
@@ -322,5 +326,53 @@ class FormSubmissionManagerTest extends TestCase
         }
 
         $this->assertEquals($results, $processor->results);
+    }
+
+    public function testProcessesDependentFieldsAfterDependencies()
+    {
+        $field1 = new FormFieldControllerBuilder('field-1');
+        $field2 = new FormFieldControllerBuilder('field-2');
+        $field3 = new FormFieldControllerBuilder('field-3');
+        $field4 = new FormFieldControllerBuilder('field-4');
+        $field5 = new FormFieldControllerBuilder('field-5');
+
+        $field1->await('field-3');
+        $field3->await('field-4')->await('field-5');
+        $field5->await('field-2');
+
+        $field1 = $field1->create();
+        $field2 = $field2->create();
+        $field3 = $field3->create();
+        $field4 = $field4->create();
+        $field5 = $field5->create();
+
+        $fields = [$field1, $field2, $field3, $field4, $field5];
+
+        $request = new ServerRequest('post', 'https://test.test');
+        $request = $request->withParsedBody([
+            'field-1' => '1',
+            'field-2' => '2',
+            'field-3' => '3',
+            'field-4' => '4',
+            'field-5' => '5',
+        ]);
+
+        $manager = new FormSubmissionManager;
+        $manager->setFields(...$fields);
+
+        $results = $manager->process($request);
+
+        $processed = array_keys($results->inputResults());
+
+        $field1Position = array_search('field-1', $processed);
+        $field2Position = array_search('field-2', $processed);
+        $field3Position = array_search('field-3', $processed);
+        $field4Position = array_search('field-4', $processed);
+        $field5Position = array_search('field-5', $processed);
+
+        $this->assertGreaterThan($field3Position, $field1Position);
+        $this->assertGreaterThan($field4Position, $field3Position);
+        $this->assertGreaterThan($field5Position, $field3Position);
+        $this->assertGreaterThan($field2Position, $field5Position);
     }
 }

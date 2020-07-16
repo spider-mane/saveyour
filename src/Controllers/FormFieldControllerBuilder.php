@@ -68,6 +68,19 @@ class FormFieldControllerBuilder
     protected $alerts = [];
 
     /**
+     * @var string[]
+     */
+    protected $mustAwait = [];
+
+    /**
+     *
+     */
+    public function __construct(?string $requestVar)
+    {
+        $requestVar && $this->requestVar = $requestVar;
+    }
+
+    /**
      *
      */
     public function create(): FormFieldControllerInterface
@@ -80,7 +93,8 @@ class FormFieldControllerBuilder
             $this->filters,
             $this->rules,
             $this->escaper,
-            $this->processingDisabled
+            $this->processingDisabled,
+            $this->mustAwait
         );
     }
 
@@ -372,6 +386,40 @@ class FormFieldControllerBuilder
     public function addAlert(string $rule, string $alert)
     {
         $this->alerts[$rule] = $alert;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of mustAwait
+     *
+     * @return string[]
+     */
+    public function getMustAwait(): array
+    {
+        return $this->mustAwait;
+    }
+
+    /**
+     * Set the value of mustAwait
+     *
+     * @param string[] $mustAwait
+     *
+     * @return self
+     */
+    public function setMustAwait(string ...$fields)
+    {
+        $this->mustAwait = $fields;
+
+        return $this;
+    }
+
+    /**
+     *
+     */
+    public function await(string $field)
+    {
+        $this->mustAwait[] = $field;
 
         return $this;
     }
