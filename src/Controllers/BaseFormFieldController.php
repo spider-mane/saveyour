@@ -14,7 +14,6 @@ use WebTheory\Saveyour\Transformers\LazyTransformer;
 
 class BaseFormFieldController extends InputPurifier implements FormFieldControllerInterface
 {
-
     /**
      * @var string
      */
@@ -320,9 +319,7 @@ class BaseFormFieldController extends InputPurifier implements FormFieldControll
      */
     public function render(ServerRequestInterface $request): ?FormFieldInterface
     {
-        return $this
-            ->prepareFormFieldForRendering($request)
-            ->getFormField();
+        return $this->prepareFormFieldForRendering($request)->getFormField();
     }
 
     /**
@@ -330,9 +327,7 @@ class BaseFormFieldController extends InputPurifier implements FormFieldControll
      */
     protected function prepareFormFieldForRendering(ServerRequestInterface $request)
     {
-        return $this
-            ->setFormFieldValue($request)
-            ->setFormFieldName();
+        return $this->setFormFieldName()->setFormFieldValue($request);
     }
 
     /**

@@ -13,6 +13,21 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 abstract class AbstractField implements FormFieldControllerInterface
 {
     /**
+     * @var string
+     */
+    protected $__requestVar;
+
+    /**
+     * @var bool
+     */
+    protected $__processingDisabled = false;
+
+    /**
+     * @var array
+     */
+    protected $__mustAwait = [];
+
+    /**
      * @var FormFieldControllerInterface
      */
     protected $__coreController;
@@ -20,9 +35,13 @@ abstract class AbstractField implements FormFieldControllerInterface
     /**
      *
      */
-    public function __construct(string $requestVar)
+    public function __construct(string $requestVar, array $mustAwait = [], $processingDisabled = false)
     {
-        $this->__coreController = $this->createFormFieldController($requestVar);
+        $this->__requestVar = $requestVar;
+        $this->__mustAwait = $mustAwait;
+        $this->__processingDisabled = $processingDisabled;
+
+        $this->__coreController = $this->createFormFieldController();
     }
 
     /**
@@ -41,6 +60,38 @@ abstract class AbstractField implements FormFieldControllerInterface
     public function getFormField(): ?FormFieldInterface
     {
         return $this->__coreController->getFormField();
+    }
+
+    /**
+     *
+     */
+    public function getPresetValue(ServerRequestInterface $request)
+    {
+        return $this->__coreController->getPresetValue($request);
+    }
+
+    /**
+     *
+     */
+    public function mustAwait(): array
+    {
+        return $this->__coreController->mustAwait();
+    }
+
+    /**
+     *
+     */
+    public function render(ServerRequestInterface $request): ?FormFieldInterface
+    {
+        return $this->__coreController->render($request);
+    }
+
+    /**
+     *
+     */
+    public function process(ServerRequestInterface $request): FieldOperationCacheInterface
+    {
+        return $this->__coreController->process($request);
     }
 
     /**
@@ -67,7 +118,6 @@ abstract class AbstractField implements FormFieldControllerInterface
         return $this->__coreController->getFilters();
     }
 
-
     /**
      * @return bool|mixed
      */
@@ -83,65 +133,37 @@ abstract class AbstractField implements FormFieldControllerInterface
     {
         return $this->__coreController->getViolations();
     }
-    /**
-     *
-     */
-    public function getPresetValue(ServerRequestInterface $request)
-    {
-        return $this->__coreController->getPresetValue($request);
-    }
 
     /**
      *
      */
-    public function canProcessInput(): bool
-    {
-        return $this->__coreController->canProcessInput();
-    }
-
-    /**
-     *
-     */
-    public function render(ServerRequestInterface $request): ?FormFieldInterface
-    {
-        return $this->__coreController->render($request);
-    }
-
-    /**
-     *
-     */
-    public function process(ServerRequestInterface $request): FieldOperationCacheInterface
-    {
-        return $this->__coreController->process($request);
-    }
-
-    /**
-     *
-     */
-    public function mustAwait(): array
-    {
-        return $this->__coreController->mustAwait();
-    }
-
-    /**
-     *
-     */
-    protected function createFormFieldController(string $requestVar): FormFieldControllerInterface
+    protected function createFormFieldController(): FormFieldControllerInterface
     {
         return new BaseFormFieldController(
-            $requestVar,
-            $this->createFormField(),
-            $this->createDataManager(),
-            $this->createDataTransformer(),
+            $this->defineRequestVar(),
+            $this->defineFormField(),
+            $this->defineDataManager(),
+            $this->defineDataTransformer(),
             $this->defineFilters(),
-            $this->defineRules()
+            $this->defineRules(),
+            $this->defineEscaper(),
+            $this->defineProcessingDisabled(),
+            $this->defineMustAwait()
         );
     }
 
     /**
      *
      */
-    protected function createFormField(): ?FormFieldInterface
+    protected function defineRequestVar(): string
+    {
+        return $this->__requestVar;
+    }
+
+    /**
+     *
+     */
+    protected function defineFormField(): ?FormFieldInterface
     {
         return null;
     }
@@ -149,7 +171,7 @@ abstract class AbstractField implements FormFieldControllerInterface
     /**
      *
      */
-    protected function createDataManager(): ?FieldDataManagerInterface
+    protected function defineDataManager(): ?FieldDataManagerInterface
     {
         return null;
     }
@@ -157,7 +179,7 @@ abstract class AbstractField implements FormFieldControllerInterface
     /**
      *
      */
-    protected function createDataTransformer(): ?DataTransformerInterface
+    protected function defineDataTransformer(): ?DataTransformerInterface
     {
         return null;
     }
@@ -176,5 +198,29 @@ abstract class AbstractField implements FormFieldControllerInterface
     protected function defineRules(): ?array
     {
         return null;
+    }
+
+    /**
+     *
+     */
+    protected function defineEscaper(): ?callable
+    {
+        return null;
+    }
+
+    /**
+     *
+     */
+    protected function defineProcessingDisabled(): ?bool
+    {
+        return $this->__processingDisabled;
+    }
+
+    /**
+     *
+     */
+    protected function defineMustAwait(): ?array
+    {
+        return $this->__mustAwait;
     }
 }
