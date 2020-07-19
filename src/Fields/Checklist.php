@@ -67,11 +67,10 @@ class Checklist extends AbstractChecklist implements FormFieldInterface
      */
     protected function defineChecklistItem(string $item, array $values)
     {
-        $html = '';
-        $html .= $this->createItemCheckBox($values)->setChecked($this->isItemChecked($item));
-        $html .= $this->createItemLabel($values)->setFor($values['id'] ?? '');
+        $checkbox = $this->createItemCheckBox($values)->setChecked($this->isItemChecked($item));
+        $label = $this->createItemLabel($values)->setFor($values['id'] ?? '');
 
-        return $html;
+        return $checkbox . $label;
     }
 
     /**
@@ -91,10 +90,10 @@ class Checklist extends AbstractChecklist implements FormFieldInterface
 
             $checked = $this->isItemChecked($values['value']);
 
-            $html .= $this->open('li');
-            $html .= $this->createItemCheckBox($values)->setChecked($checked);
-            $html .= $this->createItemLabel($values)->setFor($values['id']);
-            $html .= $this->close('li');
+            $html .= $this->open('li')
+                . $this->createItemCheckBox($values)->setChecked($checked)
+                . $this->createItemLabel($values)->setFor($values['id'])
+                . $this->close('li');
         }
 
         return $html;
@@ -108,9 +107,9 @@ class Checklist extends AbstractChecklist implements FormFieldInterface
         $html = '';
 
         foreach ($this->getItemsToRender() as $item => $values) {
-            $html .= $this->open('li');
-            $html .= $this->defineChecklistItem($item, $values);
-            $html .= $this->close('li');
+            $html .= $this->open('li')
+                . $this->defineChecklistItem($item, $values)
+                . $this->close('li');
         }
 
         return $html;
@@ -125,22 +124,6 @@ class Checklist extends AbstractChecklist implements FormFieldInterface
             ? $this->renderItemsFromProvider()
             : $this->renderItemsFromSelection();
     }
-
-    // /**
-    //  *
-    //  */
-    // public function renderHtmlMarkup(): string
-    // {
-    //     $html = '';
-    //     $html .= $this->open('div', $this->attributes ?? null);
-    //     $html .= $this->createClearControl();
-    //     $html .= $this->open('ul');
-    //     $html .= $this->renderItems();
-    //     $html .= $this->close('ul');
-    //     $html .= $this->close('div');
-
-    //     return $html;
-    // }
 
     /**
      *
