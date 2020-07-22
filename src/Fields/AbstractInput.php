@@ -41,7 +41,7 @@ abstract class AbstractInput extends AbstractStandardFormControl implements Form
     /**
      *
      */
-    public function renderHtmlMarkup(): string
+    protected function renderHtmlMarkup(): string
     {
         return $this->open('input', $this->attributes);
     }

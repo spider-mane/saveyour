@@ -71,7 +71,7 @@ class Label extends AbstractHtmlElement
     /**
      *
      */
-    public function renderHtmlMarkup(): string
+    protected function renderHtmlMarkup(): string
     {
         return $this->tag('label', $this->content, $this->attributes);
     }

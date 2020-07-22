@@ -2,13 +2,12 @@
 
 namespace WebTheory\Saveyour\Fields;
 
-use WebTheory\Saveyour\Concerns\IsBasicallyChecklistTrait;
-use WebTheory\Saveyour\Contracts\CheckableFieldInterface;
+use WebTheory\Saveyour\Concerns\MultiValueSelectionTrait;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
-class Checklist extends AbstractChecklist implements FormFieldInterface
+class Checklist extends AbstractCompositeSelectionField implements FormFieldInterface
 {
-    use IsBasicallyChecklistTrait;
+    use MultiValueSelectionTrait;
 
     /**
      * Value for hidden input that facilitates unsetting all values on the server
@@ -44,97 +43,54 @@ class Checklist extends AbstractChecklist implements FormFieldInterface
     /**
      *
      */
-    protected function createClearControl(): Hidden
+    protected function renderHtmlMarkup(): string
     {
-        return (new Hidden())
-            ->setName($this->name . "[]")
-            ->setValue($this->clearControl);
-    }
-
-    /**
-     *
-     */
-    protected function createItemCheckBox(array $values): CheckableFieldInterface
-    {
-        return (new Checkbox())
-            ->setId($values['id'] ?? '')
-            ->setValue($values['value'] ?? '')
-            ->setName($this->name . '[]');
-    }
-
-    /**
-     *
-     */
-    protected function defineChecklistItem(string $item, array $values)
-    {
-        $checkbox = $this->createItemCheckBox($values)->setChecked($this->isItemChecked($item));
-        $label = $this->createItemLabel($values)->setFor($values['id'] ?? '');
-
-        return $checkbox . $label;
-    }
-
-    /**
-     *
-     */
-    protected function renderItemsFromProvider(): string
-    {
-        $html = '';
-        $provider = $this->checklistItemProvider;
-
-        foreach ($provider->provideItemsAsRawData() as $item) {
-            $values = [
-                'id' => $provider->provideItemId($item),
-                'value' => $provider->provideItemValue($item),
-                'label' => $provider->provideItemLabel($item)
-            ];
-
-            $checked = $this->isItemChecked($values['value']);
-
-            $html .= $this->open('li')
-                . $this->createItemCheckBox($values)->setChecked($checked)
-                . $this->createItemLabel($values)->setFor($values['id'])
-                . $this->close('li');
-        }
-
-        return $html;
-    }
-
-    /**
-     *
-     */
-    protected function renderItemsFromSelection(): string
-    {
-        $html = '';
-
-        foreach ($this->getItemsToRender() as $item => $values) {
-            $html .= $this->open('li')
-                . $this->defineChecklistItem($item, $values)
-                . $this->close('li');
-        }
-
-        return $html;
-    }
-
-    /**
-     *
-     */
-    protected function renderItems()
-    {
-        return isset($this->checklistItemProvider)
-            ? $this->renderItemsFromProvider()
-            : $this->renderItemsFromSelection();
-    }
-
-    /**
-     *
-     */
-    public function renderHtmlMarkup(): string
-    {
-        return $this->open('div', $this->attributes ?? null)
-            . $this->createClearControl()
+        return $this->open('div', $this->attributes)
+            . $this->createClearControlField()->setValue($this->clearControl)
             . $this->open('ul')
-            . $this->renderItems()
+            . $this->renderSelection()
             . $this->close('ul')
             . $this->close('div');
+    }
+
+    /**
+     *
+     */
+    protected function createClearControlField(): Hidden
+    {
+        return (new Hidden())->setName($this->name . "[]");
+    }
+
+    /**
+     *
+     */
+    protected function renderSelection(): string
+    {
+        $html = '';
+
+        foreach ($this->getSelectionData() as $selection) {
+            $id  = $this->defineSelectionId($selection);
+            $value = $this->defineSelectionValue($selection);
+
+            $checked = $this->isSelectionSelected($value);
+
+            $html .= $this->open('li')
+                . $this->createSelectionCheckbox($selection)->setChecked($checked)
+                . $this->createSelectionLabel($selection)->setFor($id)
+                . $this->close('li');
+        }
+
+        return $html;
+    }
+
+    /**
+     *
+     */
+    protected function createSelectionCheckbox($item): Checkbox
+    {
+        return (new Checkbox())
+            ->setName($this->name . '[]')
+            ->setId($this->defineSelectionId($item))
+            ->setValue($this->defineSelectionValue($item));
     }
 }

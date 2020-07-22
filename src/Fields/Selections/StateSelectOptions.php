@@ -3,9 +3,9 @@
 namespace WebTheory\Saveyour\Fields\Selections;
 
 use InvalidArgumentException;
-use WebTheory\Saveyour\Contracts\SelectionProviderInterface;
+use WebTheory\Saveyour\Contracts\SelectOptionsProviderInterface;
 
-class StateSelectOptions implements SelectionProviderInterface
+class StateSelectOptions implements SelectOptionsProviderInterface
 {
     /**
      *
@@ -15,12 +15,12 @@ class StateSelectOptions implements SelectionProviderInterface
     /**
      *
      */
-    protected $reSort;
+    protected $text = 'name';
 
     /**
      *
      */
-    protected const ALLOWED_GROUPS = ['States', 'Territories', 'ArmedForces'];
+    protected $reSort;
 
     /**
      *
@@ -103,6 +103,16 @@ class StateSelectOptions implements SelectionProviderInterface
     /**
      *
      */
+    protected const ALLOWED_GROUPS = ['States', 'Territories', 'ArmedForces'];
+
+    /**
+     *
+     */
+    protected const ALLOWED_TEXT = ['abbr', 'name'];
+
+    /**
+     *
+     */
     protected const MAP = [
         'States' => self::STATES,
         'Territories' => self::TERRITORIES,
@@ -112,9 +122,11 @@ class StateSelectOptions implements SelectionProviderInterface
     /**
      *
      */
-    public function __construct(array $groups = ['States'], $reSort = false)
+    public function __construct(array $groups = ['States'], string $text = 'name', $reSort = false)
     {
         $this->setGroups($groups);
+        $this->setText($text);
+
         $this->reSort = $reSort;
     }
 
@@ -133,20 +145,25 @@ class StateSelectOptions implements SelectionProviderInterface
                 $this->groups[] = $group;
             }
         }
+
+        return $this;
     }
 
     /**
      *
      */
-    public function getSelection(): array
+    protected function setText(string $text)
     {
-        $groups = array_merge(...$this->getOptions());
+        if (!in_array($text, static::ALLOWED_TEXT)) {
+            $valid = implode(', ', static::ALLOWED_TEXT);
+            $alert = "valid text includes {$valid} only";
 
-        if ($this->reSort) {
-            sort($groups);
+            throw new InvalidArgumentException($alert);
         }
 
-        return $groups;
+        $this->text = $text;
+
+        return $this;
     }
 
     /**
@@ -154,8 +171,45 @@ class StateSelectOptions implements SelectionProviderInterface
      */
     protected function getOptions()
     {
-        return array_map(function ($group) {
-            return static::MAP[$group];
-        }, $this->groups);
+        $options = [];
+
+        foreach ($this->groups as $locales) {
+            foreach ($locales as $abbr => $name) {
+                $options[] = [
+                    'name' => $name,
+                    'abbr' => $abbr
+                ];
+            }
+        }
+
+        if ($this->reSort) {
+            sort($options);
+        }
+
+        return $options;
+    }
+
+    /**
+     *
+     */
+    public function provideItemsAsRawData(): array
+    {
+        return $this->getOptions();
+    }
+
+    /**
+     *
+     */
+    public function provideItemText($item): string
+    {
+        return $item[$this->text];
+    }
+
+    /**
+     *
+     */
+    public function provideItemValue($item): string
+    {
+        return $item['abbr'];
     }
 }

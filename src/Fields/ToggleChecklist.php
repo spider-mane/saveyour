@@ -4,7 +4,7 @@ namespace WebTheory\Saveyour\Fields;
 
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
-class ToggleChecklist extends AbstractChecklist implements FormFieldInterface
+class ToggleChecklist extends AbstractCompositeSelectionField implements FormFieldInterface
 {
     /**
      * Value for hidden input that facilitates unsetting single value on the server
@@ -40,9 +40,9 @@ class ToggleChecklist extends AbstractChecklist implements FormFieldInterface
     /**
      *
      */
-    protected function createItemToggleControl(array $values): Hidden
+    protected function createSelectionToggleControl($selection): Hidden
     {
-        $basename = $values['name'] ?? '';
+        $basename = $this->define;
 
         return (new Hidden())
             ->setName($this->name . "[{$basename}]")
@@ -78,7 +78,7 @@ class ToggleChecklist extends AbstractChecklist implements FormFieldInterface
     /**
      *
      */
-    public function renderHtmlMarkup(): string
+    protected function renderHtmlMarkup(): string
     {
         $html = '';
         $html .= $this->open('div', $this->attributes ?? null);

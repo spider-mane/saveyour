@@ -2,10 +2,12 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-interface SelectOptionsProviderInterface extends SuperSelectionProviderInterface
+interface SelectOptionsProviderInterface extends SelectionProviderInterface
 {
     /**
+     * @param mixed
      *
+     * @return string
      */
-    public function provideItemContent($item): string;
+    public function provideItemText($item): string;
 }

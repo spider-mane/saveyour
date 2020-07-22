@@ -3,22 +3,15 @@
 namespace WebTheory\Saveyour\Fields;
 
 use WebTheory\Html\AbstractHtmlElement;
-use WebTheory\Saveyour\Concerns\IsSelectionFieldTrait;
+use WebTheory\Saveyour\Concerns\IsSimpleSelectionFieldTrait;
+use WebTheory\Saveyour\Concerns\MultiValueSelectionTrait;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Elements\Option;
 
 class Select extends AbstractStandardFormControl implements FormFieldInterface
 {
-    use IsSelectionFieldTrait;
-
-    /**
-     *
-     */
-    public $options = [];
-
-    /**
-     *
-     */
-    public $value = [];
+    use IsSimpleSelectionFieldTrait;
+    use MultiValueSelectionTrait;
 
     /**
      * @var bool
@@ -29,44 +22,6 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
      * @var int
      */
     public $size;
-
-    /**
-     * Get the value of options
-     *
-     * @return mixed
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * Set the value of options
-     *
-     * @param mixed $options
-     *
-     * @return self
-     */
-    public function setOptions($options)
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    /**
-     * Set the value of value
-     *
-     * @param mixed $value
-     *
-     * @return self
-     */
-    public function setValue($value)
-    {
-        $this->value[] = $value;
-
-        return $this;
-    }
 
     /**
      * Get the value of multiple
@@ -93,51 +48,90 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     }
 
     /**
+     * Get the value of size
+     *
+     * @return int
+     */
+    public function getSize(): int
+    {
+        return $this->size;
+    }
+
+    /**
+     * Set the value of size
+     *
+     * @param int $size
+     *
+     * @return self
+     */
+    public function setSize(int $size)
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    /**
      *
      */
     protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
-            ->addAttribute('multiple', $this->multiple);
+            ->addAttribute('multiple', $this->multiple)
+            ->addAttribute('size', $this->size);
     }
 
     /**
      *
      */
-    protected function getItemsToRender(): array
+    protected function renderHtmlMarkup(): string
     {
-        return $this->selectionProvider
-            ? $this->selectionProvider->getSelection()
-            : $this->options;
+        return $this->tag('select', $this->renderOptions(), $this->attributes);
     }
 
     /**
      *
      */
-    public function renderHtmlMarkup(): string
+    protected function renderOptions()
+    {
+        $html = !empty($this->placeholder) ? $this->createPlaceholder() : '';
+        $html .= $this->renderSelection();
+
+        return $html;
+    }
+
+    /**
+     *
+     */
+    protected function createPlaceholder(): Option
+    {
+        return new Option($this->placeholder, '');
+    }
+
+    /**
+     *
+     */
+    protected function renderSelection()
     {
         $html = '';
 
-        $html .= $this->open('select', $this->attributes);
+        foreach ($this->getSelectionData() as $selection) {
+            $selected = $this->isSelectionSelected($this->defineSelectionValue($selection));
 
-        if (!empty($this->placeholder)) {
-            $html .= $this->open('option') . $this->placeholder . $this->close('option');
+            $html .= $this->createOption($selection)->setSelected($selected);
         }
-
-        foreach ($this->getItemsToRender() as $value => $option) {
-            $optionAttr = ['value' => $value];
-
-            if (in_array($value, $this->value)) {
-                $optionAttr['selected'] = true;
-            }
-
-            $html .= $this->open('option', $optionAttr);
-            $html .= $option;
-            $html .= $this->close('option');
-        }
-
-        $html .= $this->close('select');
 
         return $html;
+    }
+
+    /**
+     *
+     */
+    protected function createOption($selection): Option
+    {
+        return new Option(
+            $this->defineSelectionText($selection),
+            $this->defineSelectionValue($selection)
+        );
     }
 }

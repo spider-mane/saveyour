@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-interface CompositeFieldSelectionProviderInterface extends SuperSelectionProviderInterface
+interface CompositeFieldSelectionProviderInterface extends SelectionProviderInterface
 {
     /**
      *

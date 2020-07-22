@@ -2,57 +2,17 @@
 
 namespace WebTheory\Saveyour\Fields;
 
-use WebTheory\Saveyour\Concerns\HasLabelsTrait;
-use WebTheory\Saveyour\Concerns\IsSelectionFieldTrait;
+use WebTheory\Saveyour\Concerns\SingleValueSelectionTrait;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
-class RadioSelection extends AbstractFormField implements FormFieldInterface
+class RadioSelection extends AbstractCompositeSelectionField implements FormFieldInterface
 {
-    use HasLabelsTrait;
-    use IsSelectionFieldTrait;
-
-    /**
-     *
-     */
-    protected $items = [];
+    use SingleValueSelectionTrait;
 
     /**
      * @var bool
      */
     protected $isInline = false;
-
-    /**
-     *
-     */
-    public function __construct(array $items)
-    {
-        $this->items = $items;
-        parent::__construct();
-    }
-
-    /**
-     * Get the value of items
-     *
-     * @return mixed
-     */
-    public function getItems()
-    {
-        return $this->items;
-    }
-
-    /**
-     * Set the value of items
-     *
-     * @param mixed $items
-     *
-     * @return self
-     */
-    public function setItems($items)
-    {
-        $this->items = $items;
-
-        return $this;
-    }
 
     /**
      * Get the value of isInline
@@ -81,41 +41,34 @@ class RadioSelection extends AbstractFormField implements FormFieldInterface
     /**
      *
      */
-    protected function getItemsToRender(): array
-    {
-        return $this->selectionProvider
-            ? $this->selectionProvider->getSelection()
-            : $this->items;
-    }
-
-    /**
-     *
-     */
-    protected function isItemSelected(string $item)
-    {
-        return $item === $this->value;
-    }
-
-    /**
-     *
-     */
-    public function renderHtmlMarkup(): string
+    protected function renderHtmlMarkup(): string
     {
         $html = '';
 
-        foreach ($this->getItemsToRender() as $item => $label) {
+        foreach ($this->getSelectionData() as $selection) {
+            $id = $this->defineSelectionId($selection);
+            $value = $this->defineSelectionValue($selection);
 
-            $radio = (new Radio())
-                ->setChecked($this->isItemSelected($item))
-                ->setValue($item)
-                ->setName($this->name)
-                ->setClasslist(explode(' ', $this->classlist->parse()));
+            $checked = $this->isSelectionSelected($value);
 
-            $html .= $this->createLabel($radio . $label, $this->labelOptions);
+            $html .= $this->createSelectionRadio($selection)->setChecked($checked);
+            $html .= $this->createSelectionLabel($selection)->setFor($id);
 
-            $html .= !$this->isInline ? '<br>' : '';
+            if ($this->isInline) {
+                $html .= '<br>';
+            }
         }
 
         return $html;
+    }
+
+    /**
+     *
+     */
+    protected function createSelectionRadio($selection): Radio
+    {
+        return (new Radio())
+            ->setName($this->name)
+            ->setValue($this->defineSelectionValue($selection));
     }
 }

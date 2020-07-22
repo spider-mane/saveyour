@@ -34,4 +34,20 @@ trait IsSelectionFieldTrait
 
         return $this;
     }
+
+    /**
+     *
+     */
+    protected function getSelectionData()
+    {
+        return $this->selectionProvider->provideItemsAsRawData();
+    }
+
+    /**
+     *
+     */
+    protected function defineSelectionValue($item)
+    {
+        return $this->selectionProvider->provideItemValue($item);
+    }
 }
