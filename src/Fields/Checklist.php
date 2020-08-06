@@ -3,11 +3,22 @@
 namespace WebTheory\Saveyour\Fields;
 
 use WebTheory\Saveyour\Concerns\MultiValueSelectionTrait;
+use WebTheory\Saveyour\Contracts\ChecklistItemsInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Checklist extends AbstractCompositeSelectionField implements FormFieldInterface
 {
     use MultiValueSelectionTrait;
+
+    /**
+     * @var array
+     */
+    protected $value = [];
+
+    /**
+     * @var ChecklistItemsInterface
+     */
+    protected $selectionProvider;
 
     /**
      * Value for hidden input that facilitates unsetting all values on the server
@@ -43,14 +54,23 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
     /**
      *
      */
+    protected function getSelectionItemsName()
+    {
+        return $this->name . '[]';
+    }
+
+    /**
+     *
+     */
     protected function renderHtmlMarkup(): string
     {
-        return $this->open('div', $this->attributes)
-            . $this->createClearControlField()->setValue($this->clearControl)
-            . $this->open('ul')
-            . $this->renderSelection()
-            . $this->close('ul')
-            . $this->close('div');
+        $clearControl = $this->createClearControlField()
+            ->setName($this->getSelectionItemsName())
+            ->setValue($this->clearControl);
+
+        $list = $this->tag('ul', $this->renderSelection());
+
+        return $this->tag('div', $clearControl . $list, $this->attributes);
     }
 
     /**
@@ -58,7 +78,7 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
      */
     protected function createClearControlField(): Hidden
     {
-        return (new Hidden())->setName($this->name . "[]");
+        return new Hidden();
     }
 
     /**
@@ -72,12 +92,15 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
             $id  = $this->defineSelectionId($selection);
             $value = $this->defineSelectionValue($selection);
 
-            $checked = $this->isSelectionSelected($value);
+            $checkbox = $this->createSelectionCheckbox($selection)
+                ->setChecked($this->isSelectionSelected($value))
+                ->setName($this->getSelectionItemsName())
+                ->setValue($value)
+                ->setId($id);
 
-            $html .= $this->open('li')
-                . $this->createSelectionCheckbox($selection)->setChecked($checked)
-                . $this->createSelectionLabel($selection)->setFor($id)
-                . $this->close('li');
+            $label = $this->createSelectionLabel($selection)->setFor($id);
+
+            $html .= $this->tag('li', $checkbox . $label);
         }
 
         return $html;
@@ -86,11 +109,8 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
     /**
      *
      */
-    protected function createSelectionCheckbox($item): Checkbox
+    protected function createSelectionCheckbox($selection): Checkbox
     {
-        return (new Checkbox())
-            ->setName($this->name . '[]')
-            ->setId($this->defineSelectionId($item))
-            ->setValue($this->defineSelectionValue($item));
+        return new Checkbox();
     }
 }

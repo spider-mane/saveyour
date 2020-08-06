@@ -12,14 +12,14 @@ class OptGroup extends AbstractHtmlElement
     use MultiValueSelectionTrait;
 
     /**
+     *
+     */
+    protected $value = [];
+
+    /**
      * @var string
      */
     protected $label;
-
-    /**
-     *
-     */
-
 
     /**
      * @var bool
@@ -32,6 +32,8 @@ class OptGroup extends AbstractHtmlElement
     public function __construct(string $label)
     {
         $this->label = $label;
+
+        parent::__construct();
     }
 
     /**
@@ -39,7 +41,7 @@ class OptGroup extends AbstractHtmlElement
      *
      * @return bool
      */
-    public function getDisabled(): bool
+    public function isDisabled(): bool
     {
         return $this->disabled;
     }
@@ -90,5 +92,16 @@ class OptGroup extends AbstractHtmlElement
         }
 
         return $html;
+    }
+
+    /**
+     *
+     */
+    protected function createOption($selection): Option
+    {
+        return new Option(
+            $this->defineSelectionText($selection),
+            $this->defineSelectionValue($selection)
+        );
     }
 }

@@ -12,5 +12,5 @@ interface SelectionProviderInterface
     /**
      *
      */
-    public function provideItemValue($item): string;
+    public function provideItemValue($selection): string;
 }

@@ -1,19 +1,13 @@
 <?php
 
-use CommerceGuys\Addressing\Address;
-use CommerceGuys\Addressing\AddressFormat\AddressFormatRepository;
-use CommerceGuys\Addressing\Country\CountryRepository;
-use CommerceGuys\Addressing\Formatter\DefaultFormatter;
-use CommerceGuys\Addressing\Subdivision\SubdivisionRepository;
-use Geocoder\Provider\GoogleMaps\GoogleMaps;
-use Geocoder\Query\GeocodeQuery;
-use GuzzleHttp\Psr7\ServerRequest;
-use Http\Adapter\Guzzle6\Client;
+
 use WebTheory\Saveyour\Contracts\ChecklistItemsInterface;
-use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
-use WebTheory\Saveyour\Controllers\FormFieldControllerBuilder;
+use WebTheory\Saveyour\Contracts\RadioGroupSelectionInterface;
+use WebTheory\Saveyour\Contracts\SelectOptionsProviderInterface;
+use WebTheory\Saveyour\Elements\OptGroup;
 use WebTheory\Saveyour\Fields\Checklist;
-use WebTheory\Saveyour\Fields\RadioSelection;
+use WebTheory\Saveyour\Fields\RadioGroup;
+use WebTheory\Saveyour\Fields\Select;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -32,81 +26,70 @@ include '../env.php';
 ################################################################################
 # start
 ################################################################################
+echo "<h1>Visual Field Tests</h1><hr>";
 
-echo "this is a test";
+################################################################################
+# Radio Selection
+################################################################################
+echo '<h2>RadioGroup Test</h2>';
 
-$list = new RadioSelection([
-    'test-1' => 'Test 1',
-    'test-2' => 'Test 2',
+$provider = new class implements RadioGroupSelectionInterface
+{
+    public function provideItemsAsRawData(): array
+    {
+        return [
+            [
+                'value' => 'test-1',
+                'label' => 'Test 1',
+                'id' => 'radio-selection-test-1'
+            ],
+            [
+                'value' => 'test-2',
+                'label' => 'Test 2',
+                'id' => 'radio-selection-test-2'
+            ]
+        ];
+    }
+
+    public function provideItemValue($item): string
+    {
+        return $item['value'];
+    }
+
+    public function provideItemId($item): string
+    {
+        return $item['id'];
+    }
+
+    public function provideItemLabel($item): string
+    {
+        return $item['label'];
+    }
+};
+
+$selection = new RadioGroup();
+$selection->setSelectionProvider($provider);
+$selection->setLabelOptions([
+    'classlist' => ['label-class', 'label-class-1']
 ]);
+$selection->setName('radio-group-test-1');
+$selection->setValue('test-2');
 
-$list
-    ->setLabelOptions([
-        'classlist' => ['label-class', 'label-class-1']
-    ])
-    ->setName('test-name')
-    ->setValue('test-2');
+echo '<h3>Inline</h3>';
+echo $selection;
 
-dump($list->toHtml());
+$selection->setIsInline(false);
+$selection->setName('radio-group-test-2');
 
-echo $list;
+echo '<h3>Not Inline</h3>';
+echo $selection;
 
-$request = ServerRequest::fromGlobals()
-    ->withAttribute('post_id', 45)
-    ->withParsedBody([
-        'test' => '5'
-    ]);
+echo '<hr>';
 
-$address = [
-    'street' => 'One Microsoft Way',
-    'city' => 'Redmond',
-    'state' => 'WA',
-    'zip' => '98052',
-];
-
-$address = (new Address)
-    ->withAddressLine1($address['street'])
-    ->withLocality($address['city'])
-    ->withAdministrativeArea($address['state'])
-    ->withPostalCode($address['zip'])
-    ->withCountryCode('US');
-
-$options = [
-    'html' => false,
-];
-
-$display = new DefaultFormatter(
-    new AddressFormatRepository,
-    new CountryRepository,
-    new SubdivisionRepository,
-    $options
-);
-
-$formatted = str_replace("\n", ', ', $display->format($address));
-
-$client = new Client();
-$geocoder = new GoogleMaps($client, null, getenv('GOOGLE_MAPS'));
-
-$collection = $geocoder->geocodeQuery(GeocodeQuery::create($display->format($address)));
-$coordinates = $collection->get(0)->getCoordinates();
-
-$coordinates = [
-    'lat' => $coordinates->getLatitude(),
-    'lng' => $coordinates->getLongitude(),
-];
-
-var_dump($coordinates);
-
-$selection = [
-    'test-1' => [
-        'label' => 'Test 1',
-        'id' => 'test-1'
-    ],
-    'test-2' => [
-        'label' => 'Test 2',
-        'id' => 'test-2'
-    ]
-];
+################################################################################
+# Checklist
+################################################################################
+echo '<h2>Checklist Test</h2>';
 
 $provider = new class implements ChecklistItemsInterface
 {
@@ -114,14 +97,14 @@ $provider = new class implements ChecklistItemsInterface
     {
         return [
             [
-                'value' => 'test-3',
-                'label' => 'Test 3',
-                'id' => 'test-3'
+                'value' => 'test-1',
+                'label' => 'Test 1',
+                'id' => 'checklist-test-1'
             ],
             [
-                'value' => 'test-4',
-                'label' => 'Test 4',
-                'id' => 'test-4'
+                'value' => 'test-2',
+                'label' => 'Test 2',
+                'id' => 'checklist-test-2'
             ]
         ];
     }
@@ -143,52 +126,124 @@ $provider = new class implements ChecklistItemsInterface
 };
 
 $checklist = new Checklist;
-$checklist->setItems($selection);
+$checklist->setSelectionProvider($provider);
+$checklist->setValue('test-1');
+$checklist->setName('checklist-test-1');
 
-echo $checklist->toHtml();
-
-$checklist->setChecklistItemProvider($provider);
 echo $checklist->toHtml();
 echo '<hr>';
 
-
 ################################################################################
-#
+# Select
 ################################################################################
+echo '<h2>Select Test</h2>';
 
-// $field1 = new FormFieldControllerBuilder('test-1');
-// $field2 = new FormFieldControllerBuilder('test-2');
-// $field3 = new FormFieldControllerBuilder('test-3');
-// $field4 = new FormFieldControllerBuilder('test-4');
-// $field5 = new FormFieldControllerBuilder('test-5');
+$select = new Select();
 
-// $field1->await('test-3');
-// $field3->await('test-4');
+$provider1 = new class implements SelectOptionsProviderInterface
+{
+    public function provideItemsAsRawData(): array
+    {
+        return [
+            [
+                'value' => 'test-A',
+                'text' => 'Test A',
+            ],
+            [
+                'value' => 'test-B',
+                'text' => 'Test B',
+            ]
+        ];
+    }
 
-// $field1 = $field1->create();
-// $field2 = $field2->create();
-// $field3 = $field3->create();
-// $field4 = $field4->create();
-// $field5 = $field5->create();
+    public function provideItemValue($item): string
+    {
+        return $item['value'];
+    }
 
-// // $fields = [$field3, $field1, $field2];
-// $fields = [$field1, $field2, $field3, $field4, $field5];
-// // $fields = [$field1, $field3];
-// var_dump($fields);
+    public function provideItemText($item): string
+    {
+        return $item['text'];
+    }
+};
 
-// usort($fields, function (FormFieldControllerInterface $a, FormFieldControllerInterface $b) {
+$select->setPlaceholder('Select Test');
+$select->setSelectionProvider($provider1);
+$select->setValue('test-B');
 
-//     var_dump($a->getRequestVar(), $b->getRequestVar());
-//     echo '<hr>';
+echo '<h3>Single Value</h3>';
+echo $select->toHtml();
 
-//     // because usort will not compare values that it infers from previous
-//     // comparisons are equal, 0 should never be returned. all that matters is
-//     // that dependent fields are positioned after their dependencies.
-//     return in_array($a->getRequestVar(), $b->mustAwait()) ? -1 : 1;
-// });
+echo str_repeat('<br>', 2);
 
-// var_dump($fields);
+echo '<h3>Multi-Value with optgroups and Size >1</h3>';
 
-################################################################################
-#
-################################################################################
+$provider2 = new class implements SelectOptionsProviderInterface
+{
+    public function provideItemsAsRawData(): array
+    {
+        return [
+            [
+                'value' => 'test-C',
+                'text' => 'Test C',
+            ],
+            [
+                'value' => 'test-D',
+                'text' => 'Test D',
+            ]
+        ];
+    }
+
+    public function provideItemValue($item): string
+    {
+        return $item['value'];
+    }
+
+    public function provideItemText($item): string
+    {
+        return $item['text'];
+    }
+};
+
+$provider3 = new class implements SelectOptionsProviderInterface
+{
+    public function provideItemsAsRawData(): array
+    {
+        return [
+            [
+                'value' => 'test-E',
+                'text' => 'Test E',
+            ],
+            [
+                'value' => 'test-F',
+                'text' => 'Test F',
+            ]
+        ];
+    }
+
+    public function provideItemValue($item): string
+    {
+        return $item['value'];
+    }
+
+    public function provideItemText($item): string
+    {
+        return $item['text'];
+    }
+};
+
+$optgroup1 = new OptGroup('Test Group 1');
+$optgroup2 = new OptGroup('Test Group 2');
+$optgroup3 = new OptGroup('Test Group 3');
+
+$optgroup1->setSelectionProvider($provider1);
+$optgroup2->setSelectionProvider($provider2);
+$optgroup3->setSelectionProvider($provider3);
+
+$select->setGroups($optgroup1, $optgroup2, $optgroup3);
+$select->setSize(5);
+$select->setMultiple(true);
+$select->setValue(['test-C', 'test-F']);
+
+echo $select->toHtml();
+echo '<hr>';

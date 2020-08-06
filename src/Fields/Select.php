@@ -6,6 +6,7 @@ use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Concerns\IsSimpleSelectionFieldTrait;
 use WebTheory\Saveyour\Concerns\MultiValueSelectionTrait;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Elements\OptGroup;
 use WebTheory\Saveyour\Elements\Option;
 
 class Select extends AbstractStandardFormControl implements FormFieldInterface
@@ -14,14 +15,48 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     use MultiValueSelectionTrait;
 
     /**
+     *
+     */
+    protected $value = [];
+
+    /**
+     * @var OptGroup[]
+     */
+    protected $groups = [];
+
+    /**
      * @var bool
      */
-    public $multiple = false;
+    protected $multiple = false;
 
     /**
      * @var int
      */
-    public $size;
+    protected $size;
+
+    /**
+     *
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     *
+     */
+    public function setGroups(OptGroup ...$optGroups)
+    {
+        $this->groups = $optGroups;
+    }
+
+    /**
+     *
+     */
+    public function addGroup(OptGroup $optGroup)
+    {
+        $this->groups[] = $optGroup;
+    }
 
     /**
      * Get the value of multiple
@@ -111,7 +146,17 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     /**
      *
      */
-    protected function renderSelection()
+    protected function renderSelection(): string
+    {
+        return empty($this->groups)
+            ? $this->renderSelectionFromOptions()
+            : $this->renderSelectionFromOptGroups();
+    }
+
+    /**
+     *
+     */
+    protected function renderSelectionFromOptions(): string
     {
         $html = '';
 
@@ -119,6 +164,20 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
             $selected = $this->isSelectionSelected($this->defineSelectionValue($selection));
 
             $html .= $this->createOption($selection)->setSelected($selected);
+        }
+
+        return $html;
+    }
+
+    /**
+     *
+     */
+    protected function renderSelectionFromOptGroups(): string
+    {
+        $html = '';
+
+        foreach ($this->groups as $optgroup) {
+            $html .= $optgroup->setValue($this->value);
         }
 
         return $html;

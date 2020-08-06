@@ -7,10 +7,10 @@ interface CompositeFieldSelectionProviderInterface extends SelectionProviderInte
     /**
      *
      */
-    public function provideItemLabel($item): string;
+    public function provideItemLabel($selection): string;
 
     /**
      *
      */
-    public function provideItemId($item): string;
+    public function provideItemId($selection): string;
 }

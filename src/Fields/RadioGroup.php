@@ -4,15 +4,21 @@ namespace WebTheory\Saveyour\Fields;
 
 use WebTheory\Saveyour\Concerns\SingleValueSelectionTrait;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\RadioGroupSelectionInterface;
 
-class RadioSelection extends AbstractCompositeSelectionField implements FormFieldInterface
+class RadioGroup extends AbstractCompositeSelectionField implements FormFieldInterface
 {
     use SingleValueSelectionTrait;
 
     /**
+     * @var RadioGroupSelectionInterface
+     */
+    protected $selectionProvider;
+
+    /**
      * @var bool
      */
-    protected $isInline = false;
+    protected $isInline = true;
 
     /**
      * Get the value of isInline
@@ -49,14 +55,16 @@ class RadioSelection extends AbstractCompositeSelectionField implements FormFiel
             $id = $this->defineSelectionId($selection);
             $value = $this->defineSelectionValue($selection);
 
-            $checked = $this->isSelectionSelected($value);
+            $radio = $this->createSelectionRadio($selection)
+                ->setChecked($this->isSelectionSelected($value))
+                ->setName($this->name)
+                ->setValue($value)
+                ->setId($id);
 
-            $html .= $this->createSelectionRadio($selection)->setChecked($checked);
-            $html .= $this->createSelectionLabel($selection)->setFor($id);
+            $label = $this->createSelectionLabel($selection)->setFor($id);
 
-            if ($this->isInline) {
-                $html .= '<br>';
-            }
+            $html .= $radio . $label;
+            $html .= $this->isInline ? ' ' : '<br>';
         }
 
         return $html;
@@ -67,8 +75,6 @@ class RadioSelection extends AbstractCompositeSelectionField implements FormFiel
      */
     protected function createSelectionRadio($selection): Radio
     {
-        return (new Radio())
-            ->setName($this->name)
-            ->setValue($this->defineSelectionValue($selection));
+        return new Radio();
     }
 }
