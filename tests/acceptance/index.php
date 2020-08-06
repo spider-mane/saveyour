@@ -1,6 +1,6 @@
 <?php
 
-
+use WebTheory\Html\Html;
 use WebTheory\Saveyour\Contracts\ChecklistItemsInterface;
 use WebTheory\Saveyour\Contracts\RadioGroupSelectionInterface;
 use WebTheory\Saveyour\Contracts\SelectOptionsProviderInterface;
@@ -8,6 +8,7 @@ use WebTheory\Saveyour\Elements\OptGroup;
 use WebTheory\Saveyour\Fields\Checklist;
 use WebTheory\Saveyour\Fields\RadioGroup;
 use WebTheory\Saveyour\Fields\Select;
+use WebTheory\Saveyour\Fields\Submit;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -26,7 +27,11 @@ include '../env.php';
 ################################################################################
 # start
 ################################################################################
+if ($_POST) exit(var_dump($_POST));
+
 echo "<h1>Visual Field Tests</h1><hr>";
+echo Html::open('form', ['method' => 'post']);
+echo new Submit;
 
 ################################################################################
 # Radio Selection
@@ -169,6 +174,7 @@ $provider1 = new class implements SelectOptionsProviderInterface
 
 $select->setPlaceholder('Select Test');
 $select->setSelectionProvider($provider1);
+$select->setName('select-test-1');
 $select->setValue('test-B');
 
 echo '<h3>Single Value</h3>';
@@ -176,7 +182,7 @@ echo $select->toHtml();
 
 echo str_repeat('<br>', 2);
 
-echo '<h3>Multi-Value with optgroups and Size >1</h3>';
+echo '<h3>Multi-Value with optgroups</h3>';
 
 $provider2 = new class implements SelectOptionsProviderInterface
 {
@@ -241,9 +247,15 @@ $optgroup2->setSelectionProvider($provider2);
 $optgroup3->setSelectionProvider($provider3);
 
 $select->setGroups($optgroup1, $optgroup2, $optgroup3);
-$select->setSize(5);
+// $select->setSize(5);
 $select->setMultiple(true);
+$select->setName('select-test-2');
 $select->setValue(['test-C', 'test-F']);
 
 echo $select->toHtml();
 echo '<hr>';
+
+################################################################################
+# end
+################################################################################
+echo Html::close('form');

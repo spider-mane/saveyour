@@ -112,6 +112,7 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
+            ->addAttribute('name', $this->name . ($this->multiple ? '[]' : ''))
             ->addAttribute('multiple', $this->multiple)
             ->addAttribute('size', $this->size);
     }
