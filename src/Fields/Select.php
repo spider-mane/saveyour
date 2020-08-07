@@ -130,7 +130,12 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
      */
     protected function renderOptions()
     {
-        $html = !empty($this->placeholder) ? $this->createPlaceholder() : '';
+        $html = '';
+
+        if (!empty($this->placeholder)) {
+            $html .= $this->createPlaceholder();
+        }
+
         $html .= $this->renderSelection();
 
         return $html;
@@ -150,14 +155,14 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     protected function renderSelection(): string
     {
         return empty($this->groups)
-            ? $this->renderSelectionFromOptions()
+            ? $this->renderSelectionFromProvider()
             : $this->renderSelectionFromOptGroups();
     }
 
     /**
      *
      */
-    protected function renderSelectionFromOptions(): string
+    protected function renderSelectionFromProvider(): string
     {
         $html = '';
 
