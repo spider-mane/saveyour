@@ -2,9 +2,9 @@
 
 namespace WebTheory\Saveyour\Fields;
 
+use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 use WebTheory\Saveyour\Elements\Label;
-use WebTheory\Html\AbstractHtmlElement;
 
 abstract class AbstractFormField extends AbstractHtmlElement implements FormFieldInterface
 {
@@ -214,7 +214,7 @@ abstract class AbstractFormField extends AbstractHtmlElement implements FormFiel
     /**
      * @return string
      */
-    public function getLabelHtml()
+    public function getLabelHtml(): Label
     {
         return (new Label($this->label))->setFor($this->id)->toHtml();
     }

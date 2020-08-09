@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use WebTheory\Saveyour\Fields\Selections\StateSelectOptions;
+use WebTheory\Saveyour\Selections\StateSelectOptions;
 
 class SelectOptionsTest extends TestCase
 {

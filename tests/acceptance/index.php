@@ -1,7 +1,7 @@
 <?php
 
 use WebTheory\Html\Html;
-use WebTheory\Saveyour\Contracts\ChecklistItemsInterface;
+use WebTheory\Saveyour\Contracts\ChecklistItemsProviderInterface;
 use WebTheory\Saveyour\Contracts\RadioGroupSelectionInterface;
 use WebTheory\Saveyour\Contracts\SelectOptionsProviderInterface;
 use WebTheory\Saveyour\Elements\OptGroup;
@@ -9,7 +9,9 @@ use WebTheory\Saveyour\Fields\Checklist;
 use WebTheory\Saveyour\Fields\RadioGroup;
 use WebTheory\Saveyour\Fields\Select2;
 use WebTheory\Saveyour\Fields\Select;
+use WebTheory\Saveyour\Selections\StateSelectOptions;
 use WebTheory\Saveyour\Fields\Submit;
+use WebTheory\Saveyour\Fields\TrixEditor;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -35,14 +37,11 @@ echo '
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <title>Saveyour Field Tests</title>
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-  <script src="assets/index.js"></script>
+  <link rel="stylesheet" type="text/css" href="assets/trix.css">
 </head>
-<body>
-';
+<body>';
 
 echo "<h1>Visual Field Tests</h1><hr>";
 echo Html::open('form', ['method' => 'post']);
@@ -111,7 +110,7 @@ echo '<hr>';
 ################################################################################
 echo '<h2>Checklist Test</h2>';
 
-$provider = new class implements ChecklistItemsInterface
+$provider = new class implements ChecklistItemsProviderInterface
 {
     public function provideItemsAsRawData(): array
     {
@@ -262,12 +261,10 @@ $optgroup2->setSelectionProvider($provider2);
 $optgroup3->setSelectionProvider($provider3);
 
 $select->setGroups($optgroup1, $optgroup2, $optgroup3);
-// $select->setSize(5);
 $select->setMultiple(true);
 $select->setName('select-test-2');
 $select->setValue(['test-C', 'test-F']);
 
-dump($select->toHtml());
 echo $select->toHtml();
 echo '<hr>';
 
@@ -275,12 +272,24 @@ echo '<hr>';
 # Select2
 ################################################################################
 echo Html::tag('h2', 'Select2 Test');
+$states = new StateSelectOptions();
 
 $select2 = new Select2;
 $select2->setName('select2-test-1');
-$select2->setSelectionProvider($provider1);
+$select2->setSelectionProvider($states);
 $select2->setPlaceholder('Select2 Test Placeholder');
-$select2->setWidth('200px');
+
+echo $select2->toHtml();
+echo str_repeat('<br>', 2);
+
+$select2 = new Select2([
+    'allowClear' => true
+]);
+$select2->setName('select2-test-4');
+$select2->setSelectionProvider($states);
+$select2->setPlaceholder('Select2 Test 4 Placeholder');
+$select2->setWidth('250px');
+$select2->setTheme('classic');
 
 echo $select2->toHtml();
 echo str_repeat('<br>', 2);
@@ -295,10 +304,39 @@ $select2->setMultiple(true);
 echo $select2->toHtml();
 echo str_repeat('<br>', 2);
 
+$select2 = new Select2;
+$select2->setName('select2-test-3');
+$select2->setPlaceholder('Select2 Test 3 Placeholder');
+$select2->setWidth('300px');
+$select2->setMultiple(true);
+$select2->setSize(5);
+$select2->setGroups($optgroup1, $optgroup2, $optgroup3);
+
+echo $select2->toHtml();
+echo str_repeat('<br>', 2);
+
 echo '<hr>';
+
+################################################################################
+# Trix
+################################################################################
+echo Html::tag('h2', 'Trix Editor Test');
+$trix = new TrixEditor('test-control');
+$trix->setId('test-trix');
+$trix->setName('trix-test');
+$trix->setValue('This is <del><b>not</b></del> a test <del>but it is now</del>.');
+
+echo $trix;
 
 ################################################################################
 # end
 ################################################################################
+echo new Submit;
 echo Html::close('form');
-echo '</body></html>';
+echo '
+  <script type="text/javascript" src="assets/trix.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+  <script src="assets/index.js" ver="' . time() . '"></script>
+</body>
+</html>';

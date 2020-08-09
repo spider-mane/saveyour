@@ -6,7 +6,6 @@ use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Concerns\IsSimpleSelectionFieldTrait;
 use WebTheory\Saveyour\Concerns\MultiValueSelectionTrait;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
-use WebTheory\Saveyour\Elements\Option;
 
 class Select2 extends Select implements FormFieldInterface
 {
@@ -21,41 +20,41 @@ class Select2 extends Select implements FormFieldInterface
     /**
      * @var string
      */
-    protected $dir;
-
-    /**
-     * @var bool
-     */
-    protected $allowClear = false;
+    protected $theme = 'default';
 
     /**
      *
      */
-
-    protected const EXPECTED_CLASS = 'saveyour--select2';
+    protected $config = [];
 
     /**
-     * Get the value of dir
      *
-     * @return string
      */
-    public function getDir(): string
+    public const EXPECTED_CLASS = 'saveyour--select2';
+
+    /**
+     *
+     */
+    public const EXPECTED_DATA_KEY = 'data-saveyour__select2';
+
+    /**
+     *
+     */
+    public function __construct(array $config = [])
     {
-        return $this->dir;
+        $this->config = $config + $this->config;
+
+        parent::__construct();
     }
 
     /**
-     * Set the value of dir
+     * Get the value of config
      *
-     * @param string $dir
-     *
-     * @return self
+     * @return mixed
      */
-    public function setDir(string $dir)
+    public function getConfig()
     {
-        $this->dir = $dir;
-
-        return $this;
+        return $this->config;
     }
 
     /**
@@ -83,11 +82,27 @@ class Select2 extends Select implements FormFieldInterface
     }
 
     /**
+     * Get the value of theme
      *
+     * @return string
      */
-    protected function createPlaceholder(): Option
+    public function getTheme(): string
     {
-        return new Option('', '');
+        return $this->theme;
+    }
+
+    /**
+     * Set the value of theme
+     *
+     * @param string $theme
+     *
+     * @return self
+     */
+    public function setTheme(string $theme)
+    {
+        $this->theme = $theme;
+
+        return $this;
     }
 
     /**
@@ -98,7 +113,7 @@ class Select2 extends Select implements FormFieldInterface
         $this->addClass(static::EXPECTED_CLASS);
 
         return parent::resolveAttributes()
-            ->addAttribute('data-saveyour__select2', $this->getConfiguration());
+            ->addAttribute(static::EXPECTED_DATA_KEY, $this->getConfiguration());
     }
 
     /**
@@ -106,7 +121,7 @@ class Select2 extends Select implements FormFieldInterface
      */
     protected function getConfiguration(): string
     {
-        return htmlspecialchars(json_encode($this->resolveConfiguration()));
+        return json_encode($this->resolveConfiguration() + $this->config);
     }
 
     /**
@@ -115,10 +130,10 @@ class Select2 extends Select implements FormFieldInterface
     protected function resolveConfiguration(): array
     {
         return [
-            'dir' => $this->dir,
             'disabled' => $this->disabled,
             'multiple' => $this->multiple,
             'placeholder' => $this->placeholder,
+            'theme' => $this->theme,
             'width' => $this->width
         ];
     }

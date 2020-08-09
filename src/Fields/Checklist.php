@@ -3,7 +3,7 @@
 namespace WebTheory\Saveyour\Fields;
 
 use WebTheory\Saveyour\Concerns\MultiValueSelectionTrait;
-use WebTheory\Saveyour\Contracts\ChecklistItemsInterface;
+use WebTheory\Saveyour\Contracts\ChecklistItemsProviderInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Checklist extends AbstractCompositeSelectionField implements FormFieldInterface
@@ -16,7 +16,7 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
     protected $value = [];
 
     /**
-     * @var ChecklistItemsInterface
+     * @var ChecklistItemsProviderInterface
      */
     protected $selectionProvider;
 

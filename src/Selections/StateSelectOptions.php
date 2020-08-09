@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\Saveyour\Fields\Selections;
+namespace WebTheory\Saveyour\Selections;
 
 use InvalidArgumentException;
 use WebTheory\Saveyour\Contracts\SelectOptionsProviderInterface;
@@ -18,9 +18,9 @@ class StateSelectOptions implements SelectOptionsProviderInterface
     protected $text = 'name';
 
     /**
-     *
+     * @var bool
      */
-    protected $reSort;
+    protected $reSort = false;
 
     /**
      *
@@ -103,21 +103,21 @@ class StateSelectOptions implements SelectOptionsProviderInterface
     /**
      *
      */
+    protected const MAP = [
+        'States' => self::STATES,
+        'Territories' => self::TERRITORIES,
+        'ArmedForces' => self::ARMED_FORCES
+    ];
+
+    /**
+     *
+     */
     protected const ALLOWED_GROUPS = ['States', 'Territories', 'ArmedForces'];
 
     /**
      *
      */
     protected const ALLOWED_TEXT = ['abbr', 'name'];
-
-    /**
-     *
-     */
-    protected const MAP = [
-        'States' => self::STATES,
-        'Territories' => self::TERRITORIES,
-        'ArmedForces' => self::ARMED_FORCES
-    ];
 
     /**
      *
@@ -173,8 +173,8 @@ class StateSelectOptions implements SelectOptionsProviderInterface
     {
         $options = [];
 
-        foreach ($this->groups as $locales) {
-            foreach ($locales as $abbr => $name) {
+        foreach ($this->groups as $group) {
+            foreach (static::MAP[$group] as $abbr => $name) {
                 $options[] = [
                     'name' => $name,
                     'abbr' => $abbr

@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\Saveyour\Fields\Selections;
+namespace WebTheory\Saveyour\Selections;
 
 use WebTheory\Saveyour\Contracts\SelectOptionsProviderInterface;
 
