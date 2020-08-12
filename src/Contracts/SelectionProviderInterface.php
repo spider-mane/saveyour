@@ -7,7 +7,7 @@ interface SelectionProviderInterface
     /**
      *
      */
-    public function provideSelectionData(): array;
+    public function provideSelectionsData(): array;
 
     /**
      *
