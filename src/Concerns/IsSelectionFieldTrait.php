@@ -16,7 +16,7 @@ trait IsSelectionFieldTrait
      */
     protected function getSelectionData()
     {
-        return $this->selectionProvider->provideSelectionData();
+        return $this->selectionProvider->provideSelectionsData();
     }
 
     /**

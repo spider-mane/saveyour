@@ -192,7 +192,7 @@ class StateSelectOptions implements OptionsProviderInterface
     /**
      *
      */
-    public function provideSelectionData(): array
+    public function provideSelectionsData(): array
     {
         return $this->getOptions();
     }

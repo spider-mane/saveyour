@@ -32,7 +32,7 @@ abstract class AbstractSelectionFromMap implements SelectionProviderInterface
     /**
      *
      */
-    public function provideSelectionData(): array
+    public function provideSelectionsData(): array
     {
         return $this->selection;
     }
