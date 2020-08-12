@@ -4,7 +4,7 @@ namespace WebTheory\Saveyour\Selections;
 
 use WebTheory\Saveyour\Contracts\SelectionProviderInterface;
 
-class SelectionFromMap implements SelectionProviderInterface
+abstract class AbstractSelectionFromMap implements SelectionProviderInterface
 {
     /**
      * @var array
@@ -32,7 +32,7 @@ class SelectionFromMap implements SelectionProviderInterface
     /**
      *
      */
-    public function provideItemsAsRawData(): array
+    public function provideSelectionData(): array
     {
         return $this->selection;
     }
@@ -40,7 +40,7 @@ class SelectionFromMap implements SelectionProviderInterface
     /**
      *
      */
-    public function provideItemValue($item): string
+    public function defineSelectionValue($item): string
     {
         return array_search($item, $this->selection);
     }

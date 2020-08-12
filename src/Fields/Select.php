@@ -3,16 +3,18 @@
 namespace WebTheory\Saveyour\Fields;
 
 use WebTheory\Html\AbstractHtmlElement;
-use WebTheory\Saveyour\Concerns\IsSimpleSelectionFieldTrait;
 use WebTheory\Saveyour\Concerns\MultiValueSelectionTrait;
+use WebTheory\Saveyour\Concerns\RendersOptionsTrait;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 use WebTheory\Saveyour\Elements\OptGroup;
 use WebTheory\Saveyour\Elements\Option;
 
 class Select extends AbstractStandardFormControl implements FormFieldInterface
 {
-    use IsSimpleSelectionFieldTrait;
     use MultiValueSelectionTrait;
+    use RendersOptionsTrait {
+        renderSelection as renderSelectionFromProvider;
+    }
 
     /**
      *
@@ -162,22 +164,6 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     /**
      *
      */
-    protected function renderSelectionFromProvider(): string
-    {
-        $html = '';
-
-        foreach ($this->getSelectionData() as $selection) {
-            $selected = $this->isSelectionSelected($this->defineSelectionValue($selection));
-
-            $html .= $this->createOption($selection)->setSelected($selected);
-        }
-
-        return $html;
-    }
-
-    /**
-     *
-     */
     protected function renderSelectionFromOptGroups(): string
     {
         $html = '';
@@ -187,16 +173,5 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
         }
 
         return $html;
-    }
-
-    /**
-     *
-     */
-    protected function createOption($selection): Option
-    {
-        return new Option(
-            $this->defineSelectionText($selection),
-            $this->defineSelectionValue($selection)
-        );
     }
 }

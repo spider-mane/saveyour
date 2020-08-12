@@ -16,16 +16,16 @@ trait IsCompositeSelectionFieldTrait
     /**
      *
      */
-    protected function defineSelectionLabel($item)
+    protected function defineSelectionLabel($selection)
     {
-        return $this->selectionProvider->provideItemLabel($item);
+        return $this->selectionProvider->defineSelectionLabel($selection);
     }
 
     /**
      *
      */
-    protected function defineSelectionId($item)
+    protected function defineSelectionId($selection)
     {
-        return $this->selectionProvider->provideItemId($item);
+        return $this->selectionProvider->defineSelectionId($selection);
     }
 }

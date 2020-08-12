@@ -4,12 +4,12 @@ namespace WebTheory\Saveyour\Selections;
 
 use WebTheory\Saveyour\Contracts\CompositeFieldSelectionProviderInterface;
 
-class CompositeSelectionFromMap extends SelectionFromMap implements CompositeFieldSelectionProviderInterface
+class CompositeSelectionFromMap extends AbstractSelectionFromMap implements CompositeFieldSelectionProviderInterface
 {
     /**
      *
      */
-    public function provideItemId($item): string
+    public function defineSelectionId($item): string
     {
         return $item['id'];
     }
@@ -17,7 +17,7 @@ class CompositeSelectionFromMap extends SelectionFromMap implements CompositeFie
     /**
      *
      */
-    public function provideItemLabel($item): string
+    public function defineSelectionLabel($item): string
     {
         return $item['label'];
     }

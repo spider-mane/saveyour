@@ -7,10 +7,10 @@ interface SelectionProviderInterface
     /**
      *
      */
-    public function provideItemsAsRawData(): array;
+    public function provideSelectionData(): array;
 
     /**
      *
      */
-    public function provideItemValue($selection): string;
+    public function defineSelectionValue($selection): string;
 }

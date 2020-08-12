@@ -2,14 +2,14 @@
 
 namespace WebTheory\Saveyour\Selections;
 
-use WebTheory\Saveyour\Contracts\SelectOptionsProviderInterface;
+use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
 
-class SelectOptionsFromMap extends SelectionFromMap implements SelectOptionsProviderInterface
+class SelectOptionsFromMap extends AbstractSelectionFromMap implements OptionsProviderInterface
 {
     /**
      *
      */
-    public function provideItemText($item): string
+    public function defineSelectionText($item): string
     {
         return $item;
     }

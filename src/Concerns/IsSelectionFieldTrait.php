@@ -12,42 +12,18 @@ trait IsSelectionFieldTrait
     protected $selectionProvider;
 
     /**
-     * Get the value of selectionProvider
-     *
-     * @return SelectionProviderInterface
-     */
-    public function getSelectionProvider(): SelectionProviderInterface
-    {
-        return $this->selectionProvider;
-    }
-
-    /**
-     * Set the value of selectionProvider
-     *
-     * @param SelectionProviderInterface $selectionProvider
-     *
-     * @return self
-     */
-    public function setSelectionProvider(SelectionProviderInterface $selectionProvider)
-    {
-        $this->selectionProvider = $selectionProvider;
-
-        return $this;
-    }
-
-    /**
      *
      */
     protected function getSelectionData()
     {
-        return $this->selectionProvider->provideItemsAsRawData();
+        return $this->selectionProvider->provideSelectionData();
     }
 
     /**
      *
      */
-    protected function defineSelectionValue($item)
+    protected function defineSelectionValue($selection)
     {
-        return $this->selectionProvider->provideItemValue($item);
+        return $this->selectionProvider->defineSelectionValue($selection);
     }
 }

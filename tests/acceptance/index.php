@@ -2,16 +2,16 @@
 
 use WebTheory\Html\Html;
 use WebTheory\Saveyour\Contracts\ChecklistItemsProviderInterface;
+use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
 use WebTheory\Saveyour\Contracts\RadioGroupSelectionInterface;
-use WebTheory\Saveyour\Contracts\SelectOptionsProviderInterface;
 use WebTheory\Saveyour\Elements\OptGroup;
 use WebTheory\Saveyour\Fields\Checklist;
 use WebTheory\Saveyour\Fields\RadioGroup;
 use WebTheory\Saveyour\Fields\Select2;
 use WebTheory\Saveyour\Fields\Select;
-use WebTheory\Saveyour\Selections\StateSelectOptions;
 use WebTheory\Saveyour\Fields\Submit;
 use WebTheory\Saveyour\Fields\TrixEditor;
+use WebTheory\Saveyour\Selections\StateSelectOptions;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -54,7 +54,7 @@ echo '<h2>RadioGroup Test</h2>';
 
 $provider = new class implements RadioGroupSelectionInterface
 {
-    public function provideItemsAsRawData(): array
+    public function provideSelectionData(): array
     {
         return [
             [
@@ -70,17 +70,17 @@ $provider = new class implements RadioGroupSelectionInterface
         ];
     }
 
-    public function provideItemValue($item): string
+    public function defineSelectionValue($item): string
     {
         return $item['value'];
     }
 
-    public function provideItemId($item): string
+    public function defineSelectionId($item): string
     {
         return $item['id'];
     }
 
-    public function provideItemLabel($item): string
+    public function defineSelectionLabel($item): string
     {
         return $item['label'];
     }
@@ -112,7 +112,7 @@ echo '<h2>Checklist Test</h2>';
 
 $provider = new class implements ChecklistItemsProviderInterface
 {
-    public function provideItemsAsRawData(): array
+    public function provideSelectionData(): array
     {
         return [
             [
@@ -128,23 +128,23 @@ $provider = new class implements ChecklistItemsProviderInterface
         ];
     }
 
-    public function provideItemValue($item): string
+    public function defineSelectionValue($item): string
     {
         return $item['value'];
     }
 
-    public function provideItemId($item): string
+    public function defineSelectionId($item): string
     {
         return $item['id'];
     }
 
-    public function provideItemLabel($item): string
+    public function defineSelectionLabel($item): string
     {
         return $item['label'];
     }
 };
 
-$checklist = new Checklist;
+$checklist = new Checklist();
 $checklist->setSelectionProvider($provider);
 $checklist->setValue('test-1');
 $checklist->setName('checklist-test-1');
@@ -159,9 +159,9 @@ echo '<h2>Select Test</h2>';
 
 $select = new Select();
 
-$provider1 = new class implements SelectOptionsProviderInterface
+$provider1 = new class implements OptionsProviderInterface
 {
-    public function provideItemsAsRawData(): array
+    public function provideSelectionData(): array
     {
         return [
             [
@@ -175,12 +175,12 @@ $provider1 = new class implements SelectOptionsProviderInterface
         ];
     }
 
-    public function provideItemValue($item): string
+    public function defineSelectionValue($item): string
     {
         return $item['value'];
     }
 
-    public function provideItemText($item): string
+    public function defineSelectionText($item): string
     {
         return $item['text'];
     }
@@ -198,9 +198,9 @@ echo str_repeat('<br>', 2);
 
 echo '<h3>Multi-Value with optgroups</h3>';
 
-$provider2 = new class implements SelectOptionsProviderInterface
+$provider2 = new class implements OptionsProviderInterface
 {
-    public function provideItemsAsRawData(): array
+    public function provideSelectionData(): array
     {
         return [
             [
@@ -214,20 +214,20 @@ $provider2 = new class implements SelectOptionsProviderInterface
         ];
     }
 
-    public function provideItemValue($item): string
+    public function defineSelectionValue($item): string
     {
         return $item['value'];
     }
 
-    public function provideItemText($item): string
+    public function defineSelectionText($item): string
     {
         return $item['text'];
     }
 };
 
-$provider3 = new class implements SelectOptionsProviderInterface
+$provider3 = new class implements OptionsProviderInterface
 {
-    public function provideItemsAsRawData(): array
+    public function provideSelectionData(): array
     {
         return [
             [
@@ -241,12 +241,12 @@ $provider3 = new class implements SelectOptionsProviderInterface
         ];
     }
 
-    public function provideItemValue($item): string
+    public function defineSelectionValue($item): string
     {
         return $item['value'];
     }
 
-    public function provideItemText($item): string
+    public function defineSelectionText($item): string
     {
         return $item['text'];
     }
@@ -286,6 +286,7 @@ $select2 = new Select2([
     'allowClear' => true
 ]);
 $select2->setName('select2-test-4');
+$select2->setValue('MA');
 $select2->setSelectionProvider($states);
 $select2->setPlaceholder('Select2 Test 4 Placeholder');
 $select2->setWidth('250px');
@@ -306,6 +307,7 @@ echo str_repeat('<br>', 2);
 
 $select2 = new Select2;
 $select2->setName('select2-test-3');
+$select2->setValue(['test-B', 'test-D']);
 $select2->setPlaceholder('Select2 Test 3 Placeholder');
 $select2->setWidth('300px');
 $select2->setMultiple(true);

@@ -3,15 +3,10 @@
 namespace WebTheory\Saveyour\Fields;
 
 use WebTheory\Html\AbstractHtmlElement;
-use WebTheory\Saveyour\Concerns\IsSimpleSelectionFieldTrait;
-use WebTheory\Saveyour\Concerns\MultiValueSelectionTrait;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Select2 extends Select implements FormFieldInterface
 {
-    use IsSimpleSelectionFieldTrait;
-    use MultiValueSelectionTrait;
-
     /**
      * @var string
      */

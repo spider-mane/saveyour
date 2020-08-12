@@ -3,9 +3,9 @@
 namespace WebTheory\Saveyour\Selections;
 
 use InvalidArgumentException;
-use WebTheory\Saveyour\Contracts\SelectOptionsProviderInterface;
+use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
 
-class StateSelectOptions implements SelectOptionsProviderInterface
+class StateSelectOptions implements OptionsProviderInterface
 {
     /**
      *
@@ -192,7 +192,7 @@ class StateSelectOptions implements SelectOptionsProviderInterface
     /**
      *
      */
-    public function provideItemsAsRawData(): array
+    public function provideSelectionData(): array
     {
         return $this->getOptions();
     }
@@ -200,7 +200,7 @@ class StateSelectOptions implements SelectOptionsProviderInterface
     /**
      *
      */
-    public function provideItemText($item): string
+    public function defineSelectionText($item): string
     {
         return $item[$this->text];
     }
@@ -208,7 +208,7 @@ class StateSelectOptions implements SelectOptionsProviderInterface
     /**
      *
      */
-    public function provideItemValue($item): string
+    public function defineSelectionValue($item): string
     {
         return $item['abbr'];
     }

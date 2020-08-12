@@ -3,13 +3,14 @@
 namespace WebTheory\Saveyour\Elements;
 
 use WebTheory\Html\AbstractHtmlElement;
-use WebTheory\Saveyour\Concerns\IsSimpleSelectionFieldTrait;
 use WebTheory\Saveyour\Concerns\MultiValueSelectionTrait;
+use WebTheory\Saveyour\Concerns\RendersOptionsTrait;
+use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
 
 class OptGroup extends AbstractHtmlElement
 {
-    use IsSimpleSelectionFieldTrait;
     use MultiValueSelectionTrait;
+    use RendersOptionsTrait;
 
     /**
      *
@@ -25,6 +26,11 @@ class OptGroup extends AbstractHtmlElement
      * @var bool
      */
     protected $disabled = false;
+
+    /**
+     * @var OptionsProviderInterface
+     */
+    protected $selectionProvider;
 
     /**
      *
@@ -76,32 +82,5 @@ class OptGroup extends AbstractHtmlElement
     protected function renderHtmlMarkup(): string
     {
         return $this->tag('optgroup', $this->renderSelection(), $this->attributes);
-    }
-
-    /**
-     *
-     */
-    protected function renderSelection(): string
-    {
-        $html = '';
-
-        foreach ($this->getSelectionData() as $selection) {
-            $selected = $this->isSelectionSelected($this->defineSelectionValue($selection));
-
-            $html .= $this->createOption($selection)->setSelected($selected);
-        }
-
-        return $html;
-    }
-
-    /**
-     *
-     */
-    protected function createOption($selection): Option
-    {
-        return new Option(
-            $this->defineSelectionText($selection),
-            $this->defineSelectionValue($selection)
-        );
     }
 }
