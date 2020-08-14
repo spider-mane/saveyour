@@ -22,6 +22,7 @@ class Label extends AbstractHtmlElement
     public function __construct(string $content)
     {
         $this->content = $content;
+
         parent::__construct();
     }
 
@@ -73,6 +74,6 @@ class Label extends AbstractHtmlElement
      */
     protected function renderHtmlMarkup(): string
     {
-        return $this->tag('label', $this->content, $this->attributes);
+        return $this->tag('label', $this->attributes, $this->content);
     }
 }

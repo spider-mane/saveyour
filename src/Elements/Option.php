@@ -121,6 +121,6 @@ class Option extends AbstractHtmlElement
      */
     protected function renderHtmlMarkup(): string
     {
-        return $this->tag('option', $this->text, $this->attributes);
+        return $this->tag('option', $this->attributes, $this->text);
     }
 }

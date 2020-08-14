@@ -271,7 +271,7 @@ echo '<hr>';
 ################################################################################
 # Select2
 ################################################################################
-echo Html::tag('h2', 'Select2 Test');
+echo Html::h2('Select2 Test');
 $states = new StateSelectOptions();
 
 $select2 = new Select2;
@@ -322,7 +322,7 @@ echo '<hr>';
 ################################################################################
 # Trix
 ################################################################################
-echo Html::tag('h2', 'Trix Editor Test');
+echo Html::h2('Trix Editor Test');
 $trix = new TrixEditor('test-control');
 $trix->setId('test-trix');
 $trix->setName('trix-test');

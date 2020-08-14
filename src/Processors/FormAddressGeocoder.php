@@ -11,13 +11,13 @@ use Geocoder\Provider\Provider;
 use Geocoder\Query\GeocodeQuery;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
-use WebTheory\Saveyour\Contracts\DataTransformerInterface;
+use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessingCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 use WebTheory\Saveyour\Controllers\FormDataProcessingCache;
+use WebTheory\Saveyour\Formatters\LazyFormatter;
 use WebTheory\Saveyour\InputPurifier;
-use WebTheory\Saveyour\Transformers\LazyTransformer;
 
 class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements FormDataProcessorInterface
 {
@@ -42,9 +42,9 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
     protected $addressDataManager;
 
     /**
-     * @var DataTransformerInterface
+     * @var DataFormatterInterface
      */
-    protected $geoDataTransformer;
+    protected $geoDataFormatter;
 
     /**
      * @var FieldDataManagerInterface
@@ -52,9 +52,9 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
     protected $geoDataManager;
 
     /**
-     * @var DataTransformerInterface
+     * @var DataFormatterInterface
      */
-    protected $addressDataTransformer;
+    protected $addressDataFormatter;
 
     /**
      * {@inheritDoc}
@@ -67,17 +67,17 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
     public function __construct(
         Provider $provider,
         FieldDataManagerInterface $geoDataManager,
-        ?DataTransformerInterface $geoDataTransformer = null,
+        ?DataFormatterInterface $geoDataFormatter = null,
         ?FieldDataManagerInterface $addressDataManager = null,
-        ?DataTransformerInterface $addressDataTransformer = null
+        ?DataFormatterInterface $addressDataFormatter = null
     ) {
         $this->provider = $provider;
         $this->geoDataManager = $geoDataManager;
-        $this->geoDataTransformer = $geoDataTransformer ?? new LazyTransformer();
+        $this->geoDataFormatter = $geoDataFormatter ?? new LazyFormatter();
 
         if ($addressDataManager) {
             $this->addressDataManager = $addressDataManager;
-            $this->addressDataTransformer = $addressDataTransformer ?? new LazyTransformer();
+            $this->addressDataFormatter = $addressDataFormatter ?? new LazyFormatter();
         }
     }
 
@@ -134,17 +134,17 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
     /**
      *
      */
-    protected function transformGeoData($value)
+    protected function formatGeoDataInput($value)
     {
-        return $this->geoDataTransformer->reverseTransform($value);
+        return $this->geoDataFormatter->formatInput($value);
     }
 
     /**
      *
      */
-    protected function transformAddress($value)
+    protected function formatAddressInput($value)
     {
-        return $this->addressDataTransformer->reverseTransform($value);
+        return $this->addressDataFormatter->formatInput($value);
     }
 
     /**
@@ -193,13 +193,13 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
 
         $geoUpdated = $this->geoDataManager->handleSubmittedData(
             $request,
-            $this->transformGeoData($coordinates)
+            $this->formatGeoDataInput($coordinates)
         );
 
         if (isset($this->addressDataManager)) {
             $addressUpdated = $this->addressDataManager->handleSubmittedData(
                 $request,
-                $this->transformAddress($address)
+                $this->formatAddressInput($address)
             );
         }
 

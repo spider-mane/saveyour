@@ -4,7 +4,7 @@ use GuzzleHttp\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
-use WebTheory\Saveyour\Contracts\DataTransformerInterface;
+use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
@@ -44,28 +44,28 @@ class FormFieldControllerTest extends TestCase
         $this->assertEquals($formField, $controller->getFormField());
     }
 
-    public function testCanSetAndGetFormField()
-    {
-        $controller = new FormFieldController('test');
-        $field = $this->createMock(FormFieldInterface::class);
+    // public function testCanSetAndGetFormField()
+    // {
+    //     $field = $this->createMock(FormFieldInterface::class);
 
-        $controller->setFormField($field);
+    //     $controller = new FormFieldController('test', $field);
+    //     // $controller->setFormField($field);
 
-        $this->assertEquals($field, $controller->getFormField());
-    }
+    //     $this->assertEquals($field, $controller->getFormField());
+    // }
 
-    public function testFormFieldIsProperInterface()
-    {
-        $this->expectException(TypeError::class);
+    // public function testFormFieldIsProperInterface()
+    // {
+    //     $this->expectException(TypeError::class);
 
-        $controller = new FormFieldController('test');
-        $field = $this->createMock(FormFieldInterface::class);
+    //     $controller = new FormFieldController('test', 'dontdoit');
+    //     // $field = $this->createMock(FormFieldInterface::class);
 
-        $controller->setFormField(new DateTime);
-        $controller->setFormField('dontdoit');
+    //     // $controller->setFormField(new DateTime);
+    //     // $controller->setFormField('dontdoit');
 
-        $this->assertEmpty($controller->getFormField());
-    }
+    //     $this->assertEmpty($controller->getFormField());
+    // }
 
     public function testCanConstructWithDataManager()
     {
@@ -79,88 +79,89 @@ class FormFieldControllerTest extends TestCase
         $this->assertEquals($dataManager, $controller->getDataManager());
     }
 
-    public function testCanSetAndGetDataManager()
+    // public function testCanSetAndGetDataManager()
+    // {
+    //     $interface = FieldDataManagerInterface::class;
+
+    //     $manager = $this->createMock($interface);
+    //     $controller = new FormFieldController('test', null, $manager);
+
+    //     // $controller->setDataManager($manager);
+
+    //     $this->assertTrue($controller->hasDataManager());
+    //     $this->assertEquals($manager, $controller->getDataManager());
+    // }
+
+    // public function testDataManagerIsProperInterface()
+    // {
+    //     $this->expectException(TypeError::class);
+
+    //     $controller = new FormFieldController('test');
+
+    //     $controller->setDataManager(new DateTime);
+
+    //     $this->assertNull($controller->getDataManager());
+    // }
+
+    public function testCanConstructWithAndGetFormatter()
     {
-        $interface = FieldDataManagerInterface::class;
+        $interface = DataFormatterInterface::class;
 
-        $controller = new FormFieldController('test');
-        $manager = $this->createMock($interface);
+        $formatter = $this->createMock($interface);
 
-        $controller->setDataManager($manager);
+        $controller = new FormFieldController('test', null, null, $formatter);
 
-        $this->assertTrue($controller->hasDataManager());
-        $this->assertEquals($manager, $controller->getDataManager());
+        $this->assertEquals($formatter, $controller->getFormatter());
     }
 
-    public function testDataManagerIsProperInterface()
+    public function testCanConstructWithAndGetEscaper()
     {
-        $this->expectException(TypeError::class);
-
-        $controller = new FormFieldController('test');
-
-        $controller->setDataManager(new DateTime);
-
-        $this->assertNull($controller->getDataManager());
-    }
-
-    public function testCanConstructWithAndGetTransformer()
-    {
-        $interface = DataTransformerInterface::class;
-
-        $transformer = $this->createMock($interface);
-
-        $controller = new FormFieldController('test', null, null, $transformer);
-
-        $this->assertEquals($transformer, $controller->getTransformer());
-    }
-
-    public function testCanSetAndGetEscaper()
-    {
-        $controller = new FormFieldController('test');
-
         $escaper = 'strtoupper';
+        $controller = new FormFieldController('test', null, null, null, null, null, $escaper);
 
-        $controller->setEscaper($escaper);
+        // $controller->setEscaper($escaper);
 
         $this->assertEquals($escaper, $controller->getEscaper());
     }
 
-    public function testEscaperMustBeCallableOrNull()
-    {
-        $this->expectException(TypeError::class);
+    // public function testEscaperMustBeCallableOrNull()
+    // {
+    //     $this->expectException(TypeError::class);
 
-        $controller = new FormFieldController('test');
+    //     $controller = new FormFieldController('test');
 
-        $default = $controller->getEscaper();
+    //     $default = $controller->getEscaper();
 
-        $controller->setEscaper('ggfghpap43243');
-        $controller->setEscaper(5635);
-        $controller->setEscaper(5354.65563);
-        $controller->setEscaper(true);
-        $controller->setEscaper(new DateTime);
+    //     $controller->setEscaper('ggfghpap43243');
+    //     $controller->setEscaper(5635);
+    //     $controller->setEscaper(5354.65563);
+    //     $controller->setEscaper(true);
+    //     $controller->setEscaper(new DateTime);
 
-        $this->assertEquals($default, $controller->getEscaper());
+    //     $this->assertEquals($default, $controller->getEscaper());
 
-        $escaper = 'strtoupper';
-        $controller->setEscaper($controller);
+    //     $escaper = 'strtoupper';
+    //     $controller->setEscaper($controller);
 
-        $this->assertEquals($escaper, $controller->getEscaper());
-        $this->assertIsCallable($controller->getEscaper());
+    //     $this->assertEquals($escaper, $controller->getEscaper());
+    //     $this->assertIsCallable($controller->getEscaper());
 
-        $controller->setEscaper(null);
+    //     $controller->setEscaper(null);
 
-        $this->assertNull($controller->getEscaper());
-    }
+    //     $this->assertNull($controller->getEscaper());
+    // }
 
     public function testCanSetAndGetProcessingDisabled()
     {
-        $controller = new FormFieldController('test');
+        $controller = new FormFieldController('test', null, null, null, null, null, null, true);
 
-        $controller->setProcessingDisabled(true);
+        // $controller->setProcessingDisabled(true);
 
         $this->assertTrue($controller->isProcessingDisabled());
 
-        $controller->setProcessingDisabled(false);
+        $controller = new FormFieldController('test', null, null, null, null, null, null, false);
+
+        // $controller->setProcessingDisabled(false);
 
         $this->assertFalse($controller->isProcessingDisabled());
     }
@@ -168,11 +169,12 @@ class FormFieldControllerTest extends TestCase
     public function testCanProcessValidInputOnPost()
     {
         $requestVar = 'test';
-        $controller = new FormFieldController($requestVar);
         $manager = $this->createMock(FieldDataManagerInterface::class);
+        $rule = ['phone' => ['validator' => Validator::phone()]];
 
-        $controller->setDataManager($manager);
-        $controller->addRule('phone', Validator::phone());
+        // $controller->setDataManager($manager);
+        // $controller->addRule('phone', Validator::phone());
+        $controller = new FormFieldController($requestVar, null, $manager, null, null, $rule);
 
         $input = '202-561-4684';
 
@@ -189,11 +191,12 @@ class FormFieldControllerTest extends TestCase
     public function testCanProcessValidInputOnGet()
     {
         $requestVar = 'test';
-        $controller = new FormFieldController($requestVar);
         $manager = $this->createMock(FieldDataManagerInterface::class);
+        $rule = ['phone' => ['validator' => Validator::phone()]];
 
-        $controller->setDataManager($manager);
-        $controller->addRule('phone', Validator::phone());
+        // $controller->setDataManager($manager);
+        // $controller->addRule('phone', Validator::phone());
+        $controller = new FormFieldController($requestVar, null, $manager, null, null, $rule);
 
         $input = '202-561-4684';
 
@@ -212,9 +215,11 @@ class FormFieldControllerTest extends TestCase
         $requestVar = 'test';
         $controller = new FormFieldController($requestVar);
         $manager = $this->createMock(FieldDataManagerInterface::class);
+        $rule = ['phone' => ['validator' => Validator::phone(), 'alert' => 'invalid phone']];
 
-        $controller->setDataManager($manager);
-        $controller->addRule('phone', Validator::phone(), 'invalid phone');
+        // $controller->setDataManager($manager);
+        // $controller->addRule('phone', Validator::phone(), 'invalid phone');
+        $controller = new FormFieldController($requestVar, null, $manager, null, null, $rule);
 
         $input = 'foobar';
 
@@ -252,7 +257,6 @@ class FormFieldControllerTest extends TestCase
     public function testCanRenderFormField()
     {
         $name = 'test';
-        $controller = new FormFieldController($name);
 
         $manager = new class implements FieldDataManagerInterface
         {
@@ -267,8 +271,9 @@ class FormFieldControllerTest extends TestCase
             }
         };
 
-        $controller->setFormField(new Input);
-        $controller->setDataManager($manager);
+        // $controller->setFormField(new Input);
+        // $controller->setDataManager($manager);
+        $controller = new FormFieldController($name, new Input, $manager);
 
         $field = $controller->render(ServerRequest::fromGlobals());
 
@@ -278,7 +283,6 @@ class FormFieldControllerTest extends TestCase
 
     public function testDoesNotEscapeValueIfEscaperSetToNull()
     {
-        $controller = new FormFieldController('test');
         $request = $this->createMock(ServerRequestInterface::class);
 
         $manager = new class implements FieldDataManagerInterface
@@ -297,14 +301,15 @@ class FormFieldControllerTest extends TestCase
         $escaped = '&lt;div&gt;foobar&lt;/div&gt;';
         $unescaped = '<div>foobar</div>';
 
-        $controller->setDataManager($manager);
-        $controller->setFormField(new Input);
+        // $controller->setDataManager($manager);
+        // $controller->setFormField(new Input);
 
-        $controller->setEscaper('htmlspecialchars');
+        // $controller->setEscaper('htmlspecialchars');
+        $controller = new FormFieldController('test', new Input, $manager, null, null, null, 'htmlspecialchars');
 
         $this->assertEquals($escaped, $controller->render($request)->getValue());
 
-        $controller->setEscaper(null);
+        $controller = new FormFieldController('test', new Input, $manager, null, null, null, FormFieldController::LAZY_ESCAPE);
 
         $this->assertEquals($unescaped, $controller->render($request)->getValue());
     }

@@ -51,7 +51,7 @@ class TrixEditor extends AbstractFormField implements FormFieldInterface
             ->setValue($this->value)
             ->setId($this->controlId);
 
-        $editor = $this->tag('trix-editor', '', $this->attributes);
+        $editor = $this->tag('trix-editor', $this->attributes);
 
         return $control . $editor;
     }

@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Controllers;
 
-use WebTheory\Saveyour\Contracts\DataTransformerInterface;
+use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
@@ -85,11 +85,11 @@ abstract class AbstractBuilderField
      */
     public function init(): FormFieldControllerInterface
     {
-        return new BaseFormFieldController(
+        return new FormFieldController(
             $this->defineRequestVar(),
             $this->defineFormField(),
             $this->defineDataManager(),
-            $this->defineDataTransformer(),
+            $this->defineDataFormatter(),
             $this->defineFilters(),
             $this->defineRules(),
             $this->defineEscaper(),
@@ -125,7 +125,7 @@ abstract class AbstractBuilderField
     /**
      *
      */
-    protected function defineDataTransformer(): ?DataTransformerInterface
+    protected function defineDataFormatter(): ?DataFormatterInterface
     {
         return null;
     }

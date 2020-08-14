@@ -4,7 +4,7 @@ namespace WebTheory\Saveyour\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validatable;
-use WebTheory\Saveyour\Contracts\DataTransformerInterface;
+use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
@@ -139,11 +139,11 @@ abstract class AbstractField implements FormFieldControllerInterface
      */
     protected function createFormFieldController(): FormFieldControllerInterface
     {
-        return new BaseFormFieldController(
+        return new FormFieldController(
             $this->defineRequestVar(),
             $this->defineFormField(),
             $this->defineDataManager(),
-            $this->defineDataTransformer(),
+            $this->defineDataFormatter(),
             $this->defineFilters(),
             $this->defineRules(),
             $this->defineEscaper(),
@@ -179,7 +179,7 @@ abstract class AbstractField implements FormFieldControllerInterface
     /**
      *
      */
-    protected function defineDataTransformer(): ?DataTransformerInterface
+    protected function defineDataFormatter(): ?DataFormatterInterface
     {
         return null;
     }

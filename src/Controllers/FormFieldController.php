@@ -2,36 +2,214 @@
 
 namespace WebTheory\Saveyour\Controllers;
 
-use WebTheory\Saveyour\Contracts\DataTransformerInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
+use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
+use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\InputPurifier;
+use WebTheory\Saveyour\Request;
+use WebTheory\Saveyour\Formatters\LazyFormatter;
 
-class FormFieldController extends BaseFormFieldController
+class FormFieldController extends InputPurifier implements FormFieldControllerInterface
 {
     /**
-     * Set the value of formField
-     *
-     * @param   mixed  $formField
-     *
-     * @return  self
+     * @var string
      */
-    public function setFormField(FormFieldInterface $formField)
-    {
-        $this->formField = $formField;
+    protected $requestVar;
 
-        return $this;
+    /**
+     * formField
+     *
+     * @var FormFieldInterface
+     */
+    protected $formField;
+
+    /**
+     * dataManager
+     *
+     * @var FieldDataManagerInterface
+     */
+    protected $dataManager;
+
+    /**
+     * @var DataFormatterInterface
+     */
+    protected $formatter;
+
+    /**
+     * Callback to escape value on display
+     *
+     * @var callable|null
+     */
+    protected $escaper = 'htmlspecialchars';
+
+    /**
+     * @var bool
+     */
+    protected $processingDisabled = false;
+
+    /**
+     * @var string[]
+     */
+    protected $mustAwait = [];
+
+    /**
+     *
+     */
+    public const LAZY_ESCAPE = [self::class, 'lazyEscaper'];
+
+    /**
+     *
+     */
+    public function __construct(
+        string $requestVar,
+        ?FormFieldInterface $formField = null,
+        ?FieldDataManagerInterface $dataManager = null,
+        ?DataFormatterInterface $formatter = null,
+        ?array $filters = null,
+        ?array $rules = null,
+        ?callable $escaper = null,
+        ?bool $processingDisabled = null,
+        ?array $await = null
+    ) {
+        $this->requestVar = $requestVar;
+
+        $formField && $this->formField = $formField;
+        $dataManager && $this->dataManager = $dataManager;
+        $processingDisabled && $this->processingDisabled = $processingDisabled;
+        $escaper && $this->escaper = $escaper;
+
+        $this->formatter = $formatter ?? new LazyFormatter();
+
+        $filters && $this->setFilters(...$filters);
+        $rules && $this->setRules($rules);
+        $await && $this->setMustAwait(...$await);
     }
 
     /**
-     * Set the value of dataManager
+     * Get the value of requestVar
      *
-     * @param FieldDataManagerInterface  $dataManager
+     * @return string
+     */
+    public function getRequestVar(): string
+    {
+        return $this->requestVar;
+    }
+
+    /**
+     * Get formField
+     *
+     * @return FormFieldInterface|null
+     */
+    public function getFormField(): ?FormFieldInterface
+    {
+        return $this->formField;
+    }
+
+    /**
+     * Get dataManager
+     *
+     * @return FieldDataManagerInterface|null
+     */
+    public function getDataManager(): ?FieldDataManagerInterface
+    {
+        return $this->dataManager;
+    }
+
+    /**
+     * Get the value of formatter
+     *
+     * @return DataFormatterInterface|null
+     */
+    public function getFormatter(): ?DataFormatterInterface
+    {
+        return $this->formatter;
+    }
+
+    /**
+     * Get callback to escape value on display
+     *
+     * @return callable|null
+     */
+    public function getEscaper(): ?callable
+    {
+        return $this->escaper;
+    }
+
+    /**
+     * Get hasDataManager
+     *
+     * @return bool
+     */
+    public function hasDataManager(): bool
+    {
+        return isset($this->dataManager);
+    }
+
+    /**
+     * Get the value of mustAwait
+     *
+     * @return string[]
+     */
+    public function mustAwait(): array
+    {
+        return $this->mustAwait;
+    }
+
+    /**
+     * Set the value of mustAwait
+     *
+     * @param string[] $mustAwait
      *
      * @return self
      */
-    public function setDataManager(FieldDataManagerInterface $dataManager)
+    protected function setMustAwait(string ...$fields)
     {
-        $this->dataManager = $dataManager;
+        $this->mustAwait = $fields;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of savingDisabled
+     *
+     * @return bool
+     */
+    public function isProcessingDisabled(): bool
+    {
+        return $this->processingDisabled;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function process(ServerRequestInterface $request): FieldOperationCacheInterface
+    {
+        $results = new FieldOperationCacheBuilder();
+        $this->processData($request, $results);
+        $results->withRuleViolations($this->getViolations());
+        $this->clearViolations();
+
+        return $results;
+    }
+
+    /**
+     *
+     */
+    protected function processData(ServerRequestInterface $request, FieldOperationCacheBuilder $results)
+    {
+        $filteredInput = $this->getSanitizedInput($request);
+
+        $results->withSanitizedInputValue($filteredInput);
+
+        if (false !== $filteredInput && $this->canProcessInput()) {
+
+            $updated = $this->processInput($request, $filteredInput);
+
+            $results->withUpdateAttempted(true)->withUpdateSuccessful($updated);
+        }
 
         return $this;
     }
@@ -39,38 +217,124 @@ class FormFieldController extends BaseFormFieldController
     /**
      *
      */
-    public function setTransformer(DataTransformerInterface $transformer)
+    protected function processInput(ServerRequestInterface $request, $input): bool
     {
-        $this->transformer = $transformer;
+        return $this->dataManager->handleSubmittedData($request, $this->formatInput($input));
+    }
+
+    /**
+     *
+     */
+    public function getPresetValue(ServerRequestInterface $request)
+    {
+        $data = $this->hasDataManager() ? $this->dataManager->getCurrentData($request) : '';
+
+        return $this->escapeValue($this->formatData($data));
+    }
+
+    /**
+     *
+     */
+    public function requestVarExists(ServerRequestInterface $request): bool
+    {
+        return Request::has($request, $this->requestVar);
+    }
+
+    /**
+     *
+     */
+    protected function getRawInput(ServerRequestInterface $request)
+    {
+        return Request::var($request, $this->requestVar);
+    }
+
+    /**
+     *
+     */
+    public function getSanitizedInput(ServerRequestInterface $request)
+    {
+        return $this->filterInput($this->getRawInput($request));
+    }
+
+    /**
+     *
+     */
+    public function canProcessInput(): bool
+    {
+        return $this->hasDataManager() && !$this->isProcessingDisabled();
+    }
+
+    /**
+     *
+     */
+    protected function formatData($data)
+    {
+        return $this->formatter->formatData($data);
+    }
+
+    /**
+     *
+     */
+    protected function formatInput($input)
+    {
+        return $this->formatter->formatInput($input);
+    }
+
+    /**
+     *
+     */
+    protected function escapeValue($value)
+    {
+        if (!isset($this->escaper)) {
+            return $value;
+        }
+
+        return !is_array($value)
+            ? call_user_func($this->escaper, $value)
+            : array_filter($value, $this->escaper);
+    }
+
+    /**
+     *
+     */
+    protected function setFormFieldName()
+    {
+        $this->formField->setName($this->getRequestVar());
 
         return $this;
     }
 
     /**
-     * Set callback to escape value on display
      *
-     * @param callable|null $escape Callback to escape value on display
-     *
-     * @return self
      */
-    public function setEscaper(?callable $escaper)
+    public function setFormFieldValue(ServerRequestInterface $request)
     {
-        $this->escaper = $escaper ?? static::LAZY_ESCAPE;
+        $this->formField->setValue($this->getPresetValue($request));
 
         return $this;
     }
 
     /**
-     * Set the value of processingDisabled
      *
-     * @param bool $processingDisabled
-     *
-     * @return self
      */
-    public function setProcessingDisabled(bool $processingDisabled)
+    public function render(ServerRequestInterface $request): ?FormFieldInterface
     {
-        $this->processingDisabled = $processingDisabled;
+        return $this->prepareFormFieldForRendering($request)->getFormField();
+    }
 
-        return $this;
+    /**
+     *
+     */
+    protected function prepareFormFieldForRendering(ServerRequestInterface $request)
+    {
+        return $this->setFormFieldName()->setFormFieldValue($request);
+    }
+
+    /**
+     *
+     */
+    protected static function lazyEscaper($value)
+    {
+        return $value;
     }
 }

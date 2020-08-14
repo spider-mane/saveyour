@@ -50,6 +50,6 @@ class Textarea extends AbstractStandardFormControl implements FormFieldInterface
      */
     protected function renderHtmlMarkup(): string
     {
-        return $this->tag('textarea', $this->value, $this->attributes);
+        return $this->tag('textarea', $this->attributes, $this->value);
     }
 }

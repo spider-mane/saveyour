@@ -3,7 +3,7 @@
 namespace WebTheory\Saveyour\Controllers;
 
 use Respect\Validation\Validatable;
-use WebTheory\Saveyour\Contracts\DataTransformerInterface;
+use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
@@ -30,9 +30,9 @@ class FormFieldControllerBuilder
     protected $dataManager;
 
     /**
-     * @var DataTransformerInterface
+     * @var DataFormatterInterface
      */
-    protected $transformer;
+    protected $formatter;
 
     /**
      * Callback to escape value on display
@@ -85,11 +85,11 @@ class FormFieldControllerBuilder
      */
     public function create(): FormFieldControllerInterface
     {
-        return new BaseFormFieldController(
+        return new FormFieldController(
             $this->requestVar,
             $this->formField,
             $this->dataManager,
-            $this->transformer,
+            $this->formatter,
             $this->filters,
             $this->rules,
             $this->escaper,
@@ -171,25 +171,25 @@ class FormFieldControllerBuilder
     }
 
     /**
-     * Get the value of transformer
+     * Get the value of formatter
      *
-     * @return DataTransformerInterface
+     * @return DataFormatterInterface
      */
-    public function getTransformer(): DataTransformerInterface
+    public function getFormatter(): DataFormatterInterface
     {
-        return $this->transformer;
+        return $this->formatter;
     }
 
     /**
-     * Set the value of transformer
+     * Set the value of formatter
      *
-     * @param DataTransformerInterface $transformer
+     * @param DataFormatterInterface $formatter
      *
      * @return self
      */
-    public function setTransformer(DataTransformerInterface $transformer)
+    public function setFormatter(DataFormatterInterface $formatter)
     {
-        $this->transformer = $transformer;
+        $this->formatter = $formatter;
 
         return $this;
     }
@@ -213,7 +213,7 @@ class FormFieldControllerBuilder
      */
     public function setEscaper(?callable $escaper)
     {
-        $this->escaper = $escaper ?? BaseFormFieldController::LAZY_ESCAPE;
+        $this->escaper = $escaper ?? FormFieldController::LAZY_ESCAPE;
 
         return $this;
     }

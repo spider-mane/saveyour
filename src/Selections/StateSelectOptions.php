@@ -183,7 +183,7 @@ class StateSelectOptions implements OptionsProviderInterface
         }
 
         if ($this->reSort) {
-            sort($options);
+            asort($options);
         }
 
         return $options;

@@ -14,6 +14,6 @@ class Datalist extends AbstractHtmlElement
      */
     protected function renderHtmlMarkup(): string
     {
-        return $this->tag('datalist', $this->renderSelection(), $this->attributes);
+        return $this->tag('datalist', $this->attributes, $this->renderSelection());
     }
 }

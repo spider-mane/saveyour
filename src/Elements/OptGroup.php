@@ -81,6 +81,6 @@ class OptGroup extends AbstractHtmlElement
      */
     protected function renderHtmlMarkup(): string
     {
-        return $this->tag('optgroup', $this->renderSelection(), $this->attributes);
+        return $this->tag('optgroup', $this->attributes, $this->renderSelection());
     }
 }

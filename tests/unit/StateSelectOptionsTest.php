@@ -3,8 +3,22 @@
 use PHPUnit\Framework\TestCase;
 use WebTheory\Saveyour\Selections\StateSelectOptions;
 
-class SelectOptionsTest extends TestCase
+class StateSelectOptionsTest extends TestCase
 {
+    /**
+     *
+     */
+    protected function getSelection($provider)
+    {
+        $value = [];
+
+        foreach ($provider->provideSelectionsData() as $selection) {
+            $value[$provider->defineSelectionValue($selection)] = $provider->defineSelectionText($selection);
+        }
+
+        return $value;
+    }
+
     /**
      * @test
      */
@@ -14,7 +28,7 @@ class SelectOptionsTest extends TestCase
 
         $options = new StateSelectOptions();
 
-        $this->assertEquals($states, $options->getSelection());
+        $this->assertEquals($states, $this->getSelection($options));
     }
 
     /**
@@ -30,7 +44,7 @@ class SelectOptionsTest extends TestCase
 
         $instance = new StateSelectOptions(['States', 'Territories', 'ArmedForces']);
 
-        $this->assertEquals($expected, $instance->getSelection());
+        $this->assertEquals($expected, $this->getSelection($instance));
     }
 
     /**
@@ -43,11 +57,11 @@ class SelectOptionsTest extends TestCase
             StateSelectOptions::TERRITORIES,
             StateSelectOptions::ARMED_FORCES
         );
-        sort($values);
+        asort($values);
 
-        $instance = new StateSelectOptions(['States', 'Territories', 'ArmedForces'], true);
+        $instance = new StateSelectOptions(['States', 'Territories', 'ArmedForces'], 'name', true);
 
-        $this->assertEquals($values, $instance->getSelection());
+        $this->assertEquals($values, $this->getSelection($instance));
     }
 
     /**
@@ -64,6 +78,6 @@ class SelectOptionsTest extends TestCase
 
         $instance = new StateSelectOptions(['States', 'InvalidTest', 'ArmedForces']);
 
-        $this->assertEquals($values, $instance->getSelection());
+        $this->assertEquals($values, $this->getSelection($instance));
     }
 }

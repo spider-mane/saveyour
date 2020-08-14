@@ -124,7 +124,7 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
      */
     protected function renderHtmlMarkup(): string
     {
-        return $this->tag('select', $this->renderOptions(), $this->attributes);
+        return $this->tag('select', $this->attributes, $this->renderOptions());
     }
 
     /**

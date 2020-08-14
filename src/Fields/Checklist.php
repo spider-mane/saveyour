@@ -92,9 +92,9 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
             ->setName($this->getSelectionItemsName())
             ->setValue($this->clearControl);
 
-        $list = $this->tag('ul', $this->renderSelection());
+        $list = $this->tag('ul', [], $this->renderSelection());
 
-        return $this->tag('div', $clearControl . $list, $this->attributes);
+        return $this->tag('div', $this->attributes, $clearControl . $list);
     }
 
     /**
@@ -124,7 +124,7 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
 
             $label = $this->createSelectionLabel($selection)->setFor($id);
 
-            $html .= $this->tag('li', $checkbox . $label);
+            $html .= $this->tag('li', [], $checkbox . $label);
         }
 
         return $html;
