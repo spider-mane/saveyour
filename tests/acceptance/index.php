@@ -99,6 +99,7 @@ echo $selection;
 
 $selection->setIsInline(false);
 $selection->setName('radio-group-test-2');
+// $selection->setDisabled(true);
 
 echo '<h3>Not Inline</h3>';
 echo $selection;
@@ -148,6 +149,7 @@ $checklist = new Checklist();
 $checklist->setSelectionProvider($provider);
 $checklist->setValue('test-1');
 $checklist->setName('checklist-test-1');
+// $checklist->setDisabled(true);
 
 echo $checklist->toHtml();
 echo '<hr>';

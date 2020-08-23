@@ -14,7 +14,7 @@ trait IsSelectionFieldTrait
     /**
      *
      */
-    protected function getSelectionData()
+    protected function getSelectionData(): array
     {
         return $this->selectionProvider->provideSelectionsData();
     }
@@ -22,7 +22,7 @@ trait IsSelectionFieldTrait
     /**
      *
      */
-    protected function defineSelectionValue($selection)
+    protected function defineSelectionValue($selection): string
     {
         return $this->selectionProvider->defineSelectionValue($selection);
     }

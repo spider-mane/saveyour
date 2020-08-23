@@ -78,7 +78,7 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
     /**
      *
      */
-    protected function getSelectionItemsName()
+    protected function getSelectionItemsName(): string
     {
         return $this->name . '[]';
     }
@@ -118,6 +118,7 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
 
             $checkbox = $this->createSelectionCheckbox($selection)
                 ->setChecked($this->isSelectionSelected($value))
+                ->setDisabled($this->disabled)
                 ->setName($this->getSelectionItemsName())
                 ->setValue($value)
                 ->setId($id);

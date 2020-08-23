@@ -81,6 +81,7 @@ class RadioGroup extends AbstractCompositeSelectionField implements FormFieldInt
 
             $radio = $this->createSelectionRadio($selection)
                 ->setChecked($this->isSelectionSelected($value))
+                ->setDisabled($this->disabled)
                 ->setName($this->name)
                 ->setValue($value)
                 ->setId($id);

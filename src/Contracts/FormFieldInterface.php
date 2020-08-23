@@ -65,7 +65,7 @@ interface FormFieldInterface
     public function isReadOnly(): bool;
 
     /**
-     * @param bool $readonly
+     * @param bool $required
      */
     public function setRequired(bool $required);
 

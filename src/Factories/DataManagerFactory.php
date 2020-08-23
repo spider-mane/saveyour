@@ -89,7 +89,7 @@ class DataManagerFactory implements FieldDataManagerResolverFactoryInterface
         } elseif ($class = $this->getClass($manager)) {
             $manager = $this->build($class, $args);
         } else {
-            throw new Exception("{$manager} is not a recognized field data manager");
+            throw new Exception("{$manager} is not a recognized data manager");
         }
 
         return $manager;

@@ -1,21 +1,32 @@
 {
-    "name": "@webtheory/saveyour",
-    "version": "0.1.0",
-    "description": "Form building and processing library",
-    "author": "Chris Williams",
-    "homepage": "https://github.com/spider-mane/saveyour",
-    "license": "MIT",
-
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/spider-mane/saveyour.git"
-    },
-
-    "bugs": {
-        "url": "https://github.com/spider-mane/saveyour/issues"
-    },
-
-    "devDependencies": {
-        "gulp": "^4.0"
-    }
+  "name": "@webtheory/saveyour",
+  "version": "0.1.0",
+  "description": "Form building and processing library",
+  "author": "Chris Williams",
+  "homepage": "https://github.com/spider-mane/saveyour",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spider-mane/saveyour.git"
+  },
+  "bugs": {
+    "url": "https://github.com/spider-mane/saveyour/issues"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --open --mode development",
+    "build": "webpack --mode production"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/register": "^7.10.5",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^4.2.1",
+    "html-webpack-plugin": "^4.3.0",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
 }

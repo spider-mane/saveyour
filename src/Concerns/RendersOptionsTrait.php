@@ -41,7 +41,7 @@ trait RendersOptionsTrait
     /**
      *
      */
-    protected function defineSelectionText($selection)
+    protected function defineSelectionText($selection): string
     {
         return $this->selectionProvider->defineSelectionText($selection);
     }

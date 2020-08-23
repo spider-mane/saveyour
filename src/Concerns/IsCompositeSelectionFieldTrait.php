@@ -16,7 +16,7 @@ trait IsCompositeSelectionFieldTrait
     /**
      *
      */
-    protected function defineSelectionLabel($selection)
+    protected function defineSelectionLabel($selection): string
     {
         return $this->selectionProvider->defineSelectionLabel($selection);
     }
@@ -24,7 +24,7 @@ trait IsCompositeSelectionFieldTrait
     /**
      *
      */
-    protected function defineSelectionId($selection)
+    protected function defineSelectionId($selection): string
     {
         return $this->selectionProvider->defineSelectionId($selection);
     }
