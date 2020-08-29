@@ -16,7 +16,8 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
     protected $value = [];
 
     /**
-     * Value for hidden input that facilitates unsetting all values on the server
+     * Value for hidden input that facilitates removing all values on the server
+     * if no values are selected in the form.
      *
      * @var string
      */
@@ -26,30 +27,6 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
      * @var ChecklistItemsProviderInterface
      */
     protected $selectionProvider;
-
-    /**
-     * Get value for hidden input that facilitates unsetting all values on the server
-     *
-     * @return string
-     */
-    public function getClearControl(): string
-    {
-        return $this->clearControl;
-    }
-
-    /**
-     * Set value for hidden input that facilitates unsetting all values on the server
-     *
-     * @param string
-     *
-     * @return self
-     */
-    public function setClearControl(string $clearControl)
-    {
-        $this->clearControl = $clearControl;
-
-        return $this;
-    }
 
     /**
      * Get the value of selectionProvider

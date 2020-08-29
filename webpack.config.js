@@ -1,8 +1,10 @@
 const path = require("path");
+const yargs = require("yargs").argv;
 
-const mode = "production";
+const mode = yargs.mode;
 
-const jsSrc = "./assets/src/index.js";
+const jsSrc = "./assets/src/js/index.js";
+const cssSrc = "./assets/src/scss/styles.scss";
 
 const distDir = path.join(__dirname, "assets", "dist");
 const testDir = path.join(__dirname, "tests", "acceptance", "assets");
@@ -26,7 +28,7 @@ module.exports = {
   resolve: {
     extensions: [".json", ".js", ".jsx"],
   },
-  devtool: "source-map",
+  devtool: mode === "development" ? "source-map" : false,
   devServer: {
     contentBase: path.join(__dirname, "/dist/"),
     inline: true,

@@ -39,7 +39,7 @@ echo '
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Saveyour Field Tests</title>
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-  <link rel="stylesheet" type="text/css" href="assets/trix.css">
+  <link rel="stylesheet" type="text/css" href="assets/lib/trix.css">
 </head>
 <body>';
 
@@ -188,6 +188,7 @@ $provider1 = new class implements OptionsProviderInterface
     }
 };
 
+// $select->setRequired(true);
 $select->setPlaceholder('Select Test');
 $select->setSelectionProvider($provider1);
 $select->setName('select-test-1');
@@ -254,6 +255,8 @@ $provider3 = new class implements OptionsProviderInterface
     }
 };
 
+$select = new Select;
+
 $optgroup1 = new OptGroup('Test Group 1');
 $optgroup2 = new OptGroup('Test Group 2');
 $optgroup3 = new OptGroup('Test Group 3');
@@ -262,10 +265,12 @@ $optgroup1->setSelectionProvider($provider1);
 $optgroup2->setSelectionProvider($provider2);
 $optgroup3->setSelectionProvider($provider3);
 
+// $select->setRequired(true);
+$select->setPlaceholder('Select Test 2');
 $select->setGroups($optgroup1, $optgroup2, $optgroup3);
 $select->setMultiple(true);
 $select->setName('select-test-2');
-$select->setValue(['test-C', 'test-F']);
+// $select->setValue(['test-C', 'test-F']);
 
 echo $select->toHtml();
 echo '<hr>';
@@ -338,9 +343,9 @@ echo $trix;
 echo new Submit;
 echo Html::close('form');
 echo '
-  <script type="text/javascript" src="assets/trix.js"></script>
+  <script type="text/javascript" src="assets/lib/trix.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-  <script src="assets/index.js" ver="' . time() . '"></script>
+  <script src="assets/saveyour.js" ver="' . time() . '"></script>
 </body>
 </html>';

@@ -25,4 +25,28 @@ trait MultiValueSelectionTrait
 
         return $this;
     }
+
+    /**
+     * Get value for hidden input that facilitates unsetting all values on the server
+     *
+     * @return string
+     */
+    public function getClearControl(): string
+    {
+        return $this->clearControl;
+    }
+
+    /**
+     * Set value for hidden input that facilitates unsetting all values on the server
+     *
+     * @param string
+     *
+     * @return self
+     */
+    public function setClearControl(string $clearControl)
+    {
+        $this->clearControl = $clearControl;
+
+        return $this;
+    }
 }

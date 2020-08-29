@@ -37,6 +37,14 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     protected $size;
 
     /**
+     * Value for hidden input that facilitates removing all values on the server
+     * if no values are selected in the form.
+     *
+     * @var string
+     */
+    protected $clearControl = '';
+
+    /**
      *
      */
     public function getGroups()
@@ -114,9 +122,17 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
-            ->addAttribute('name', $this->name . ($this->multiple ? '[]' : ''))
+            ->addAttribute('name', $this->resolveNameAttribute())
             ->addAttribute('multiple', $this->multiple)
             ->addAttribute('size', $this->size);
+    }
+
+    /**
+     *
+     */
+    protected function resolveNameAttribute()
+    {
+        return $this->name . ($this->multiple ? '[]' : '');
     }
 
     /**
@@ -133,6 +149,12 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     protected function renderOptions()
     {
         $html = '';
+
+        if ($this->multiple) {
+            $html .= (new Option('', $this->clearControl))
+                ->setSelected(true)
+                ->addAttribute('hidden', true);
+        }
 
         if (!empty($this->placeholder)) {
             $html .= $this->createPlaceholder();

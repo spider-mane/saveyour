@@ -26,6 +26,11 @@ abstract class AbstractFormField extends AbstractHtmlElement implements FormFiel
     /**
      * @var string
      */
+    protected $form;
+
+    /**
+     * @var string
+     */
     protected $placeholder = '';
 
     /**
