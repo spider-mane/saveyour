@@ -4,7 +4,7 @@ namespace WebTheory\Saveyour\Formatters;
 
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 
-class IntToStringFormatter implements DataFormatterInterface
+class IntToStringDataFormatter implements DataFormatterInterface
 {
     /**
      *

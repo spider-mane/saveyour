@@ -1,13 +1,13 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use WebTheory\Saveyour\Formatters\DelimitedArrayListFormatter;
+use WebTheory\Saveyour\Formatters\ArrayToStringDataFormatter;
 
 class DelimitedArrayListFormatterTest extends TestCase
 {
     public function testProperlyFormats()
     {
-        $formatter = new DelimitedArrayListFormatter;
+        $formatter = new ArrayToStringDataFormatter;
 
         $expected = 'foo, bar';
 
@@ -18,7 +18,7 @@ class DelimitedArrayListFormatterTest extends TestCase
 
     public function testProperlyReverseFormats()
     {
-        $formatter = new DelimitedArrayListFormatter;
+        $formatter = new ArrayToStringDataFormatter;
 
         $expected = ['foo', 'bar'];
 

@@ -2,8 +2,8 @@
 
 use PHPUnit\Framework\TestCase;
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
-use WebTheory\Saveyour\Formatters\CombinationFormatter;
-use WebTheory\Saveyour\Formatters\DelimitedArrayListFormatter;
+use WebTheory\Saveyour\Formatters\CombinationDataFormatter;
+use WebTheory\Saveyour\Formatters\ArrayToStringDataFormatter;
 use WebTheory\Saveyour\Formatters\LazyFormatter;
 
 class CombinationFormatterTest extends TestCase
@@ -41,10 +41,10 @@ class CombinationFormatterTest extends TestCase
     {
         $formatters = [
             new LazyFormatter,
-            new DelimitedArrayListFormatter
+            new ArrayToStringDataFormatter
         ];
 
-        $combination = new CombinationFormatter(...$formatters);
+        $combination = new CombinationDataFormatter(...$formatters);
 
         $this->assertEquals($formatters, $combination->getFormatters());
     }
@@ -57,9 +57,9 @@ class CombinationFormatterTest extends TestCase
         $test = 'foobar';
         $expected = 'foobar, foobar, foobar, foobar, foobar';
 
-        $formatter = new CombinationFormatter(
+        $formatter = new CombinationDataFormatter(
             $this->getDummyFormatter(count(explode(', ', $expected))),
-            new DelimitedArrayListFormatter
+            new ArrayToStringDataFormatter
         );
 
         $this->assertEquals($expected, $formatter->formatData($test));
@@ -73,9 +73,9 @@ class CombinationFormatterTest extends TestCase
         $test = 'foobar, foobar, foobar, foobar, foobar';
         $expected = 'foobar';
 
-        $formatter = new CombinationFormatter(
+        $formatter = new CombinationDataFormatter(
             $this->getDummyFormatter(count(explode(', ', $test))),
-            new DelimitedArrayListFormatter
+            new ArrayToStringDataFormatter
         );
 
         $this->assertEquals($expected, $formatter->formatInput($test));
