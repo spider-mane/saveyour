@@ -37,14 +37,6 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     protected $size;
 
     /**
-     * Value for hidden input that facilitates removing all values on the server
-     * if no values are selected in the form.
-     *
-     * @var string
-     */
-    protected $clearControl = '';
-
-    /**
      *
      */
     public function getGroups()
@@ -151,7 +143,7 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
         $html = '';
 
         if ($this->multiple) {
-            $html .= (new Option('', $this->clearControl))
+            $html .= (new Option('', ''))
                 ->setSelected(true)
                 ->addAttribute('hidden', true);
         }

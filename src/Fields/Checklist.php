@@ -16,14 +16,6 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
     protected $value = [];
 
     /**
-     * Value for hidden input that facilitates removing all values on the server
-     * if no values are selected in the form.
-     *
-     * @var string
-     */
-    protected $clearControl = '0';
-
-    /**
      * @var ChecklistItemsProviderInterface
      */
     protected $selectionProvider;
@@ -67,7 +59,7 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
     {
         $clearControl = $this->createClearControlField()
             ->setName($this->getSelectionItemsName())
-            ->setValue($this->clearControl);
+            ->setValue('');
 
         $list = $this->tag('ul', [], $this->renderSelection());
 
