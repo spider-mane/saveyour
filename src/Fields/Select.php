@@ -132,7 +132,17 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
      */
     protected function renderHtmlMarkup(): string
     {
-        return $this->tag('select', $this->attributes, $this->renderOptions());
+        $html = '';
+
+        if ($this->multiple) {
+            $html .= $this->createClearControlField()
+                ->setName($this->resolveNameAttribute())
+                ->setValue('');
+        }
+
+        $html .= $this->tag('select', $this->attributes, $this->renderOptions());
+
+        return $html;
     }
 
     /**
@@ -141,12 +151,6 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     protected function renderOptions()
     {
         $html = '';
-
-        if ($this->multiple) {
-            $html .= (new Option('', ''))
-                ->setSelected(true)
-                ->addAttribute('hidden', true);
-        }
 
         if (!empty($this->placeholder)) {
             $html .= $this->createPlaceholder();

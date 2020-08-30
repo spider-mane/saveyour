@@ -8,9 +8,9 @@ use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Formatters\LazyDataFormatter;
 use WebTheory\Saveyour\InputPurifier;
 use WebTheory\Saveyour\Request;
-use WebTheory\Saveyour\Formatters\LazyFormatter;
 
 class FormFieldController extends InputPurifier implements FormFieldControllerInterface
 {
@@ -36,7 +36,7 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
     /**
      * @var DataFormatterInterface
      */
-    protected $formatter;
+    protected $dataFormatter;
 
     /**
      * Callback to escape value on display
@@ -67,7 +67,7 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
         string $requestVar,
         ?FormFieldInterface $formField = null,
         ?FieldDataManagerInterface $dataManager = null,
-        ?DataFormatterInterface $formatter = null,
+        ?DataFormatterInterface $dataFormatter = null,
         ?array $filters = null,
         ?array $rules = null,
         ?callable $escaper = null,
@@ -81,7 +81,7 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
         $processingDisabled && $this->processingDisabled = $processingDisabled;
         $escaper && $this->escaper = $escaper;
 
-        $this->formatter = $formatter ?? new LazyFormatter();
+        $this->dataFormatter = $dataFormatter ?? new LazyDataFormatter();
 
         $filters && $this->setFilters(...$filters);
         $rules && $this->setRules($rules);
@@ -125,7 +125,7 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
      */
     public function getFormatter(): ?DataFormatterInterface
     {
-        return $this->formatter;
+        return $this->dataFormatter;
     }
 
     /**
@@ -269,7 +269,7 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
      */
     protected function formatData($data)
     {
-        return $this->formatter->formatData($data);
+        return $this->dataFormatter->formatData($data);
     }
 
     /**
@@ -277,7 +277,7 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
      */
     protected function formatInput($input)
     {
-        return $this->formatter->formatInput($input);
+        return $this->dataFormatter->formatInput($input);
     }
 
     /**

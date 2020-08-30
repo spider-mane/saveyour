@@ -281,41 +281,45 @@ echo '<hr>';
 echo Html::h2('Select2 Test');
 $states = new StateSelectOptions();
 
+#test1
 $select2 = new Select2;
 $select2->setName('select2-test-1');
 $select2->setSelectionProvider($states);
-$select2->setPlaceholder('Select2 Test Placeholder');
+$select2->setPlaceholder('Select2 Test 1 Placeholder');
 
 echo $select2->toHtml();
 echo str_repeat('<br>', 2);
 
+#test2
 $select2 = new Select2([
     'allowClear' => true
 ]);
-$select2->setName('select2-test-4');
+$select2->setName('select2-test-2');
 $select2->setValue('MA');
 $select2->setSelectionProvider($states);
-$select2->setPlaceholder('Select2 Test 4 Placeholder');
+$select2->setPlaceholder('Select2 Test 2 Placeholder');
 $select2->setWidth('250px');
 $select2->setTheme('classic');
 
 echo $select2->toHtml();
 echo str_repeat('<br>', 2);
 
+#test3
 $select2 = new Select2;
-$select2->setName('select2-test-2');
+$select2->setName('select2-test-3');
 $select2->setSelectionProvider($provider2);
-$select2->setPlaceholder('Select2 Test 2 Placeholder');
+$select2->setPlaceholder('Select2 Test 3 Placeholder');
 $select2->setWidth('300px');
 $select2->setMultiple(true);
 
 echo $select2->toHtml();
 echo str_repeat('<br>', 2);
 
+#test4
 $select2 = new Select2;
-$select2->setName('select2-test-3');
+$select2->setName('select2-test-4');
 $select2->setValue(['test-B', 'test-D']);
-$select2->setPlaceholder('Select2 Test 3 Placeholder');
+$select2->setPlaceholder('Select2 Test 4 Placeholder');
 $select2->setWidth('300px');
 $select2->setMultiple(true);
 $select2->setSize(5);

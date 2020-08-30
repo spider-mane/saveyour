@@ -2,11 +2,11 @@
 
 use PHPUnit\Framework\TestCase;
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
+use WebTheory\Saveyour\Formatters\ArrayToListDataFormatter;
 use WebTheory\Saveyour\Formatters\CombinationDataFormatter;
-use WebTheory\Saveyour\Formatters\ArrayToStringDataFormatter;
-use WebTheory\Saveyour\Formatters\LazyFormatter;
+use WebTheory\Saveyour\Formatters\LazyDataFormatter;
 
-class CombinationFormatterTest extends TestCase
+class CombinationDataFormatterTest extends TestCase
 {
     /**
      *
@@ -40,8 +40,8 @@ class CombinationFormatterTest extends TestCase
     public function can_be_instantiated_with_DataFormatters()
     {
         $formatters = [
-            new LazyFormatter,
-            new ArrayToStringDataFormatter
+            new LazyDataFormatter,
+            new ArrayToListDataFormatter
         ];
 
         $combination = new CombinationDataFormatter(...$formatters);
@@ -59,7 +59,7 @@ class CombinationFormatterTest extends TestCase
 
         $formatter = new CombinationDataFormatter(
             $this->getDummyFormatter(count(explode(', ', $expected))),
-            new ArrayToStringDataFormatter
+            new ArrayToListDataFormatter
         );
 
         $this->assertEquals($expected, $formatter->formatData($test));
@@ -75,7 +75,7 @@ class CombinationFormatterTest extends TestCase
 
         $formatter = new CombinationDataFormatter(
             $this->getDummyFormatter(count(explode(', ', $test))),
-            new ArrayToStringDataFormatter
+            new ArrayToListDataFormatter
         );
 
         $this->assertEquals($expected, $formatter->formatInput($test));

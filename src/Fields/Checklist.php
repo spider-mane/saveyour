@@ -69,14 +69,6 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
     /**
      *
      */
-    protected function createClearControlField(): Hidden
-    {
-        return new Hidden();
-    }
-
-    /**
-     *
-     */
     protected function renderSelection(): string
     {
         $html = '';

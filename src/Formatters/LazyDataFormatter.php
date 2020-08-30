@@ -4,7 +4,7 @@ namespace WebTheory\Saveyour\Formatters;
 
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 
-class LazyFormatter implements DataFormatterInterface
+class LazyDataFormatter implements DataFormatterInterface
 {
     /**
      *

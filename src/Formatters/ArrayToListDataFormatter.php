@@ -4,7 +4,7 @@ namespace WebTheory\Saveyour\Formatters;
 
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 
-class ArrayToStringDataFormatter implements DataFormatterInterface
+class ArrayToListDataFormatter implements DataFormatterInterface
 {
     /**
      *

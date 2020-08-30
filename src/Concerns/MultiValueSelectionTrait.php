@@ -2,6 +2,8 @@
 
 namespace WebTheory\Saveyour\Concerns;
 
+use WebTheory\Saveyour\Fields\Hidden;
+
 trait MultiValueSelectionTrait
 {
     /**
@@ -24,5 +26,13 @@ trait MultiValueSelectionTrait
         $this->value = (array) $value;
 
         return $this;
+    }
+
+    /**
+     *
+     */
+    protected function createClearControlField(): Hidden
+    {
+        return new Hidden();
     }
 }

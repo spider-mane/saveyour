@@ -16,7 +16,7 @@ use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessingCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 use WebTheory\Saveyour\Controllers\FormDataProcessingCache;
-use WebTheory\Saveyour\Formatters\LazyFormatter;
+use WebTheory\Saveyour\Formatters\LazyDataFormatter;
 use WebTheory\Saveyour\InputPurifier;
 
 class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements FormDataProcessorInterface
@@ -73,11 +73,11 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
     ) {
         $this->provider = $provider;
         $this->geoDataManager = $geoDataManager;
-        $this->geoDataFormatter = $geoDataFormatter ?? new LazyFormatter();
+        $this->geoDataFormatter = $geoDataFormatter ?? new LazyDataFormatter();
 
         if ($addressDataManager) {
             $this->addressDataManager = $addressDataManager;
-            $this->addressDataFormatter = $addressDataFormatter ?? new LazyFormatter();
+            $this->addressDataFormatter = $addressDataFormatter ?? new LazyDataFormatter();
         }
     }
 
