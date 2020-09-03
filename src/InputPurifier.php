@@ -10,9 +10,9 @@ class InputPurifier implements InputPurifierInterface
     /**
      * Validation rules
      *
-     * @var Validatable[]
+     * @var Validatable
      */
-    protected $rules = [];
+    protected $rules;
 
     /**
      * Callback function(s) to sanitize incoming data
@@ -213,6 +213,7 @@ class InputPurifier implements InputPurifierInterface
 
         return true;
     }
+
 
     /**
      *

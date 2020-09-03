@@ -1,5 +1,7 @@
 <?php
 
+use Respect\Validation\Exceptions\NestedValidationException;
+use Respect\Validation\Validator as v;
 use WebTheory\Html\Html;
 use WebTheory\Saveyour\Contracts\ChecklistItemsProviderInterface;
 use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
@@ -46,6 +48,28 @@ echo '
 echo "<h1>Visual Field Tests</h1><hr>";
 echo Html::open('form', ['method' => 'post']);
 echo new Submit;
+
+echo '<hr>';
+
+
+$thing1 = v::intType()->setName('ass')->setTemplate('{{thing}} is not a valid number');
+$thing2 = v::domain(false)->setName('fuck')->setTemplate('please provide a valid thing which is not {{thing}}');
+
+$thing = v::intType()->setName('Ass')->setTemplate('{{name}} must be a Valid Number, {{input}} is non such thing!');
+$thing = v::intType()->setTemplate('{{name}} must be a Valid Number, {{input}} is non such thing!');
+// $thing = v::intType()->setName('Ass');
+
+
+// $thing = v::allOf($thing1, $thing2);
+
+try {
+    $thing->assert('shit');
+} catch (NestedValidationException $e) {
+    $templates = ['ass' => '{{ass}} ain\'t no valid number'];
+
+    echo implode('\n', $e->getMessages());
+    exit(var_dump($e->getMessages()));
+}
 
 ################################################################################
 # Radio Selection

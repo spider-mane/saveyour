@@ -39,7 +39,7 @@ class FormFieldControllerBuilder
      *
      * @var callable
      */
-    protected $escaper = 'htmlspecialchars';
+    protected $escaper;
 
     /**
      * @var bool
@@ -92,9 +92,9 @@ class FormFieldControllerBuilder
             $this->formatter,
             $this->filters,
             $this->rules,
-            $this->escaper,
             $this->processingDisabled,
-            $this->mustAwait
+            $this->mustAwait,
+            $this->escaper
         );
     }
 
@@ -211,9 +211,9 @@ class FormFieldControllerBuilder
      *
      * @return self
      */
-    public function setEscaper(?callable $escaper)
+    public function setEscaper(callable $escaper)
     {
-        $this->escaper = $escaper ?? FormFieldController::LAZY_ESCAPE;
+        $this->escaper = $escaper;
 
         return $this;
     }

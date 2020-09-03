@@ -43,7 +43,7 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
      *
      * @var callable|null
      */
-    protected $escaper = 'htmlspecialchars';
+    protected $escaper;
 
     /**
      * @var bool
@@ -58,11 +58,6 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
     /**
      *
      */
-    public const LAZY_ESCAPE = [self::class, 'lazyEscaper'];
-
-    /**
-     *
-     */
     public function __construct(
         string $requestVar,
         ?FormFieldInterface $formField = null,
@@ -70,9 +65,9 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
         ?DataFormatterInterface $dataFormatter = null,
         ?array $filters = null,
         ?array $rules = null,
-        ?callable $escaper = null,
         ?bool $processingDisabled = null,
-        ?array $await = null
+        ?array $await = null,
+        ?callable $escaper = null
     ) {
         $this->requestVar = $requestVar;
 
@@ -123,7 +118,7 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
      *
      * @return DataFormatterInterface|null
      */
-    public function getFormatter(): ?DataFormatterInterface
+    public function getDataFormatter(): ?DataFormatterInterface
     {
         return $this->dataFormatter;
     }
@@ -235,7 +230,7 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
     /**
      *
      */
-    public function requestVarExists(ServerRequestInterface $request): bool
+    public function requestVarPresent(ServerRequestInterface $request): bool
     {
         return Request::has($request, $this->requestVar);
     }
@@ -328,13 +323,5 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
     protected function prepareFormFieldForRendering(ServerRequestInterface $request)
     {
         return $this->setFormFieldName()->setFormFieldValue($request);
-    }
-
-    /**
-     *
-     */
-    protected static function lazyEscaper($value)
-    {
-        return $value;
     }
 }

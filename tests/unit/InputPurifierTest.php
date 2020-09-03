@@ -69,30 +69,14 @@ class InputPurifierTest extends TestCase
         $this->assertEquals($expected, $purifier->filterInput($unfiltered));
     }
 
-    public function testCanGetAndSetValidators()
+    public function testCanGetAndSetValidator()
     {
         $purifier = new InputPurifier;
-
-        $rule = 'valid_phone';
-        $validator = Validator::phone();
-        $rules = [$rule => $validator];
-
-        $purifier->setRules($rules);
-
-        $this->assertCount(1, $purifier->getRules());
-        $this->assertEquals($rules, $purifier->getRules());
-    }
-
-    public function testCanAddAndGetSingleValidator()
-    {
-        $purifier = new InputPurifier;
-
-        $rule = 'valid_phone';
         $validator = Validator::phone();
 
-        $purifier->addRule($rule, $validator);
+        $purifier->setValidator($validator);
 
-        $this->assertEquals($validator, $purifier->getRule($rule));
+        $this->assertEquals($validator, $purifier->getValidator());
     }
 
     public function testValidatorsAreProperInterface()
@@ -101,17 +85,20 @@ class InputPurifierTest extends TestCase
 
         $purifier = new InputPurifier;
 
-        $purifier->setRules([
-            'pass1' => Validator::phone(),
-            'pass2' => Validator::email(),
-            'fail1' => 'foobar',
-            'fail2' => new DateTime,
-            'fail3' => 45645656,
-            'fail4' => 1.5,
-            'fail5' => false,
-        ]);
+        $purifier->setValidator('foobar');
+        $this->assertCount(0, $purifier->getRules());
 
-        $this->assertCount(2, $purifier->getRules());
+        $purifier->setValidator(new DateTime);
+        $this->assertCount(0, $purifier->getRules());
+
+        $purifier->setValidator(1654984);
+        $this->assertCount(0, $purifier->getRules());
+
+        $purifier->setValidator(15.54946);
+        $this->assertCount(0, $purifier->getRules());
+
+        $purifier->setValidator(false);
+        $this->assertCount(0, $purifier->getRules());
     }
 
     public function testProperlyValidatesInput()
@@ -121,93 +108,90 @@ class InputPurifierTest extends TestCase
         $pass = '202-527-7854';
         $fail = 'foobar';
 
-        $purifier->addRule('valid_phone', Validator::phone());
+        $purifier->setValidator(Validator::phone());
 
         $this->assertEquals($pass, $purifier->filterInput($pass));
         $this->assertFalse($purifier->filterInput($fail));
     }
 
-    public function testCanSetAndGetAlerts()
+    public function testCollectsAlertsOnValidationFailure()
     {
         $purifier = new InputPurifier;
+        $template = '{{input}} is an invalid {{name}}';
+        $input = 'foobar';
+
+        $v1 = Validator::phone()->setName('Phone Number')->setTemplate($template);
+        $v2 = Validator::email()->setName('Email Address')->setTemplate($template);
+
+        $validator = Validator::allOf($v1, $v2);
 
         $alerts = [
-            'test1' => 'foo',
-            'test2' => 'bar',
+            'Phone Number' => "{$input} is an invalid {$v1->getName()}",
+            'Email Address' => "{$input} is an invalid {$v2->getName()}",
         ];
 
-        $purifier->setAlerts($alerts);
+        $purifier->setValidator($validator);
+
+        $purifier->filterInput($input);
 
         $this->assertEquals($alerts, $purifier->getAlerts());
         $this->assertCount(count($alerts), $purifier->getAlerts());
     }
 
-    public function testCanAddAndGetSingleAlert()
-    {
-        $purifier = new InputPurifier;
+    // public function testCanGetAndSetAlertsViaRuleSetterMethod()
+    // {
+    //     $purifier = new InputPurifier;
 
-        $rule = 'foo';
-        $alert = 'bar';
+    //     $alert1 = 'foo';
+    //     $alert2 = 'bar';
 
-        $purifier->addAlert($rule, $alert);
+    //     $rules = [
+    //         'test1' => [
+    //             'validator' => $this->createMock(Validatable::class),
+    //             'alert' => $alert1
+    //         ],
+    //         'test2' => [
+    //             'validator' => $this->createMock(Validatable::class),
+    //             'alert' => $alert2
+    //         ]
+    //     ];
 
-        $this->assertEquals($alert, $purifier->getAlert($rule));
-    }
+    //     $purifier->setRules($rules);
 
-    public function testCanGetAndSetAlertsViaRuleSetterMethod()
-    {
-        $purifier = new InputPurifier;
+    //     $this->assertCount(count($rules), $purifier->getAlerts());
+    //     $this->assertEquals($alert1, $purifier->getAlert('test1'));
+    //     $this->assertEquals($alert2, $purifier->getAlert('test2'));
+    // }
 
-        $alert1 = 'foo';
-        $alert2 = 'bar';
+    // public function testCanAddAlertViaRuleAdderMethod()
+    // {
+    //     $purifier = new InputPurifier;
 
-        $rules = [
-            'test1' => [
-                'validator' => $this->createMock(Validatable::class),
-                'alert' => $alert1
-            ],
-            'test2' => [
-                'validator' => $this->createMock(Validatable::class),
-                'alert' => $alert2
-            ]
-        ];
+    //     $rule = 'foo';
+    //     $alert = 'bar';
 
-        $purifier->setRules($rules);
+    //     $purifier->addRule($rule, $this->createMock(Validatable::class), $alert);
 
-        $this->assertCount(count($rules), $purifier->getAlerts());
-        $this->assertEquals($alert1, $purifier->getAlert('test1'));
-        $this->assertEquals($alert2, $purifier->getAlert('test2'));
-    }
+    //     $this->assertEquals($alert, $purifier->getAlert($rule));
+    // }
 
-    public function testCanAddAlertViaRuleAdderMethod()
-    {
-        $purifier = new InputPurifier;
+    // public function testStoresAndProvidesRuleViolations()
+    // {
+    //     $purifier = new InputPurifier;
 
-        $rule = 'foo';
-        $alert = 'bar';
+    //     $test1 = 'test@test.com';
 
-        $purifier->addRule($rule, $this->createMock(Validatable::class), $alert);
+    //     $rules = [
+    //         'pass' => Validator::email(),
+    //         'fail' => Validator::phone(),
+    //     ];
 
-        $this->assertEquals($alert, $purifier->getAlert($rule));
-    }
+    //     $purifier->setRules($rules);
+    //     $purifier->filterInput($test1);
 
-    public function testStoresAndProvidesRuleViolations()
-    {
-        $purifier = new InputPurifier;
-
-        $test1 = 'test@test.com';
-
-        $rules = [
-            'pass' => Validator::email(),
-            'fail' => Validator::phone(),
-        ];
-
-        $purifier->setRules($rules);
-        $purifier->filterInput($test1);
-
-        $this->assertCount(1, $purifier->getViolations());
-        $this->assertArrayHasKey('fail', $purifier->getViolations());
-    }
+    //     $this->assertCount(1, $purifier->getViolations());
+    //     $this->assertArrayHasKey('fail', $purifier->getViolations());
+    // }
 
     public function testCanClearRuleViolations()
     {
