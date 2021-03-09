@@ -95,19 +95,11 @@ abstract class AbstractField implements FormFieldControllerInterface
     }
 
     /**
-     * @return Validatable[]
-     */
-    public function getRules(): array
-    {
-        return $this->__coreController->getRules();
-    }
-
-    /**
      * @return Validatable
      */
-    public function getRule(string $rule): Validatable
+    public function getValidator(): Validatable
     {
-        return $this->__coreController->getRule($rule);
+        return $this->__coreController->getValidator();
     }
 
     /**
@@ -129,9 +121,9 @@ abstract class AbstractField implements FormFieldControllerInterface
     /**
      * @return array
      */
-    public function getViolations(): array
+    public function getAlerts(): array
     {
-        return $this->__coreController->getViolations();
+        return $this->__coreController->getAlerts();
     }
 
     /**
@@ -143,12 +135,12 @@ abstract class AbstractField implements FormFieldControllerInterface
             $this->defineRequestVar(),
             $this->defineFormField(),
             $this->defineDataManager(),
+            $this->defineValidator(),
             $this->defineDataFormatter(),
             $this->defineFilters(),
-            $this->defineRules(),
-            $this->defineEscaper(),
             $this->defineProcessingDisabled(),
-            $this->defineMustAwait()
+            $this->defineMustAwait(),
+            $this->defineEscaper()
         );
     }
 
@@ -195,7 +187,7 @@ abstract class AbstractField implements FormFieldControllerInterface
     /**
      *
      */
-    protected function defineRules(): ?array
+    protected function defineValidator(): ?array
     {
         return null;
     }

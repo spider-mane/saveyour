@@ -17,6 +17,7 @@
   ],
   "require": {
     "php": ">=7.2",
+    "myclabs/php-enum": "^1.7",
     "psr/http-message": "^1.0",
     "respect/validation": "^2.0",
     "webtheory/guctilitybelt": "^0.2.0",
@@ -28,6 +29,7 @@
     "filp/whoops": "^2.5",
     "friendsofphp/php-cs-fixer": "^2.15",
     "geocoder-php/google-maps-provider": "^4.4",
+    "giggsey/libphonenumber-for-php": "^8.12",
     "guzzlehttp/guzzle": "~6.0",
     "guzzlehttp/psr7": "^1.6",
     "hubspot/hubspot-php": "^1.2",
@@ -60,7 +62,8 @@
   "suggest": {
     "frontpack/composer-assets-plugin": "Copy assets from vendor directory to pubic web folder",
     "swiftmailer/swiftmailer": "Send email based on form submission values",
-    "commerceguys/addressing": "Required to use FormAddressGeocoder form processor"
+    "commerceguys/addressing": "Required to use FormAddressGeocoder form processor",
+    "giggsey/libphonenumber-for-php": "Required to use PhoneNumberDataFormatter"
   },
   "scripts": {
     "test": "vendor/bin/phpunit",

@@ -9,7 +9,7 @@ use WebTheory\Saveyour\Factories\FormFieldFactory;
 use WebTheory\Saveyour\Fields\Select;
 use WebTheory\Saveyour\Managers\FieldDataManagerCallback;
 
-class FieldFactoryTest extends TestCase
+class FieldFactoryTest
 {
     /**
      *
@@ -21,117 +21,117 @@ class FieldFactoryTest extends TestCase
         };
     }
 
-    /**
-     *
-     */
-    public function testCreates_FormFieldController()
-    {
-        $factory = new FieldFactory(
-            new FormFieldFactory(),
-            new DataManagerFactory()
-        );
+    // /**
+    //  *
+    //  */
+    // public function testCreates_FormFieldController()
+    // {
+    //     $factory = new FieldFactory(
+    //         new FormFieldFactory(),
+    //         new DataManagerFactory()
+    //     );
 
-        $args = [
-            'request_var' => 'foobar',
+    //     $args = [
+    //         'request_var' => 'foobar',
 
-            'type' => [
-                '@create' => 'select',
-                'id' => 'foo',
-                'name' => 'bar',
-                'classlist' => ['foo', 'bar', 'baz'],
-            ],
+    //         'type' => [
+    //             '@create' => 'select',
+    //             'id' => 'foo',
+    //             'name' => 'bar',
+    //             'classlist' => ['foo', 'bar', 'baz'],
+    //         ],
 
-            'data' => [
-                '@create' => 'callback',
-                'get_data_callback' => $this->dummyCallback(),
-                'handle_data_callback' => $this->dummyCallback(),
-            ],
+    //         'data' => [
+    //             '@create' => 'callback',
+    //             'get_data_callback' => $this->dummyCallback(),
+    //             'handle_data_callback' => $this->dummyCallback(),
+    //         ],
 
-            'rules' => [
-                'phone' => Validator::phone(),
-                'email' => [
-                    'validator' => Validator::email(),
-                    'alert' => 'enter foobar'
-                ]
-            ]
-        ];
+    //         'rules' => [
+    //             'phone' => Validator::phone(),
+    //             'email' => [
+    //                 'validator' => Validator::email(),
+    //                 'alert' => 'enter foobar'
+    //             ]
+    //         ]
+    //     ];
 
-        $field = $args['type'];
-        $field = (new Select)
-            ->setName($field['name'])
-            ->setId($field['id'])
-            ->setClasslist($field['classlist']);
+    //     $field = $args['type'];
+    //     $field = (new Select)
+    //         ->setName($field['name'])
+    //         ->setId($field['id'])
+    //         ->setClasslist($field['classlist']);
 
-        $manager = $args['data'];
-        $manager = new FieldDataManagerCallback(
-            $manager['get_data_callback'],
-            $manager['handle_data_callback']
-        );
+    //     $manager = $args['data'];
+    //     $manager = new FieldDataManagerCallback(
+    //         $manager['get_data_callback'],
+    //         $manager['handle_data_callback']
+    //     );
 
-        $expected = new FormFieldController($args['request_var'], $field, $manager);
-        $expected->setRules($args['rules']);
+    //     $expected = new FormFieldController($args['request_var'], $field, $manager);
+    //     $expected->setRules($args['rules']);
 
-        $test = $factory->create($args);
+    //     $test = $factory->create($args);
 
-        $this->assertEquals($expected, $test);
-    }
+    //     $this->assertEquals($expected, $test);
+    // }
 
-    /**
-     *
-     */
-    public function testCreatesFormFieldWithMagicMethod()
-    {
-        $factory = new FieldFactory(
-            new FormFieldFactory(),
-            new DataManagerFactory()
-        );
+    // /**
+    //  *
+    //  */
+    // public function testCreatesFormFieldWithMagicMethod()
+    // {
+    //     $factory = new FieldFactory(
+    //         new FormFieldFactory(),
+    //         new DataManagerFactory()
+    //     );
 
-        $args = [
-            'request_var' => 'foobar',
+    //     $args = [
+    //         'request_var' => 'foobar',
 
-            'type' => [
-                '@create' => 'select',
-                'id' => 'foo',
-                'name' => 'bar',
-                'classlist' => ['foo', 'bar', 'baz'],
-            ],
+    //         'type' => [
+    //             '@create' => 'select',
+    //             'id' => 'foo',
+    //             'name' => 'bar',
+    //             'classlist' => ['foo', 'bar', 'baz'],
+    //         ],
 
-            'data' => [
-                '@create' => 'callback',
-                'get_data_callback' => function () {
-                },
-                'handle_data_callback' => function () {
-                },
-            ],
+    //         'data' => [
+    //             '@create' => 'callback',
+    //             'get_data_callback' => function () {
+    //             },
+    //             'handle_data_callback' => function () {
+    //             },
+    //         ],
 
-            'rules' => [
-                'phone' => Validator::phone(),
-                'email' => [
-                    'validator' => Validator::email(),
-                    'alert' => 'enter foobar'
-                ]
-            ]
-        ];
+    //         'rules' => [
+    //             'phone' => Validator::phone(),
+    //             'email' => [
+    //                 'validator' => Validator::email(),
+    //                 'alert' => 'enter foobar'
+    //             ]
+    //         ]
+    //     ];
 
-        $field = $args['type'];
-        $field = (new Select)
-            ->setName($field['name'])
-            ->setId($field['id'])
-            ->setClasslist($field['classlist']);
+    //     $field = $args['type'];
+    //     $field = (new Select)
+    //         ->setName($field['name'])
+    //         ->setId($field['id'])
+    //         ->setClasslist($field['classlist']);
 
-        $manager = $args['data'];
-        $manager = new FieldDataManagerCallback(
-            $manager['get_data_callback'],
-            $manager['handle_data_callback']
-        );
+    //     $manager = $args['data'];
+    //     $manager = new FieldDataManagerCallback(
+    //         $manager['get_data_callback'],
+    //         $manager['handle_data_callback']
+    //     );
 
-        $expected = new FormFieldController($args['request_var'], $field, $manager);
-        $expected->setRules($args['rules']);
+    //     $expected = new FormFieldController($args['request_var'], $field, $manager);
+    //     $expected->setRules($args['rules']);
 
-        unset($args['type']['@create']);
+    //     unset($args['type']['@create']);
 
-        $test = $factory->select($args);
+    //     $test = $factory->select($args);
 
-        $this->assertEquals($expected, $test);
-    }
+    //     $this->assertEquals($expected, $test);
+    // }
 }

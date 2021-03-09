@@ -14,17 +14,12 @@ interface InputPurifierInterface
     /**
      * @return array
      */
-    public function getViolations(): array;
-
-    /**
-     * @return Validatable[]
-     */
-    public function getRules(): array;
+    public function getAlerts(): array;
 
     /**
      * @return Validatable
      */
-    public function getRule(string $rule): Validatable;
+    public function getValidator(): Validatable;
 
     /**
      * @return callable[]

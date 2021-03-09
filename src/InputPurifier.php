@@ -2,6 +2,7 @@
 
 namespace WebTheory\Saveyour;
 
+use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validatable;
 use WebTheory\Saveyour\Contracts\InputPurifierInterface;
 
@@ -12,26 +13,53 @@ class InputPurifier implements InputPurifierInterface
      *
      * @var Validatable
      */
-    protected $rules;
+    protected $validator;
 
     /**
      * Callback function(s) to sanitize incoming data
      *
-     * @var array
+     * @var callable[]
      */
     protected $filters = [];
-
-    /**
-     * Alerts to display upon validation failure
-     *
-     * @var array
-     */
-    protected $alerts = [];
 
     /**
      * @var array
      */
     protected $violations = [];
+
+    /**
+     *
+     */
+    public function __construct(?Validatable $validator, callable ...$filters)
+    {
+        $validator && $this->validator = $validator;
+        $filters && $this->filters = $filters;
+    }
+
+    /**
+     * Get validation rules
+     *
+     * @return Validatable
+     */
+    public function getValidator(): Validatable
+    {
+        return $this->validator;
+    }
+
+    /**
+     * @deprecated
+     * Set validation rules
+     *
+     * @param Validatable $validator Validation rules
+     *
+     * @return self
+     */
+    public function setValidator(Validatable $validator)
+    {
+        $this->validator = $validator;
+
+        return $this;
+    }
 
     /**
      * Get callback function(s) to sanitize incoming data before saving to database
@@ -44,6 +72,7 @@ class InputPurifier implements InputPurifierInterface
     }
 
     /**
+     * @deprecated
      * Set callback function(s) to sanitize incoming data before saving to database
      *
      * @param array $filters Callback function(s) to sanitize incoming data before saving to database
@@ -58,6 +87,7 @@ class InputPurifier implements InputPurifierInterface
     }
 
     /**
+     * @deprecated
      * Set callback function(s) to sanitize incoming data before saving to database
      *
      * @param callable  $filters  Callback function(s) to sanitize incoming data before saving to database
@@ -72,113 +102,13 @@ class InputPurifier implements InputPurifierInterface
     }
 
     /**
-     * Get validation
-     *
-     * @return string
-     */
-    public function getRules(): array
-    {
-        return $this->rules;
-    }
-
-    /**
-     *
-     */
-    public function getRule(string $rule): Validatable
-    {
-        return $this->rules[$rule];
-    }
-
-    /**
-     * Add validation rules
-     *
-     * @param array $rules Array of Validatable instances
-     *
-     * @return self
-     */
-    public function setRules(array $rules)
-    {
-        $this->rules = [];
-
-        foreach ($rules as $rule => $validator) {
-
-            if (is_array($validator)) {
-                $alert = $validator['alert'] ?? null;
-                $validator = $validator['validator'];
-            }
-
-            $this->addRule($rule, $validator, $alert ?? null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Add validation rule
-     *
-     * @param string $rule Name of the the rule being checked
-     * @param Validatable $validator Validatable instance
-     * @param string $alert Message to be displayed if validation fails
-     *
-     * @return self
-     */
-    public function addRule(string $rule, Validatable $validator, ?string $alert = null)
-    {
-        $this->rules[$rule] = $validator;
-
-        if ($alert) {
-            $this->addAlert($rule, $alert);
-        }
-
-        return $this;
-    }
-
-    /**
      * Get validation_messages
      *
      * @return string
      */
     public function getAlerts(): array
     {
-        return $this->alerts;
-    }
-
-    /**
-     *
-     */
-    public function getAlert(string $alert)
-    {
-        return $this->alerts[$alert];
-    }
-
-    /**
-     * Set validation messages
-     *
-     * @param string  $alerts  validation_messages
-     *
-     * @return self
-     */
-    public function setAlerts(array $alerts)
-    {
-        foreach ($alerts as $rule => $alert) {
-            $this->addAlert($rule, $alert);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set validation_messages
-     *
-     * @param string  $alerts  validation_messages
-     *
-     * @return self
-     */
-    public function addAlert(string $rule, string $alert)
-    {
-        $this->alerts[$rule] = $alert;
-
-        return $this;
+        return $this->violations;
     }
 
     /**
@@ -186,7 +116,9 @@ class InputPurifier implements InputPurifierInterface
      */
     public function filterInput($input)
     {
-        if (true === $this->validateInput($input)) {
+        $this->clearViolations();
+
+        if (!isset($this->validator) || true === $this->validateInput($input)) {
             return $this->returnIfPassed($this->sanitizeInput($input));
         }
 
@@ -198,29 +130,25 @@ class InputPurifier implements InputPurifierInterface
      */
     protected function validateInput($input)
     {
-        $input = (array) $input;
+        foreach ((array) $input as $value) {
 
-        /** @var Validatable $validator */
-        foreach ($this->rules as $rule => $validator) {
-            foreach ($input as $value) {
-
-                if (true !== $validator->validate($value)) {
-                    $this->handleRuleViolation($rule);
-                    return false;
-                }
+            try {
+                $this->validator->assert($value);
+            } catch (NestedValidationException $violation) {
+                $this->handleViolation($violation);
+                return false;
             }
         }
 
         return true;
     }
 
-
     /**
      *
      */
     protected function sanitizeInput($input)
     {
-        $array = is_array($input); // check whether original input is an array
+        $inputIsArray = is_array($input); // check whether original input is an array
         $input = (array) $input; // cast input to array for simplicity
 
         foreach ($this->filters as $filter) {
@@ -231,7 +159,7 @@ class InputPurifier implements InputPurifierInterface
             unset($value);
         }
 
-        return $array ? $input : $input[0]; // return single item if original input was not an array
+        return $inputIsArray ? $input : $input[0]; // return single item if original input was not an array
     }
 
     /**
@@ -253,13 +181,13 @@ class InputPurifier implements InputPurifierInterface
     /**
      *
      */
-    protected function handleRuleViolation($rule)
+    protected function handleViolation(NestedValidationException $exception)
     {
-        $this->violations[$rule] = $this->alerts[$rule] ?? '';
+        $this->violations = $exception->getMessages();
     }
 
     /**
-     * Get the value of violations
+     * Get validation violations
      *
      * @return array
      */
@@ -271,7 +199,7 @@ class InputPurifier implements InputPurifierInterface
     /**
      *
      */
-    public function clearViolations()
+    protected function clearViolations()
     {
         $this->violations = [];
     }

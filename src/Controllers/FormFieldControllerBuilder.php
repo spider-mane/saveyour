@@ -49,9 +49,9 @@ class FormFieldControllerBuilder
     /**
      * Validation rules
      *
-     * @var Validatable[]
+     * @var Validatable
      */
-    protected $rules = [];
+    protected $validator;
 
     /**
      * Callback function(s) to sanitize incoming data
@@ -60,12 +60,12 @@ class FormFieldControllerBuilder
      */
     protected $filters = [];
 
-    /**
-     * Alerts to display upon validation failure
-     *
-     * @var array
-     */
-    protected $alerts = [];
+    // /**
+    //  * Alerts to display upon validation failure
+    //  *
+    //  * @var array
+    //  */
+    // protected $alerts = [];
 
     /**
      * @var string[]
@@ -89,9 +89,9 @@ class FormFieldControllerBuilder
             $this->requestVar,
             $this->formField,
             $this->dataManager,
+            $this->validator,
             $this->formatter,
             $this->filters,
-            $this->rules,
             $this->processingDisabled,
             $this->mustAwait,
             $this->escaper
@@ -115,7 +115,7 @@ class FormFieldControllerBuilder
      *
      * @return self
      */
-    public function setRequestVar(string $requestVar)
+    public function setRequestVar(string $requestVar): FormFieldControllerBuilder
     {
         $this->requestVar = $requestVar;
 
@@ -139,7 +139,7 @@ class FormFieldControllerBuilder
      *
      * @return self
      */
-    public function setFormField(FormFieldInterface $formField)
+    public function setFormField(FormFieldInterface $formField): FormFieldControllerBuilder
     {
         $this->formField = $formField;
 
@@ -163,7 +163,7 @@ class FormFieldControllerBuilder
      *
      * @return self
      */
-    public function setDataManager(FieldDataManagerInterface $dataManager)
+    public function setDataManager(FieldDataManagerInterface $dataManager): FormFieldControllerBuilder
     {
         $this->dataManager = $dataManager;
 
@@ -187,7 +187,7 @@ class FormFieldControllerBuilder
      *
      * @return self
      */
-    public function setFormatter(DataFormatterInterface $formatter)
+    public function setFormatter(DataFormatterInterface $formatter): FormFieldControllerBuilder
     {
         $this->formatter = $formatter;
 
@@ -211,7 +211,7 @@ class FormFieldControllerBuilder
      *
      * @return self
      */
-    public function setEscaper(callable $escaper)
+    public function setEscaper(callable $escaper): FormFieldControllerBuilder
     {
         $this->escaper = $escaper;
 
@@ -235,7 +235,7 @@ class FormFieldControllerBuilder
      *
      * @return self
      */
-    public function setProcessingDisabled(bool $processingDisabled)
+    public function setProcessingDisabled(bool $processingDisabled): FormFieldControllerBuilder
     {
         $this->processingDisabled = $processingDisabled;
 
@@ -259,7 +259,7 @@ class FormFieldControllerBuilder
      *
      * @return self
      */
-    public function setFilters(callable ...$filters)
+    public function setFilters(callable ...$filters): FormFieldControllerBuilder
     {
         $this->filters = $filters;
 
@@ -285,110 +285,112 @@ class FormFieldControllerBuilder
      *
      * @return string
      */
-    public function getRules(): array
+    public function getValidator(): Validatable
     {
-        return $this->rules;
+        return $this->validator;
     }
 
     /**
      *
      */
-    public function getRule(string $rule): Validatable
+    public function setValidator(Validatable $validator): FormFieldControllerBuilder
     {
-        return $this->rules[$rule];
-    }
-
-    /**
-     * Add validation rules
-     *
-     * @param array $rules Array of Validatable instances
-     *
-     * @return self
-     */
-    public function setRules(array $rules)
-    {
-        $this->rules = [];
-
-        foreach ($rules as $rule => $validator) {
-
-            if (is_array($validator)) {
-                $alert = $validator['alert'] ?? null;
-                $validator = $validator['validator'];
-            }
-
-            $this->addRule($rule, $validator, $alert ?? null);
-        }
+        $this->validator = $validator;
 
         return $this;
     }
 
-    /**
-     * Add validation rule
-     *
-     * @param string $rule Name of the the rule being checked
-     * @param Validatable $validator Validatable instance
-     * @param string $alert Message to be displayed if validation fails
-     *
-     * @return self
-     */
-    public function addRule(string $rule, Validatable $validator, ?string $alert = null)
-    {
-        $this->rules[$rule] = $validator;
+    // /**
+    //  * Add validation rules
+    //  *
+    //  * @param array $rules Array of Validatable instances
+    //  *
+    //  * @return self
+    //  */
+    // public function setRules(array $rules): FormFieldControllerBuilder
+    // {
+    //     $this->validator = [];
 
-        if ($alert) {
-            $this->addAlert($rule, $alert);
-        }
+    //     foreach ($rules as $rule => $validator) {
 
-        return $this;
-    }
+    //         if (is_array($validator)) {
+    //             $alert = $validator['alert'] ?? null;
+    //             $validator = $validator['validator'];
+    //         }
 
-    /**
-     * Get validation_messages
-     *
-     * @return string
-     */
-    public function getAlerts(): array
-    {
-        return $this->alerts;
-    }
+    //         $this->addRule($rule, $validator, $alert ?? null);
+    //     }
 
-    /**
-     *
-     */
-    public function getAlert(string $alert)
-    {
-        return $this->alerts[$alert];
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Set validation messages
-     *
-     * @param string  $alerts  validation_messages
-     *
-     * @return self
-     */
-    public function setAlerts(array $alerts)
-    {
-        foreach ($alerts as $rule => $alert) {
-            $this->addAlert($rule, $alert);
-        }
+    // /**
+    //  * Add validation rule
+    //  *
+    //  * @param string $rule Name of the the rule being checked
+    //  * @param Validatable $validator Validatable instance
+    //  * @param string $alert Message to be displayed if validation fails
+    //  *
+    //  * @return self
+    //  */
+    // public function addRule(string $rule, Validatable $validator, ?string $alert = null)
+    // {
+    //     $this->validator[$rule] = $validator;
 
-        return $this;
-    }
+    //     if ($alert) {
+    //         $this->addAlert($rule, $alert);
+    //     }
 
-    /**
-     * Set validation_messages
-     *
-     * @param string  $alerts  validation_messages
-     *
-     * @return self
-     */
-    public function addAlert(string $rule, string $alert)
-    {
-        $this->alerts[$rule] = $alert;
+    //     return $this;
+    // }
 
-        return $this;
-    }
+    // /**
+    //  * Get validation_messages
+    //  *
+    //  * @return string
+    //  */
+    // public function getAlerts(): array
+    // {
+    //     return $this->alerts;
+    // }
+
+    // /**
+    //  *
+    //  */
+    // public function getAlert(string $alert)
+    // {
+    //     return $this->alerts[$alert];
+    // }
+
+    // /**
+    //  * Set validation messages
+    //  *
+    //  * @param string  $alerts  validation_messages
+    //  *
+    //  * @return self
+    //  */
+    // public function setAlerts(array $alerts): FormFieldControllerBuilder
+    // {
+    //     foreach ($alerts as $rule => $alert) {
+    //         $this->addAlert($rule, $alert);
+    //     }
+
+    //     return $this;
+    // }
+
+    // /**
+    //  * Set validation_messages
+    //  *
+    //  * @param string  $alerts  validation_messages
+    //  *
+    //  * @return self
+    //  */
+    // public function addAlert(string $rule, string $alert)
+    // {
+    //     $this->alerts[$rule] = $alert;
+
+    //     return $this;
+    // }
 
     /**
      * Get the value of mustAwait
@@ -407,7 +409,7 @@ class FormFieldControllerBuilder
      *
      * @return self
      */
-    public function setMustAwait(string ...$fields)
+    public function setMustAwait(string ...$fields): FormFieldControllerBuilder
     {
         $this->mustAwait = $fields;
 

@@ -152,15 +152,7 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
      */
     protected function createInputPurifier(): InputPurifier
     {
-        return (new InputPurifier())
-            ->addRule('float', Validator::floatType())
-            ->addFilter(function ($input) {
-                return filter_var(
-                    $input,
-                    FILTER_SANITIZE_NUMBER_FLOAT,
-                    FILTER_FLAG_ALLOW_FRACTION
-                );
-            });
+        return new InputPurifier(Validator::floatType());
     }
 
     /**

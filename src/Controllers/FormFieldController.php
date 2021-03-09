@@ -3,12 +3,15 @@
 namespace WebTheory\Saveyour\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Respect\Validation\Validatable;
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\InputFormatterInterface;
 use WebTheory\Saveyour\Formatters\LazyDataFormatter;
+use WebTheory\Saveyour\Formatters\LazyInputFormatter;
 use WebTheory\Saveyour\InputPurifier;
 use WebTheory\Saveyour\Request;
 
@@ -39,6 +42,11 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
     protected $dataFormatter;
 
     /**
+     * @var InputFormatterInterface
+     */
+    protected $inputFormatter;
+
+    /**
      * Callback to escape value on display
      *
      * @var callable|null
@@ -62,9 +70,9 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
         string $requestVar,
         ?FormFieldInterface $formField = null,
         ?FieldDataManagerInterface $dataManager = null,
+        ?Validatable $validator = null,
         ?DataFormatterInterface $dataFormatter = null,
         ?array $filters = null,
-        ?array $rules = null,
         ?bool $processingDisabled = null,
         ?array $await = null,
         ?callable $escaper = null
@@ -78,9 +86,9 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
 
         $this->dataFormatter = $dataFormatter ?? new LazyDataFormatter();
 
-        $filters && $this->setFilters(...$filters);
-        $rules && $this->setRules($rules);
         $await && $this->setMustAwait(...$await);
+
+        parent::__construct($validator, ...$filters ?? []);
     }
 
     /**
@@ -285,7 +293,7 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
         }
 
         return !is_array($value)
-            ? call_user_func($this->escaper, $value)
+            ? ($this->escaper)($value)
             : array_filter($value, $this->escaper);
     }
 
