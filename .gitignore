@@ -1,23 +1,26 @@
-# editor/ IDE
-.idea
-.project
-.vscode/
-*.code-workspace
+# CI output
+/build/
+/coverage
 
-# composer
-vendor
-composer.lock
-
-# npm
-node_modules
-package-lock.json
-
-# phpunit
-phpcs.xml
-phpunit.xml
+# PHPUnit
 .phpunit.result.cache
 
-# misc
-coverage
-build
-tests/env.php
+# Composer
+vendor/
+composer.lock
+composer.phar
+
+# Env
+.env
+
+# Editor/ IDE
+.idea
+.project
+.vscode
+*.code-workspace
+
+# Version Control
+.github
+
+# Apple hidden files
+.DS_Store

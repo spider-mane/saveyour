@@ -1,0 +1,6 @@
+# Dist
+# /dist/
+
+# NPM
+node_modules/
+package-lock.json
