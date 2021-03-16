@@ -1,37 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/autoload.php"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.5/phpunit.xsd"
   backupGlobals="false"
   backupStaticAttributes="false"
+  beStrictAboutCoversAnnotation="true"
+  beStrictAboutOutputDuringTests="false"
+  beStrictAboutTodoAnnotatedTests="true"
+  bootstrap="vendor/autoload.php"
   colors="true"
-  verbose="true"
-  testdox="true"
   convertErrorsToExceptions="true"
   convertNoticesToExceptions="true"
   convertWarningsToExceptions="true"
+  defaultTestSuite="unit"
+  executionOrder="depends,defects"
+  forceCoversAnnotation="false"
   processIsolation="false"
-  stopOnFailure="false">
+  stopOnFailure="true"
+  testdox="true"
+  verbose="true">
 
+  <!-- Testsuites -->
   <testsuites>
-    <testsuite name="Webtheory Test Suite">
+    <!-- Unit Testing -->
+    <testsuite name="unit">
       <directory>tests/unit</directory>
+    </testsuite>
+
+    <!-- Integration Testing -->
+    <testsuite name="integration">
+      <directory>tests/integration</directory>
+    </testsuite>
+
+    <!-- Acceptance Testing -->
+    <testsuite name="acceptance">
+      <directory>tests/acceptance</directory>
     </testsuite>
   </testsuites>
 
-  <filter>
-    <whitelist>
-      <directory suffix=".php">src/</directory>
-    </whitelist>
-  </filter>
+  <!-- Coverage -->
+  <coverage cacheDirectory="build/phpunit/coverage/.cache">
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+    <report>
+      <html outputDirectory="build/phpunit/coverage/html"/>
+    </report>
+  </coverage>
 
+  <!-- Logging -->
   <logging>
-    <log type="junit"
-      target="build/report.junit.xml"/>
-    <log type="coverage-html"
-      target="build/coverage"/>
-    <log type="coverage-text"
-      target="build/coverage.txt"/>
-    <log type="coverage-clover"
-      target="build/logs/clover.xml"/>
+    <junit outputFile="build/phpunit/logs/report.junit.xml"/>
+    <teamcity outputFile="build/phpunit/logs/teamcity.txt"/>
+    <testdoxHtml outputFile="build/phpunit/logs/testdox.html"/>
+    <testdoxText outputFile="build/phpunit/logs/testdox.txt"/>
+    <testdoxXml outputFile="build/phpunit/logs/testdox.xml"/>
+    <text outputFile="build/phpunit/logs/logfile.txt"/>
   </logging>
 
 </phpunit>

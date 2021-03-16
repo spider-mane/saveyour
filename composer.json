@@ -39,7 +39,7 @@
     "php-http/guzzle6-adapter": "^2.0",
     "php-http/message": "^1.8",
     "phpbench/phpbench": "@dev",
-    "phpunit/phpunit": "^8.4",
+    "phpunit/phpunit": "^9.0",
     "psr/http-client": "^1.0",
     "psr/http-factory": "^1.0",
     "spatie/phpunit-watcher": "^1.12",
@@ -56,7 +56,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "WebTheory\\Saveyour\\Tests\\": "tests/unit"
+      "Tests\\Unit\\": "tests/unit"
     }
   },
   "suggest": {
