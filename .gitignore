@@ -1,23 +1,27 @@
-# Dev and CI builds
+# Dev and CI
+*.cache
 /build/
-
-# PHPUnit
-.phpunit.result.cache
+/dist/
+docker-compose.override.yml
 
 # Composer
 /vendor/
 composer.lock
 
-# Environment variables\
+# Env
 .env
 .env.*
 .*.env
+*.env
+!.env.example
+!.example.env
+!example.env
 
 # Editor/ IDE
+*.code-workspace
 .idea/
 .project/
 .vscode/
-*.code-workspace
 
 # System files
 .DS_Store
