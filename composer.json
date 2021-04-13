@@ -3,10 +3,6 @@
   "description": "Modular form building and processing library",
   "homepage": "https://github.com/spider-mane/saveyour",
   "license": "MIT",
-  "keywords": [
-    "webtheory",
-    "saveyour"
-  ],
   "authors": [
     {
       "name": "Chris Williams",
@@ -14,6 +10,10 @@
       "homepage": "https://github.com/spider-mane",
       "role": "Developer"
     }
+  ],
+  "keywords": [
+    "webtheory",
+    "saveyour"
   ],
   "require": {
     "php": ">=7.2",
@@ -56,7 +56,9 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\Unit\\": "tests/unit"
+      "Tests\\Unit\\": "tests/suites/unit",
+      "Tests\\Fixtures": "tests/fixtures",
+      "Tests\\Support": "tests/support"
     }
   },
   "suggest": {
@@ -67,15 +69,19 @@
   },
   "scripts": {
     "test": "vendor/bin/phpunit",
-    "watch": "phpunit-watcher watch",
-    "coverage": "vendor/bin/phpunit --coverage-html coverage",
-    "check": "vendor/bin/phpcs --standard=phpcs.xml.dist src",
-    "fix": "vendor/bin/phpcbf src",
-    "bench": "vendor/bin/phpbench"
-  },
-  "config": {
-    "sort-packages": true,
-    "process-timeout": 0
+    "watch": "vendor/bin/phpunit-watcher",
+    "check": "vendor/bin/phpcs",
+    "fix": "vendor/bin/php-cs-fixer fix --verbose",
+    "analyze": "vendor/bin/psalm",
+    "bench": "vendor/bin/phpbench",
+    "play": "vendor/bin/psysh",
+    "collect": "vendor/bin/var-dump-server",
+    "build": [
+      "@fix",
+      "@check",
+      "@analyze",
+      "@test"
+    ]
   },
   "extra": {
     "branch-alias": {
@@ -84,5 +90,11 @@
     "assets-files": [
       "assets/dist/saveyour.js"
     ]
-  }
+  },
+  "config": {
+    "sort-packages": true,
+    "process-timeout": 0
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

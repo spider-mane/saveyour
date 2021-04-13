@@ -21,13 +21,16 @@ use Whoops\Run;
 # bootstrap
 ################################################################################
 
+$rootDir = '../../';
+$testDir = '../';
+
 # composer autoload
-require "../../vendor/autoload.php";
+require $rootDir . "vendor/autoload.php";
 
 # filp/whoops error handling
 (new Run)->prependHandler(new PrettyPageHandler)->register();
 
-include '../env.php';
+include $testDir . '.env.php';
 
 ################################################################################
 # start
