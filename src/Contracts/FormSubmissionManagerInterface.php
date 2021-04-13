@@ -12,4 +12,8 @@ interface FormSubmissionManagerInterface
      * @return FormProcessingCacheInterface
      */
     public function process(ServerRequestInterface $request): FormProcessingCacheInterface;
+
+    public function validate(ServerRequestInterface $request): bool;
+
+    public function validated(ServerRequestInterface $request): array;
 }
