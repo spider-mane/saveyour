@@ -1,0 +1,9 @@
+#!/usr/bin/env php
+<?php
+
+$root = dirname(__DIR__, 1);
+$assets = "$root/assets/dist";
+$link = "$root/tests/suites/visual/assets";
+
+shell_exec("rm -f $link");
+symlink($assets, $link); // running this on windows requires administrator permissions

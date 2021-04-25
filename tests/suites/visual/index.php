@@ -21,17 +21,29 @@ use Whoops\Run;
 # bootstrap
 ################################################################################
 
-$rootDir = '../../';
-$testDir = '../';
+$root = dirname(__DIR__, 3);
+$testDir = $root . '/tests';
 
-# composer autoload
-require $rootDir . "vendor/autoload.php";
+// composer autoload
+require $root . "vendor/autoload.php";
 
-# filp/whoops error handling
-(new Run)->prependHandler(new PrettyPageHandler)->register();
+// filp/whoops error handling
+call_user_func(function () {
+    $handler = new PrettyPageHandler;
+    $run = new Run;
 
-include $testDir . '.env.php';
+    $run->prependHandler($handler)->register();
+});
 
+// load environment variables
+call_user_func(function () use ($testDir) {
+    require $testDir . '.env.php';
+});
+
+// symlink assets
+// call_user_func(function () use ($root) {
+//     require $root . '/bin/symlink-assets';
+// });
 ################################################################################
 # start
 ################################################################################

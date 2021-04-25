@@ -9,14 +9,5 @@ indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{html,json}]
-insert_final_newline = false
-
-[*.js]
-; insert js specific rules here
-
-[*.scss]
-; insert scss specific rules here
-
 [*.md]
 trim_trailing_whitespace = false

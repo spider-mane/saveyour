@@ -42,5 +42,5 @@ interface FormFieldControllerInterface extends InputPurifierInterface
 
     public function validate(ServerRequestInterface $request): bool;
 
-    public function validated(ServerRequestInterface $request);
+    public function validated(ServerRequestInterface $request): array;
 }
