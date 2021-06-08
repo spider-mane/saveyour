@@ -6,6 +6,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validatable;
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
+use WebTheory\Saveyour\Contracts\FieldOperationCacheBuilderInterface;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
@@ -45,6 +46,11 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
      * @var InputFormatterInterface
      */
     protected $inputFormatter;
+
+    /**
+     * @var FieldOperationCacheBuilderInterface
+     */
+    protected $cacheBuilder;
 
     /**
      * Callback to escape value on display
@@ -190,28 +196,38 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
      */
     public function process(ServerRequestInterface $request): FieldOperationCacheInterface
     {
-        $results = new FieldOperationCacheBuilder();
-        $this->processData($request, $results);
-        $results->withRuleViolations($this->getViolations());
+        $this->establishCacheBuilder()->processData($request);
+
+        $this->cacheBuilder->withRuleViolations($this->getViolations());
         $this->clearViolations();
 
-        return $results;
+        return $this->cacheBuilder;
     }
 
     /**
      *
      */
-    protected function processData(ServerRequestInterface $request, FieldOperationCacheBuilder $results)
+    protected function establishCacheBuilder()
+    {
+        $this->cacheBuilder = new FieldOperationCacheBuilder();
+
+        return $this;
+    }
+
+    /**
+     *
+     */
+    protected function processData(ServerRequestInterface $request)
     {
         $filteredInput = $this->getSanitizedInput($request);
 
-        $results->withSanitizedInputValue($filteredInput);
+        $this->cacheBuilder->withSanitizedInputValue($filteredInput);
 
         if (false !== $filteredInput && $this->canProcessInput()) {
 
             $updated = $this->processInput($request, $filteredInput);
 
-            $results->withUpdateAttempted(true)->withUpdateSuccessful($updated);
+            $this->cacheBuilder->withUpdateAttempted(true)->withUpdateSuccessful($updated);
         }
 
         return $this;
