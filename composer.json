@@ -16,17 +16,15 @@
     "saveyour"
   ],
   "require": {
-    "php": ">=7.2",
+    "php": ">=7.4",
     "myclabs/php-enum": "^1.7",
     "psr/http-message": "^1.0",
     "respect/validation": "^2.0",
-    "webtheory/guctilitybelt": "^0.2.0",
-    "webtheory/html": "^0.2.0"
+    "webtheory/html": "@stable"
   },
   "require-dev": {
     "commerceguys/addressing": "^1.0",
     "egulias/email-validator": "^2.1",
-    "filp/whoops": "^2.5",
     "friendsofphp/php-cs-fixer": "^2.15",
     "geocoder-php/google-maps-provider": "^4.4",
     "giggsey/libphonenumber-for-php": "^8.12",
@@ -45,9 +43,11 @@
     "spatie/phpunit-watcher": "^1.12",
     "squizlabs/php_codesniffer": "^3.0",
     "swiftmailer/swiftmailer": "^6.2",
+    "symfony/polyfill-php80": "^1.23",
+    "symfony/polyfill-php81": "^1.23",
     "symfony/thanks": "^1.1",
-    "symfony/validator": "^4.3",
-    "symfony/var-dumper": "^4.3"
+    "symfony/validator": "^5.4",
+    "webtheory/exterminate": "@stable"
   },
   "autoload": {
     "psr-4": {
@@ -57,8 +57,8 @@
   "autoload-dev": {
     "psr-4": {
       "Tests\\Unit\\": "tests/suites/unit",
-      "Tests\\Fixtures": "tests/fixtures",
-      "Tests\\Support": "tests/support"
+      "Tests\\Fixtures\\": "tests/fixtures",
+      "Tests\\Support\\": "tests/support"
     }
   },
   "suggest": {
