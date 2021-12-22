@@ -2,14 +2,15 @@
 
 namespace WebTheory\Saveyour\Controllers;
 
+use WebTheory\Saveyour\Contracts\FieldOperationCacheBuilderInterface;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 
-class FieldOperationCacheBuilder extends AbstractFieldOperationCache implements FieldOperationCacheInterface
+class FieldOperationCacheBuilder extends AbstractFieldOperationCache implements FieldOperationCacheBuilderInterface
 {
     /**
      *
      */
-    public function withRequestVarPresent(bool $result)
+    public function withRequestVarPresent(bool $result): FieldOperationCacheBuilderInterface
     {
         $this->results['request_var_present'] = $result;
 
@@ -19,7 +20,7 @@ class FieldOperationCacheBuilder extends AbstractFieldOperationCache implements 
     /**
      *
      */
-    public function withSanitizedInputValue($value)
+    public function withSanitizedInputValue($value): FieldOperationCacheBuilderInterface
     {
         $this->results['sanitized_input_value'] = $value;
 
@@ -29,7 +30,7 @@ class FieldOperationCacheBuilder extends AbstractFieldOperationCache implements 
     /**
      *
      */
-    public function withUpdateAttempted(bool $result)
+    public function withUpdateAttempted(bool $result): FieldOperationCacheBuilderInterface
     {
         $this->results['update_attempted'] = $result;
 
@@ -39,7 +40,7 @@ class FieldOperationCacheBuilder extends AbstractFieldOperationCache implements 
     /**
      *
      */
-    public function withUpdateSuccessful(bool $result)
+    public function withUpdateSuccessful(bool $result): FieldOperationCacheBuilderInterface
     {
         $this->results['update_successful'] = $result;
 
@@ -49,8 +50,10 @@ class FieldOperationCacheBuilder extends AbstractFieldOperationCache implements 
     /**
      *
      */
-    public function withRuleViolations(array $violations)
+    public function withRuleViolations(array $violations): FieldOperationCacheBuilderInterface
     {
         $this->results['rule_violations'] = $violations;
+
+        return $this;
     }
 }

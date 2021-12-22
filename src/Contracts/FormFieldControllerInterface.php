@@ -39,8 +39,4 @@ interface FormFieldControllerInterface extends InputPurifierInterface
      * @return FieldOperationCacheInterface
      */
     public function process(ServerRequestInterface $request): FieldOperationCacheInterface;
-
-    public function validate(ServerRequestInterface $request): bool;
-
-    public function validated(ServerRequestInterface $request): array;
 }
