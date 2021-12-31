@@ -1,6 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Saveyour\Concerns\ShantHaveCurrentData;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;

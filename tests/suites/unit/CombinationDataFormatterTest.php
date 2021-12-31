@@ -1,6 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Formatters\ArrayToListDataFormatter;
 use WebTheory\Saveyour\Formatters\CombinationDataFormatter;
@@ -13,7 +13,7 @@ class CombinationDataFormatterTest extends TestCase
      */
     protected function getDummyFormatter(int $count)
     {
-        return new class ($count) implements DataFormatterInterface
+        return new class($count) implements DataFormatterInterface
         {
             protected $count;
 

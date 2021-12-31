@@ -1,7 +1,7 @@
 <?php
 
 use GuzzleHttp\Psr7\ServerRequest;
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessingCacheInterface;
@@ -244,7 +244,7 @@ class FormSubmissionManagerTest extends TestCase
 
         $param = 'test';
 
-        $controller = new class ($param) extends FormFieldController implements FormFieldControllerInterface
+        $controller = new class($param) extends FormFieldController implements FormFieldControllerInterface
         {
             public $request;
 
@@ -273,7 +273,7 @@ class FormSubmissionManagerTest extends TestCase
         $fields = ['test1', 'test2', 'test3'];
         $invalid = ['fail1', 'fail2'];
 
-        $processor = new class ($fields) implements FormDataProcessorInterface
+        $processor = new class($fields) implements FormDataProcessorInterface
         {
             public $fields;
             public $results;

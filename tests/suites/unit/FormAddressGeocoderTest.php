@@ -9,7 +9,7 @@ use Geocoder\Provider\GoogleMaps\GoogleMaps;
 use Geocoder\Query\GeocodeQuery;
 use GuzzleHttp\Psr7\ServerRequest;
 use Http\Adapter\Guzzle6\Client;
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Controllers\FieldOperationCacheBuilder;

@@ -1,7 +1,7 @@
 <?php
 
 use GuzzleHttp\Psr7\ServerRequest;
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Request;
 
 class RequestTest extends TestCase

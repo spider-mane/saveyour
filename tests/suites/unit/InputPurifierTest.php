@@ -1,6 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use Respect\Validation\Validatable;
 use Respect\Validation\Validator;
 use WebTheory\Saveyour\InputPurifier;

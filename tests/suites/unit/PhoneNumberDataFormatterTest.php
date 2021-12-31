@@ -1,6 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use WebTheory\GuctilityBelt\Phone;
 use WebTheory\Saveyour\Enum\PhoneNumberFormat;
 use WebTheory\Saveyour\Formatters\PhoneNumberDataFormatter;

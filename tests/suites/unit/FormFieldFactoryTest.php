@@ -1,6 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Factories\FormFieldFactory;
 use WebTheory\Saveyour\Fields\Select;
 
