@@ -52,14 +52,17 @@ class Request
         switch ($request->getMethod()) {
             case 'GET':
                 $request = $request->getQueryParams();
+
                 break;
 
             case 'POST':
                 $request = $request->getParsedBody();
+
                 break;
 
             default:
                 $request = $request->getParsedBody();
+
                 break;
         }
 

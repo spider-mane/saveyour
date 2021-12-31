@@ -1,7 +1,7 @@
 <?php
 
-use Tests\Support\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Concerns\ShantHaveCurrentData;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 
@@ -11,8 +11,7 @@ class ShantHaveCurrentDataTest extends TestCase
 
     public function generateDummyClass(): FieldDataManagerInterface
     {
-        return new class implements FieldDataManagerInterface
-        {
+        return new class () implements FieldDataManagerInterface {
             use ShantHaveCurrentData;
 
             public function handleSubmittedData(ServerRequestInterface $request, $data): bool

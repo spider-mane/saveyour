@@ -12,8 +12,7 @@ class AbstractFieldTest extends TestCase
     {
         $requestVar = 'test';
 
-        $child = new class($requestVar) extends AbstractField
-        {
+        $child = new class ($requestVar) extends AbstractField {
         };
 
         $this->assertEquals($requestVar, $child->getRequestVar());

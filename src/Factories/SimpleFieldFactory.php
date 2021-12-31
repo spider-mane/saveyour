@@ -4,9 +4,6 @@ namespace WebTheory\Saveyour\Factories;
 
 use WebTheory\Saveyour\Contracts\FieldDataManagerResolverFactoryInterface;
 use WebTheory\Saveyour\Contracts\FormFieldResolverFactoryInterface;
-use WebTheory\Saveyour\Factories\DataManagerFactory;
-use WebTheory\Saveyour\Factories\FieldFactory;
-use WebTheory\Saveyour\Factories\FormFieldFactory;
 
 class SimpleFieldFactory extends FieldFactory
 {

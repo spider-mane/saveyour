@@ -20,7 +20,7 @@ class FormFieldFactoryTest extends TestCase
             'classlist' => ['foo', 'bar', 'baz'],
         ];
 
-        $expected = (new Select)
+        $expected = (new Select())
             ->setName($args['name'])
             ->setId($args['id'])
             ->setClasslist($args['classlist']);

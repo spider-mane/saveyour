@@ -3,8 +3,8 @@
 namespace WebTheory\Saveyour\Factories;
 
 use Exception;
-use WebTheory\GuctilityBelt\Traits\ClassResolverTrait;
-use WebTheory\GuctilityBelt\Traits\SmartFactoryTrait;
+use WebTheory\Factory\Traits\ClassResolverTrait;
+use WebTheory\Factory\Traits\SmartFactoryTrait;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerResolverFactoryInterface;
 use WebTheory\Saveyour\Managers\FieldDataManagerCallback;
@@ -25,11 +25,11 @@ class DataManagerFactory implements FieldDataManagerResolverFactoryInterface
     protected $namespaces = [];
 
     public const NAMESPACES = [
-        'webtheory.saveyour' =>  "WebTheory\\Saveyour\\Managers",
+        'webtheory.saveyour' => "WebTheory\\Saveyour\\Managers",
     ];
 
     public const MANAGERS = [
-        'callback' => FieldDataManagerCallback::class
+        'callback' => FieldDataManagerCallback::class,
     ];
 
     protected const CONVENTION = '%sFieldDataManager';

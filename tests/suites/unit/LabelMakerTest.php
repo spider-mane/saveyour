@@ -8,8 +8,7 @@ class LabelMakerTest extends TestCase
 {
     public function generateDummyClass()
     {
-        return new class
-        {
+        return new class () {
             use LabelMaker;
 
             public function create($content, $options)
@@ -28,8 +27,8 @@ class LabelMakerTest extends TestCase
             'id' => 'foo',
             'for' => 'bar',
             'attributes' => [
-                'data-test' => 'foobar'
-            ]
+                'data-test' => 'foobar',
+            ],
         ];
 
         $label = $maker->create($content, $options);

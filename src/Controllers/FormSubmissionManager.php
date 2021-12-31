@@ -74,7 +74,6 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         $this->validators = [];
 
         foreach ($validators as $rule => $validator) {
-
             if (is_array($validator)) {
                 $alert = $validator['alert'] ?? null;
                 $validator = $validator['validator'];

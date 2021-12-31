@@ -3,7 +3,6 @@
 namespace WebTheory\Saveyour\Controllers;
 
 use WebTheory\Saveyour\Contracts\FieldOperationCacheBuilderInterface;
-use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 
 class FieldOperationCacheBuilder extends AbstractFieldOperationCache implements FieldOperationCacheBuilderInterface
 {

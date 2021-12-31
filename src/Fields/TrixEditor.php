@@ -61,7 +61,7 @@ class TrixEditor extends AbstractFormField implements FormFieldInterface
      */
     protected function createEditorFormControl(): Hidden
     {
-        return new Hidden;
+        return new Hidden();
     }
 
     /**

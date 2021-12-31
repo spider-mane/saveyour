@@ -2,8 +2,6 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
-
 interface FieldOperationCacheBuilderInterface extends FieldOperationCacheInterface
 {
     /**

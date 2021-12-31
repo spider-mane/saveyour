@@ -2,6 +2,8 @@
 
 namespace WebTheory\Saveyour\Concerns;
 
+use LogicException;
+
 trait ImmutableObjectTrait
 {
     /**
@@ -9,7 +11,7 @@ trait ImmutableObjectTrait
      */
     protected function throwModificationException()
     {
-        throw new \LogicException('properties in ' . static::class . ' cannot be modified.');
+        throw new LogicException('properties in ' . static::class . ' cannot be modified.');
     }
 
     /**

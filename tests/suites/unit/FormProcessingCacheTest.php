@@ -51,10 +51,10 @@ class FormProcessingCacheTest extends TestCase
             'request_violations' => ['foo' => 'bar'],
             'input_violations' => ['test' => $this->testFieldCache->ruleViolations()],
             'input_results' => ['test' => $this->testFieldCache],
-            'processing_results' => ['test' => new FormDataProcessingCache()]
+            'processing_results' => ['test' => new FormDataProcessingCache()],
         ];
 
-        $this->testInstance = (new FormProcessingCache)
+        $this->testInstance = (new FormProcessingCache())
             ->withInputResults($this->values['input_results'])
             ->withInputViolations($this->values['input_violations'])
             ->withRequestViolations($this->values['request_violations'])
@@ -66,7 +66,7 @@ class FormProcessingCacheTest extends TestCase
      */
     public function testCanSetAndGetInputResults()
     {
-        $cache = new FormProcessingCache;
+        $cache = new FormProcessingCache();
         $results = ['test' => $this->testFieldCache];
 
         $cache->withInputResults($results);
@@ -79,7 +79,7 @@ class FormProcessingCacheTest extends TestCase
      */
     public function testCanSetAndGetInputViolations()
     {
-        $cache = new FormProcessingCache;
+        $cache = new FormProcessingCache();
         $violations = ['test' => $this->testFieldCache->ruleViolations()];
 
         $cache->withInputViolations($violations);
@@ -92,7 +92,7 @@ class FormProcessingCacheTest extends TestCase
      */
     public function testCanSetAndGetRequestViolations()
     {
-        $cache = new FormProcessingCache;
+        $cache = new FormProcessingCache();
         $violations = ['foo' => 'bar'];
 
         $cache->withRequestViolations($violations);

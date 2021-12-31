@@ -2,8 +2,8 @@
 
 namespace WebTheory\Saveyour\Enum;
 
-use MyCLabs\Enum\Enum;
 use libphonenumber\PhoneNumberFormat as LibPhoneNumberFormat;
+use MyCLabs\Enum\Enum;
 
 /**
  * @method static int E164()
