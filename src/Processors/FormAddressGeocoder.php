@@ -180,7 +180,7 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
 
         $coordinates = $this->createInputPurifier()->filterInput([
             'lat' => $data->getLatitude(),
-            'lng' => $data->getLongitude()
+            'lng' => $data->getLongitude(),
         ]);
 
         $geoUpdated = $this->geoDataManager->handleSubmittedData(

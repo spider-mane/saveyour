@@ -1,9 +1,9 @@
 <?php
 
 use GuzzleHttp\Psr7\ServerRequest;
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
@@ -173,8 +173,7 @@ class FormFieldControllerTest extends TestCase
     {
         $name = 'test';
 
-        $manager = new class implements FieldDataManagerInterface
-        {
+        $manager = new class () implements FieldDataManagerInterface {
             public function getCurrentData(ServerRequestInterface $request)
             {
                 return 'foobar';
@@ -186,7 +185,7 @@ class FormFieldControllerTest extends TestCase
             }
         };
 
-        $controller = new FormFieldController($name, new Input, $manager);
+        $controller = new FormFieldController($name, new Input(), $manager);
 
         $field = $controller->render(ServerRequest::fromGlobals());
 

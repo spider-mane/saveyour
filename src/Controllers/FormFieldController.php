@@ -12,7 +12,6 @@ use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 use WebTheory\Saveyour\Contracts\InputFormatterInterface;
 use WebTheory\Saveyour\Formatters\LazyDataFormatter;
-use WebTheory\Saveyour\Formatters\LazyInputFormatter;
 use WebTheory\Saveyour\InputPurifier;
 use WebTheory\Saveyour\Request;
 
@@ -224,7 +223,6 @@ class FormFieldController extends InputPurifier implements FormFieldControllerIn
         $this->cacheBuilder->withSanitizedInputValue($filteredInput);
 
         if (false !== $filteredInput && $this->canProcessInput()) {
-
             $updated = $this->processInput($request, $filteredInput);
 
             $this->cacheBuilder->withUpdateAttempted(true)->withUpdateSuccessful($updated);

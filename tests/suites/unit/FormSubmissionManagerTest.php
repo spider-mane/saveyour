@@ -1,14 +1,13 @@
 <?php
 
 use GuzzleHttp\Psr7\ServerRequest;
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessingCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormValidatorInterface;
-use WebTheory\Saveyour\Controllers\FieldOperationCache;
 use WebTheory\Saveyour\Controllers\FieldOperationCacheBuilder;
 use WebTheory\Saveyour\Controllers\FormFieldController;
 use WebTheory\Saveyour\Controllers\FormFieldControllerBuilder;
@@ -28,14 +27,13 @@ class FormSubmissionManagerTest extends TestCase
 
     public function setup(): void
     {
-        $this->testManager = new FormSubmissionManager;
+        $this->testManager = new FormSubmissionManager();
         $this->testFormValidator = $this->createMock(FormValidatorInterface::class);
     }
 
     protected function generatePassingValidator()
     {
-        return new class implements FormValidatorInterface
-        {
+        return new class () implements FormValidatorInterface {
             public function isValid(ServerRequestInterface $request): bool
             {
                 return true;
@@ -45,8 +43,7 @@ class FormSubmissionManagerTest extends TestCase
 
     protected function generateFailingValidator()
     {
-        return new class implements FormValidatorInterface
-        {
+        return new class () implements FormValidatorInterface {
             public function isValid(ServerRequestInterface $request): bool
             {
                 return false;
@@ -56,7 +53,7 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testAppropriateMethodsAreChainable()
     {
-        $manager = (new FormSubmissionManager)
+        $manager = (new FormSubmissionManager())
             ->setValidators(['test' => $this->testFormValidator])
             ->addValidator('test', $this->testFormValidator);
 
@@ -65,12 +62,12 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testCanSetAndGetMultipleValidators()
     {
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
 
         $validators = [
             $this->testFormValidator,
             $this->createMock(FormValidatorInterface::class),
-            $this->createMock(FormValidatorInterface::class)
+            $this->createMock(FormValidatorInterface::class),
         ];
 
         $manager->setValidators($validators);
@@ -80,7 +77,7 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testCanGetAndSetSingleValidators()
     {
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
         $manager->addValidator('test', $this->testFormValidator);
 
         $validator = $manager->getValidators();
@@ -92,7 +89,7 @@ class FormSubmissionManagerTest extends TestCase
         $this->expectException(TypeError::class);
 
         $manager = $this->testManager;
-        $manager->addValidator('fail', new DateTime);
+        $manager->addValidator('fail', new DateTime());
 
         $this->assertEmpty($manager->getValidators()[0]);
         $this->assertCount(0, $manager->getValidators());
@@ -100,11 +97,11 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testCanSetAndGetAlerts()
     {
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
 
         $alerts = [
             '1' => 'foo',
-            '2' => 'bar'
+            '2' => 'bar',
         ];
 
         $manager->setAlerts($alerts);
@@ -115,7 +112,7 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testCanAddAndGetSingleAlert()
     {
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
 
         $rule = 'foo';
         $alert = 'bar';
@@ -127,7 +124,7 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testCanSetAlertsViaValidatorSetterMethod()
     {
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
 
         $alerts = [
             'test1' => 'foo',
@@ -137,12 +134,12 @@ class FormSubmissionManagerTest extends TestCase
         $verification = [
             'test1' => [
                 'validator' => $this->createMock(FormValidatorInterface::class),
-                'alert' => $alerts['test1']
+                'alert' => $alerts['test1'],
             ],
             'test2' => [
                 'validator' => $this->createMock(FormValidatorInterface::class),
-                'alert' => $alerts['test2']
-            ]
+                'alert' => $alerts['test2'],
+            ],
         ];
 
         $manager->setValidators($verification);
@@ -152,7 +149,7 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testCanAddSingleAlertViaValidatorAdderMethod()
     {
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
 
         $rule = 'foo';
         $alert = 'bar';
@@ -164,7 +161,7 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testCanSetAndGetFormFieldControllers()
     {
-        $manager  = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
 
         $fields = [
             new FormFieldController('test1'),
@@ -182,7 +179,7 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testCanAddSingleFormFieldController()
     {
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
 
         $field1 = new FormFieldController('test1');
         $field2 = new FormFieldController('test2');
@@ -197,7 +194,7 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testCanSetAndGetProcessors()
     {
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
 
         $processors = [
             $this->createMock(FormDataProcessorInterface::class),
@@ -212,7 +209,7 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testCanAddSingleProcessor()
     {
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
 
         $processor1 = $this->createMock(FormDataProcessorInterface::class);
         $processor2 = $this->createMock(FormDataProcessorInterface::class);
@@ -227,7 +224,7 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testWontRunIfValidationFails()
     {
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
 
         $manager->addValidator('fail', $this->generateFailingValidator());
         $manager->addValidator('pass', $this->generatePassingValidator());
@@ -240,19 +237,18 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testPassesServerRequestToFormFieldControllers()
     {
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
 
         $param = 'test';
 
-        $controller = new class ($param) extends FormFieldController implements FormFieldControllerInterface
-        {
+        $controller = new class ($param) extends FormFieldController implements FormFieldControllerInterface {
             public $request;
 
             public function process(ServerRequestInterface $request): FieldOperationCacheInterface
             {
                 $this->request = $request;
 
-                return new FieldOperationCacheBuilder;
+                return new FieldOperationCacheBuilder();
             }
         };
 
@@ -268,14 +264,14 @@ class FormSubmissionManagerTest extends TestCase
 
     public function testPassesFieldOperationCacheObjectsToProcessors()
     {
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
 
         $fields = ['test1', 'test2', 'test3'];
         $invalid = ['fail1', 'fail2'];
 
-        $processor = new class ($fields) implements FormDataProcessorInterface
-        {
+        $processor = new class ($fields) implements FormDataProcessorInterface {
             public $fields;
+
             public $results;
 
             public function __construct(array $fields)
@@ -356,7 +352,7 @@ class FormSubmissionManagerTest extends TestCase
             'field-5' => '5',
         ]);
 
-        $manager = new FormSubmissionManager;
+        $manager = new FormSubmissionManager();
         $manager->setFields(...$fields);
 
         $results = $manager->process($request);

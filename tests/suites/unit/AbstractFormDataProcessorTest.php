@@ -1,7 +1,7 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Contracts\FormDataProcessingCacheInterface;
 use WebTheory\Saveyour\Controllers\FieldOperationCacheBuilder;
 use WebTheory\Saveyour\Processors\AbstractFormDataProcessor;
@@ -10,11 +10,13 @@ class AbstractFormDataProcessorTest extends TestCase
 {
     protected function generateDummyClass(): AbstractFormDataProcessor
     {
-        return new class extends AbstractFormDataProcessor
-        {
+        return new class () extends AbstractFormDataProcessor {
             public $fields;
+
             public $extractedValues;
+
             public $valueUpdated;
+
             public $allFieldsPresent;
 
             public function process(ServerRequestInterface $request, array $results): ?FormDataProcessingCacheInterface
@@ -35,7 +37,7 @@ class AbstractFormDataProcessorTest extends TestCase
         $fields = [
             'test1' => 'foo',
             'test2' => 'bar',
-            'test3' => 'baz'
+            'test3' => 'baz',
         ];
 
         $processor->setFields($fields);
@@ -65,12 +67,12 @@ class AbstractFormDataProcessorTest extends TestCase
         $fields = [
             'test1' => 'field1',
             'test2' => 'field2',
-            'test3' => 'field3'
+            'test3' => 'field3',
         ];
 
         $results = [
-            'field1' => (new FieldOperationCacheBuilder)->withSanitizedInputValue('foo'),
-            'field3' => (new FieldOperationCacheBuilder)->withSanitizedInputValue('bar'),
+            'field1' => (new FieldOperationCacheBuilder())->withSanitizedInputValue('foo'),
+            'field3' => (new FieldOperationCacheBuilder())->withSanitizedInputValue('bar'),
         ];
 
         $processor->setFields($fields);
@@ -79,7 +81,7 @@ class AbstractFormDataProcessorTest extends TestCase
 
         $this->assertFalse($processor->allFieldsPresent);
 
-        $results['field2'] = (new FieldOperationCacheBuilder)->withSanitizedInputValue('baz');
+        $results['field2'] = (new FieldOperationCacheBuilder())->withSanitizedInputValue('baz');
 
         $processor->process($request, $results);
 
@@ -95,19 +97,19 @@ class AbstractFormDataProcessorTest extends TestCase
         $fields = [
             'test1' => 'field1',
             'test2' => 'field2',
-            'test3' => 'field3'
+            'test3' => 'field3',
         ];
 
         $results = [
-            'field1' => (new FieldOperationCacheBuilder)->withSanitizedInputValue('foo'),
-            'field2' => (new FieldOperationCacheBuilder)->withSanitizedInputValue('bar'),
-            'field3' => (new FieldOperationCacheBuilder)->withSanitizedInputValue('baz'),
+            'field1' => (new FieldOperationCacheBuilder())->withSanitizedInputValue('foo'),
+            'field2' => (new FieldOperationCacheBuilder())->withSanitizedInputValue('bar'),
+            'field3' => (new FieldOperationCacheBuilder())->withSanitizedInputValue('baz'),
         ];
 
         $expected = [
             'test1' => 'foo',
             'test2' => 'bar',
-            'test3' => 'baz'
+            'test3' => 'baz',
         ];
 
         $processor->fields = $fields;
@@ -132,19 +134,19 @@ class AbstractFormDataProcessorTest extends TestCase
         $fields = [
             'test1' => 'field1',
             'test2' => 'field2',
-            'test3' => 'field3'
+            'test3' => 'field3',
         ];
 
         $updated = [
-            'field1' => (new FieldOperationCacheBuilder)->withUpdateSuccessful(false),
-            'field2' => (new FieldOperationCacheBuilder)->withUpdateSuccessful(true),
-            'field3' => (new FieldOperationCacheBuilder)->withUpdateSuccessful(true),
+            'field1' => (new FieldOperationCacheBuilder())->withUpdateSuccessful(false),
+            'field2' => (new FieldOperationCacheBuilder())->withUpdateSuccessful(true),
+            'field3' => (new FieldOperationCacheBuilder())->withUpdateSuccessful(true),
         ];
 
         $notUpdated = [
-            'field1' => (new FieldOperationCacheBuilder)->withUpdateSuccessful(false),
-            'field2' => (new FieldOperationCacheBuilder)->withUpdateSuccessful(false),
-            'field3' => (new FieldOperationCacheBuilder)->withUpdateSuccessful(false),
+            'field1' => (new FieldOperationCacheBuilder())->withUpdateSuccessful(false),
+            'field2' => (new FieldOperationCacheBuilder())->withUpdateSuccessful(false),
+            'field3' => (new FieldOperationCacheBuilder())->withUpdateSuccessful(false),
         ];
 
         $processor->fields = $fields;

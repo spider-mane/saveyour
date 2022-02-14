@@ -1,7 +1,5 @@
 <?php
 
-use Respect\Validation\Exceptions\NestedValidationException;
-use Respect\Validation\Validator as v;
 use WebTheory\Html\Html;
 use WebTheory\Saveyour\Contracts\ChecklistItemsProviderInterface;
 use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
@@ -9,8 +7,8 @@ use WebTheory\Saveyour\Contracts\RadioGroupSelectionInterface;
 use WebTheory\Saveyour\Elements\OptGroup;
 use WebTheory\Saveyour\Fields\Checklist;
 use WebTheory\Saveyour\Fields\RadioGroup;
-use WebTheory\Saveyour\Fields\Select2;
 use WebTheory\Saveyour\Fields\Select;
+use WebTheory\Saveyour\Fields\Select2;
 use WebTheory\Saveyour\Fields\Submit;
 use WebTheory\Saveyour\Fields\TrixEditor;
 use WebTheory\Saveyour\Selections\StateSelectOptions;
@@ -29,8 +27,8 @@ require $root . "vendor/autoload.php";
 
 // filp/whoops error handling
 call_user_func(function () {
-    $handler = new PrettyPageHandler;
-    $run = new Run;
+    $handler = new PrettyPageHandler();
+    $run = new Run();
 
     $run->prependHandler($handler)->register();
 });
@@ -47,7 +45,9 @@ call_user_func(function () use ($testDir) {
 ################################################################################
 # start
 ################################################################################
-if ($_POST) exit(var_dump($_POST));
+if ($_POST) {
+    exit(var_dump($_POST));
+}
 echo '
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +62,7 @@ echo '
 
 echo "<h1>Visual Field Tests</h1><hr>";
 echo Html::open('form', ['method' => 'post']);
-echo new Submit;
+echo new Submit();
 echo '<hr>';
 
 ################################################################################
@@ -70,21 +70,20 @@ echo '<hr>';
 ################################################################################
 echo '<h2>RadioGroup Test</h2>';
 
-$provider = new class implements RadioGroupSelectionInterface
-{
+$provider = new class () implements RadioGroupSelectionInterface {
     public function provideSelectionsData(): array
     {
         return [
             [
                 'value' => 'test-1',
                 'label' => 'Test 1',
-                'id' => 'radio-selection-test-1'
+                'id' => 'radio-selection-test-1',
             ],
             [
                 'value' => 'test-2',
                 'label' => 'Test 2',
-                'id' => 'radio-selection-test-2'
-            ]
+                'id' => 'radio-selection-test-2',
+            ],
         ];
     }
 
@@ -107,7 +106,7 @@ $provider = new class implements RadioGroupSelectionInterface
 $selection = new RadioGroup();
 $selection->setSelectionProvider($provider);
 $selection->setLabelOptions([
-    'classlist' => ['label-class', 'label-class-1']
+    'classlist' => ['label-class', 'label-class-1'],
 ]);
 $selection->setName('radio-group-test-1');
 $selection->setValue('test-2');
@@ -129,21 +128,20 @@ echo '<hr>';
 ################################################################################
 echo '<h2>Checklist Test</h2>';
 
-$provider = new class implements ChecklistItemsProviderInterface
-{
+$provider = new class () implements ChecklistItemsProviderInterface {
     public function provideSelectionsData(): array
     {
         return [
             [
                 'value' => 'test-1',
                 'label' => 'Test 1',
-                'id' => 'checklist-test-1'
+                'id' => 'checklist-test-1',
             ],
             [
                 'value' => 'test-2',
                 'label' => 'Test 2',
-                'id' => 'checklist-test-2'
-            ]
+                'id' => 'checklist-test-2',
+            ],
         ];
     }
 
@@ -179,8 +177,7 @@ echo '<h2>Select Test</h2>';
 
 $select = new Select();
 
-$provider1 = new class implements OptionsProviderInterface
-{
+$provider1 = new class () implements OptionsProviderInterface {
     public function provideSelectionsData(): array
     {
         return [
@@ -191,7 +188,7 @@ $provider1 = new class implements OptionsProviderInterface
             [
                 'value' => 'test-B',
                 'text' => 'Test B',
-            ]
+            ],
         ];
     }
 
@@ -219,8 +216,7 @@ echo str_repeat('<br>', 2);
 
 echo '<h3>Multi-Value with optgroups</h3>';
 
-$provider2 = new class implements OptionsProviderInterface
-{
+$provider2 = new class () implements OptionsProviderInterface {
     public function provideSelectionsData(): array
     {
         return [
@@ -231,7 +227,7 @@ $provider2 = new class implements OptionsProviderInterface
             [
                 'value' => 'test-D',
                 'text' => 'Test D',
-            ]
+            ],
         ];
     }
 
@@ -246,8 +242,7 @@ $provider2 = new class implements OptionsProviderInterface
     }
 };
 
-$provider3 = new class implements OptionsProviderInterface
-{
+$provider3 = new class () implements OptionsProviderInterface {
     public function provideSelectionsData(): array
     {
         return [
@@ -258,7 +253,7 @@ $provider3 = new class implements OptionsProviderInterface
             [
                 'value' => 'test-F',
                 'text' => 'Test F',
-            ]
+            ],
         ];
     }
 
@@ -273,7 +268,7 @@ $provider3 = new class implements OptionsProviderInterface
     }
 };
 
-$select = new Select;
+$select = new Select();
 
 $optgroup1 = new OptGroup('Test Group 1');
 $optgroup2 = new OptGroup('Test Group 2');
@@ -300,7 +295,7 @@ echo Html::h2('Select2 Test');
 $states = new StateSelectOptions();
 
 #test1
-$select2 = new Select2;
+$select2 = new Select2();
 $select2->setName('select2-test-1');
 $select2->setSelectionProvider($states);
 $select2->setPlaceholder('Select2 Test 1 Placeholder');
@@ -310,7 +305,7 @@ echo str_repeat('<br>', 2);
 
 #test2
 $select2 = new Select2([
-    'allowClear' => true
+    'allowClear' => true,
 ]);
 $select2->setName('select2-test-2');
 $select2->setValue('MA');
@@ -323,7 +318,7 @@ echo $select2->toHtml();
 echo str_repeat('<br>', 2);
 
 #test3
-$select2 = new Select2;
+$select2 = new Select2();
 $select2->setName('select2-test-3');
 $select2->setSelectionProvider($provider2);
 $select2->setPlaceholder('Select2 Test 3 Placeholder');
@@ -334,7 +329,7 @@ echo $select2->toHtml();
 echo str_repeat('<br>', 2);
 
 #test4
-$select2 = new Select2;
+$select2 = new Select2();
 $select2->setName('select2-test-4');
 $select2->setValue(['test-B', 'test-D']);
 $select2->setPlaceholder('Select2 Test 4 Placeholder');
@@ -363,7 +358,7 @@ echo $trix;
 # end
 ################################################################################
 echo '<br><hr>';
-echo new Submit;
+echo new Submit();
 echo Html::close('form');
 echo '
   <script type="text/javascript" src="assets/lib/trix.js"></script>

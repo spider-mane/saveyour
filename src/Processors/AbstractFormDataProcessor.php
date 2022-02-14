@@ -61,7 +61,6 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
     protected function valueUpdated(array $results): bool
     {
         foreach ($results as $result) {
-
             if (true === $result->updateSuccessful()) {
                 return true;
             }
@@ -93,7 +92,6 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
         $keys = array_flip($this->fields);
 
         foreach ($results as $id => $cache) {
-
             $values[$keys[$id]] = $cache->sanitizedInputValue();
         }
 

@@ -1,7 +1,7 @@
 <?php
 
 use GuzzleHttp\Psr7\ServerRequest;
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Request;
 
 class RequestTest extends TestCase
@@ -14,7 +14,7 @@ class RequestTest extends TestCase
         $request = ServerRequest::fromGlobals()
             ->withMethod('POST')
             ->withParsedBody([
-                $param => $value
+                $param => $value,
             ]);
 
         $this->assertTrue(Request::has($request, $param));
@@ -29,7 +29,7 @@ class RequestTest extends TestCase
         $request = ServerRequest::fromGlobals()
             ->withMethod('GET')
             ->withQueryParams([
-                $param => $value
+                $param => $value,
             ]);
 
         $this->assertTrue(Request::has($request, $param));
@@ -44,7 +44,7 @@ class RequestTest extends TestCase
         $request = ServerRequest::fromGlobals()
             ->withMethod('CUSTOM')
             ->withParsedBody([
-                $param => $value
+                $param => $value,
             ]);
 
         $this->assertTrue(Request::has($request, $param));

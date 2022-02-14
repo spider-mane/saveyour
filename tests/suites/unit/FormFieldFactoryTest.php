@@ -1,6 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Factories\FormFieldFactory;
 use WebTheory\Saveyour\Fields\Select;
 
@@ -20,7 +20,7 @@ class FormFieldFactoryTest extends TestCase
             'classlist' => ['foo', 'bar', 'baz'],
         ];
 
-        $expected = (new Select)
+        $expected = (new Select())
             ->setName($args['name'])
             ->setId($args['id'])
             ->setClasslist($args['classlist']);

@@ -1,8 +1,7 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Respect\Validation\Validatable;
 use Respect\Validation\Validator;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\InputPurifier;
 
 class InputPurifierTest extends TestCase
@@ -95,7 +94,7 @@ class InputPurifierTest extends TestCase
             'Test' => [
                 'Phone Number' => "{$formatted} is an invalid {$v1->getName()}",
                 'Email Address' => "{$formatted} is an invalid {$v2->getName()}",
-            ]
+            ],
         ];
 
         $purifier = new InputPurifier($validator);

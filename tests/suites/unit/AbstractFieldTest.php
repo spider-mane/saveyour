@@ -1,6 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Controllers\AbstractField;
 
 class AbstractFieldTest extends TestCase
@@ -12,8 +12,7 @@ class AbstractFieldTest extends TestCase
     {
         $requestVar = 'test';
 
-        $child = new class ($requestVar) extends AbstractField
-        {
+        $child = new class ($requestVar) extends AbstractField {
         };
 
         $this->assertEquals($requestVar, $child->getRequestVar());

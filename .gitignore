@@ -2,6 +2,10 @@
 *.cache
 /build/
 /dist/
+/logs/
+/temp/
+captainhook.config.json
+cghooks.lock
 docker-compose.override.yml
 
 # Composer
@@ -9,11 +13,11 @@ docker-compose.override.yml
 composer.lock
 
 # Env
-.env
+*.env
 .env.*
 .*.env
-*.env
 !.env.example
+!.env.*.example
 !.example.env
 !example.env
 

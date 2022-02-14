@@ -106,7 +106,7 @@ class StateSelectOptions implements OptionsProviderInterface
     protected const MAP = [
         'States' => self::STATES,
         'Territories' => self::TERRITORIES,
-        'ArmedForces' => self::ARMED_FORCES
+        'ArmedForces' => self::ARMED_FORCES,
     ];
 
     /**
@@ -177,7 +177,7 @@ class StateSelectOptions implements OptionsProviderInterface
             foreach (static::MAP[$group] as $abbr => $name) {
                 $options[] = [
                     'name' => $name,
-                    'abbr' => $abbr
+                    'abbr' => $abbr,
                 ];
             }
         }

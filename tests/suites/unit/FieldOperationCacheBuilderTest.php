@@ -1,13 +1,13 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Controllers\FieldOperationCacheBuilder;
 
 class FieldOperationCacheBuilderTest extends TestCase
 {
     public function testCanSetRequestVarPresent()
     {
-        $builder = new FieldOperationCacheBuilder;
+        $builder = new FieldOperationCacheBuilder();
 
         $builder->withRequestVarPresent(true);
 
@@ -20,7 +20,7 @@ class FieldOperationCacheBuilderTest extends TestCase
 
     public function testCanSetSanitizedInputValue()
     {
-        $builder = new FieldOperationCacheBuilder;
+        $builder = new FieldOperationCacheBuilder();
 
         $value = 'foobar';
 
@@ -31,7 +31,7 @@ class FieldOperationCacheBuilderTest extends TestCase
 
     public function testCanSetUpdateAttempted()
     {
-        $builder = new FieldOperationCacheBuilder;
+        $builder = new FieldOperationCacheBuilder();
 
         $builder->withUpdateAttempted(true);
 
@@ -44,7 +44,7 @@ class FieldOperationCacheBuilderTest extends TestCase
 
     public function testCanSetUpdateSuccessful()
     {
-        $builder = new FieldOperationCacheBuilder;
+        $builder = new FieldOperationCacheBuilder();
 
         $builder->withUpdateSuccessful(true);
 
@@ -57,7 +57,7 @@ class FieldOperationCacheBuilderTest extends TestCase
 
     public function testCanSetRuleViolations()
     {
-        $builder = new FieldOperationCacheBuilder;
+        $builder = new FieldOperationCacheBuilder();
 
         $violations = [
             'test1' => 'foo',

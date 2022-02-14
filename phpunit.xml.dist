@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.5/phpunit.xsd"
+  xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
   backupGlobals="false"
   backupStaticAttributes="false"
   beStrictAboutCoversAnnotation="true"
   beStrictAboutOutputDuringTests="false"
   beStrictAboutTodoAnnotatedTests="true"
-  bootstrap="vendor/autoload.php"
+  bootstrap="tests/bootstrap.php"
+  cacheResult="true"
+  cacheResultFile="build/phpunit/.result.cache"
   colors="true"
-  convertErrorsToExceptions="true"
-  convertNoticesToExceptions="true"
-  convertWarningsToExceptions="true"
   defaultTestSuite="unit"
   executionOrder="depends,defects"
   forceCoversAnnotation="false"
+  printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer"
   processIsolation="false"
   stopOnFailure="true"
   testdox="true"
   verbose="true">
 
-  <!-- Testsuites -->
   <testsuites>
-    <!-- Unit Testing -->
     <testsuite name="unit">
-      <directory>tests/suites/unit</directory>
+      <directory>tests/Suites/Unit</directory>
     </testsuite>
 
-    <!-- Integration Testing -->
     <testsuite name="integration">
-      <directory>tests/suites/integration</directory>
+      <directory>tests/Suites/Integration</directory>
     </testsuite>
 
-    <!-- Acceptance Testing -->
+    <testsuite name="functional">
+      <directory>tests/Suites/Functional</directory>
+    </testsuite>
+
     <testsuite name="acceptance">
-      <directory>tests/suites/acceptance</directory>
+      <directory>tests/Suites/Acceptance</directory>
     </testsuite>
   </testsuites>
 
-  <!-- Coverage -->
   <coverage cacheDirectory="build/phpunit/coverage/.cache">
     <include>
       <directory suffix=".php">src</directory>
     </include>
     <report>
       <html outputDirectory="build/phpunit/coverage/html"/>
+      <clover outputFile="build/phpunit/coverage/coverage.clover.xml"/>
+      <text outputFile="build/phpunit/coverage/coverage.txt"/>
     </report>
   </coverage>
 
-  <!-- Logging -->
   <logging>
     <junit outputFile="build/phpunit/logs/report.junit.xml"/>
     <teamcity outputFile="build/phpunit/logs/teamcity.txt"/>

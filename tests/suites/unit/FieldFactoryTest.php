@@ -1,6 +1,5 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
 use Respect\Validation\Validator;
 use WebTheory\Saveyour\Controllers\FormFieldController;
 use WebTheory\Saveyour\Factories\DataManagerFactory;

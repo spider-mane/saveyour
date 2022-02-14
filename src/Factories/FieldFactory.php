@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Factories;
 
-use WebTheory\GuctilityBelt\Traits\SmartFactoryTrait;
+use WebTheory\Factory\Traits\SmartFactoryTrait;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerResolverFactoryInterface as iDataManagerFactory;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;

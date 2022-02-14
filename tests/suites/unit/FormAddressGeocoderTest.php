@@ -9,8 +9,8 @@ use Geocoder\Provider\GoogleMaps\GoogleMaps;
 use Geocoder\Query\GeocodeQuery;
 use GuzzleHttp\Psr7\ServerRequest;
 use Http\Adapter\Guzzle6\Client;
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Controllers\FieldOperationCacheBuilder;
 use WebTheory\Saveyour\Processors\FormAddressGeocoder;
@@ -22,8 +22,7 @@ class FormAddressGeocoderTest extends TestCase
      */
     protected function generateDummyDataManager()
     {
-        return new class implements FieldDataManagerInterface
-        {
+        return new class () implements FieldDataManagerInterface {
             public function getCurrentData(ServerRequestInterface $request)
             {
                 return '';
@@ -55,24 +54,24 @@ class FormAddressGeocoderTest extends TestCase
         $request = ServerRequest::fromGlobals();
 
         $results = [
-            'street' => (new FieldOperationCacheBuilder)
+            'street' => (new FieldOperationCacheBuilder())
                 ->withSanitizedInputValue($address['street'])
                 ->withUpdateSuccessful(true),
 
-            'city' => (new FieldOperationCacheBuilder)
+            'city' => (new FieldOperationCacheBuilder())
                 ->withSanitizedInputValue($address['city'])
                 ->withUpdateSuccessful(true),
 
-            'state' => (new FieldOperationCacheBuilder)
+            'state' => (new FieldOperationCacheBuilder())
                 ->withSanitizedInputValue($address['state'])
                 ->withUpdateSuccessful(true),
 
-            'zip' => (new FieldOperationCacheBuilder)
+            'zip' => (new FieldOperationCacheBuilder())
                 ->withSanitizedInputValue($address['zip'])
                 ->withUpdateSuccessful(true),
         ];
 
-        $address = (new Address)
+        $address = (new Address())
             ->withAddressLine1($address['street'])
             ->withLocality($address['city'])
             ->withAdministrativeArea($address['state'])
@@ -80,9 +79,9 @@ class FormAddressGeocoderTest extends TestCase
             ->withCountryCode('US');
 
         $formatter = new DefaultFormatter(
-            new AddressFormatRepository,
-            new CountryRepository,
-            new SubdivisionRepository,
+            new AddressFormatRepository(),
+            new CountryRepository(),
+            new SubdivisionRepository(),
             ['html' => false]
         );
 

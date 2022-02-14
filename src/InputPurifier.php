@@ -131,11 +131,11 @@ class InputPurifier implements InputPurifierInterface
     protected function validateInput($input)
     {
         foreach ((array) $input as $value) {
-
             try {
                 $this->validator->assert($value);
             } catch (NestedValidationException $violation) {
                 $this->handleViolation($violation);
+
                 return false;
             }
         }
@@ -152,7 +152,6 @@ class InputPurifier implements InputPurifierInterface
         $input = (array) $input; // cast input to array for simplicity
 
         foreach ($this->filters as $filter) {
-
             foreach ($input as &$value) {
                 $value = $filter($value);
             }

@@ -129,7 +129,7 @@ class Select2 extends Select implements FormFieldInterface
             'multiple' => $this->multiple,
             'placeholder' => $this->placeholder,
             'theme' => $this->theme,
-            'width' => $this->width
+            'width' => $this->width,
         ];
     }
 }

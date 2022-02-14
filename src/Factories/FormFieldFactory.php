@@ -3,8 +3,8 @@
 namespace WebTheory\Saveyour\Factories;
 
 use Exception;
-use WebTheory\GuctilityBelt\Traits\ClassResolverTrait;
-use WebTheory\GuctilityBelt\Traits\SmartFactoryTrait;
+use WebTheory\Factory\Traits\ClassResolverTrait;
+use WebTheory\Factory\Traits\SmartFactoryTrait;
 use WebTheory\Html\TagSage;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 use WebTheory\Saveyour\Contracts\FormFieldResolverFactoryInterface;
@@ -31,7 +31,7 @@ class FormFieldFactory implements FormFieldResolverFactoryInterface
     protected $rules = [];
 
     public const NAMESPACES = [
-        'webtheory.saveyour' =>  "WebTheory\\Saveyour\\Fields"
+        'webtheory.saveyour' => "WebTheory\\Saveyour\\Fields",
     ];
 
     public const FIELDS = [];

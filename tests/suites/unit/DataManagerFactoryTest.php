@@ -1,6 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use Tests\Support\TestCase;
 use WebTheory\Saveyour\Factories\DataManagerFactory;
 use WebTheory\Saveyour\Managers\FieldDataManagerCallback;
 

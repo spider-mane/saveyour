@@ -74,7 +74,7 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
         $html = '';
 
         foreach ($this->getSelectionData() as $selection) {
-            $id  = $this->defineSelectionId($selection);
+            $id = $this->defineSelectionId($selection);
             $value = $this->defineSelectionValue($selection);
 
             $checkbox = $this->createSelectionCheckbox($selection)
