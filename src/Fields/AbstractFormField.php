@@ -219,7 +219,7 @@ abstract class AbstractFormField extends AbstractHtmlElement implements FormFiel
     /**
      * @return string
      */
-    public function getLabelHtml(): Label
+    public function getLabelHtml(): string
     {
         return (new Label($this->label))->setFor($this->id)->toHtml();
     }
