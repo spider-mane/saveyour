@@ -24,9 +24,6 @@ abstract class AbstractBuilderField
      */
     protected $mustAwait = [];
 
-    /**
-     *
-     */
     public function __construct(string $requestVar)
     {
         $this->requestVar = $requestVar;
@@ -80,9 +77,6 @@ abstract class AbstractBuilderField
         return $this;
     }
 
-    /**
-     *
-     */
     public function init(): FormFieldControllerInterface
     {
         return new FormFieldController(
@@ -98,73 +92,46 @@ abstract class AbstractBuilderField
         );
     }
 
-    /**
-     *
-     */
     protected function defineRequestVar(): string
     {
         return $this->requestVar;
     }
 
-    /**
-     *
-     */
     protected function defineFormField(): ?FormFieldInterface
     {
         return null;
     }
 
-    /**
-     *
-     */
     protected function defineDataManager(): ?FieldDataManagerInterface
     {
         return null;
     }
 
-    /**
-     *
-     */
     protected function defineDataFormatter(): ?DataFormatterInterface
     {
         return null;
     }
 
-    /**
-     *
-     */
     protected function defineFilters(): ?array
     {
         return null;
     }
 
-    /**
-     *
-     */
     protected function defineRules(): ?array
     {
         return null;
     }
 
-    /**
-     *
-     */
     protected function defineEscaper(): ?callable
     {
         return null;
     }
 
-    /**
-     *
-     */
     protected function defineProcessingDisabled(): ?bool
     {
         return $this->processingDisabled;
     }
 
-    /**
-     *
-     */
     protected function defineMustAwait(): ?array
     {
         return $this->mustAwait;

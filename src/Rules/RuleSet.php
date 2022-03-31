@@ -21,9 +21,6 @@ class RuleSet
         return $this->rules;
     }
 
-    /**
-     *
-     */
     public function add(string $name, Validatable $rule)
     {
         $this->rules[$name] = $rule;
@@ -47,17 +44,11 @@ class RuleSet
         return $this;
     }
 
-    /**
-     *
-     */
     public function get(string $rule): Validatable
     {
         return $this->rules[$rule];
     }
 
-    /**
-     *
-     */
     public function break(string $rule)
     {
         unset($this->rules[$rule]);

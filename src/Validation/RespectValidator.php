@@ -9,7 +9,7 @@ use WebTheory\Saveyour\Contracts\ValidatorInterface;
 class RespectValidator implements ValidatorInterface
 {
     /**
-     * @var Validatable[]
+     * @var array<int,Validatable>
      */
     protected array $validatables = [];
 
@@ -18,24 +18,24 @@ class RespectValidator implements ValidatorInterface
         $this->validatables = $validatables;
     }
 
-    public function validate($value): ValidationReportInterface
+    public function inspect($value): ValidationReportInterface
     {
         $builder = new ValidationReportBuilder();
 
         foreach ($this->validatables as $validatable) {
             if (!$validatable->validate($value)) {
-                $builder->violation($validatable->getName());
+                $builder->withRuleViolation($validatable->getName());
                 $status = false;
             }
         }
 
-        $builder->status($status ?? true);
+        $builder->withValidationStatus($status ?? true);
 
         return $builder->build();
     }
 
-    public function isValid($value): bool
+    public function validate($value): bool
     {
-        return $this->validate($value)->getStatus();
+        return $this->inspect($value)->validationStatus();
     }
 }

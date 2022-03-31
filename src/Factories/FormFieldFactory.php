@@ -15,19 +15,10 @@ class FormFieldFactory implements FormFieldResolverFactoryInterface
     use SmartFactoryTrait;
     use ClassResolverTrait;
 
-    /**
-     *
-     */
     private $fields = [];
 
-    /**
-     *
-     */
     protected $namespaces = [];
 
-    /**
-     *
-     */
     protected $rules = [];
 
     public const NAMESPACES = [
@@ -38,9 +29,6 @@ class FormFieldFactory implements FormFieldResolverFactoryInterface
 
     protected const CONVENTION = null;
 
-    /**
-     *
-     */
     public function __construct(array $namespaces = [], array $fields = [])
     {
         $this->namespaces = $namespaces + static::NAMESPACES;
@@ -71,9 +59,6 @@ class FormFieldFactory implements FormFieldResolverFactoryInterface
         return $this;
     }
 
-    /**
-     *
-     */
     public function addFields(array $fields)
     {
         $this->fields = $fields + $this->fields;
@@ -81,9 +66,6 @@ class FormFieldFactory implements FormFieldResolverFactoryInterface
         return $this;
     }
 
-    /**
-     *
-     */
     public function create(string $field, array $args = []): FormFieldInterface
     {
         $class = $this->getClass($field);

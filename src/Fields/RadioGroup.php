@@ -68,9 +68,6 @@ class RadioGroup extends AbstractCompositeSelectionField implements FormFieldInt
         return $this;
     }
 
-    /**
-     *
-     */
     protected function renderHtmlMarkup(): string
     {
         $html = '';
@@ -95,9 +92,6 @@ class RadioGroup extends AbstractCompositeSelectionField implements FormFieldInt
         return $html;
     }
 
-    /**
-     *
-     */
     protected function createSelectionRadio($selection): Radio
     {
         return new Radio();

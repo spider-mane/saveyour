@@ -7,9 +7,6 @@ use WebTheory\Saveyour\Contracts\FormFieldResolverFactoryInterface;
 
 class SimpleFieldFactory extends FieldFactory
 {
-    /**
-     *
-     */
     public function __construct(array $options = [])
     {
         $field = $options['form_field_factory'] ?? [];
@@ -24,9 +21,6 @@ class SimpleFieldFactory extends FieldFactory
         }
     }
 
-    /**
-     *
-     */
     protected function createFormFieldFactory(array $options): FormFieldResolverFactoryInterface
     {
         $namespaces = $options['namespaces'] ?? [];
@@ -35,9 +29,6 @@ class SimpleFieldFactory extends FieldFactory
         return new FormFieldFactory($namespaces, $fields);
     }
 
-    /**
-     *
-     */
     protected function createDataManagerFactory(array $options): FieldDataManagerResolverFactoryInterface
     {
         $namespaces = $options['namespaces'] ?? [];

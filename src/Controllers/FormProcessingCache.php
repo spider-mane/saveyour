@@ -12,9 +12,6 @@ class FormProcessingCache implements FormProcessingCacheInterface, ArrayAccess, 
 {
     use ImmutableObjectTrait;
 
-    /**
-     *
-     */
     protected $results = [
         'request_violations' => [],
         'input_violations' => [],
@@ -30,9 +27,6 @@ class FormProcessingCache implements FormProcessingCacheInterface, ArrayAccess, 
         return $this->results['request_violations'];
     }
 
-    /**
-     *
-     */
     public function withRequestViolations(array $violations)
     {
         $this->results['request_violations'] = $violations;
@@ -48,9 +42,6 @@ class FormProcessingCache implements FormProcessingCacheInterface, ArrayAccess, 
         return $this->results['input_violations'];
     }
 
-    /**
-     *
-     */
     public function withInputViolations(array $violations)
     {
         $this->results['input_violations'] = $violations;
@@ -66,9 +57,6 @@ class FormProcessingCache implements FormProcessingCacheInterface, ArrayAccess, 
         return $this->results['input_results'];
     }
 
-    /**
-     *
-     */
     public function withInputResults(array $results)
     {
         $this->results['input_results'] = $results;
@@ -94,33 +82,21 @@ class FormProcessingCache implements FormProcessingCacheInterface, ArrayAccess, 
         return $this;
     }
 
-    /**
-     *
-     */
     public function toArray()
     {
         return $this->results;
     }
 
-    /**
-     *
-     */
     public function offsetExists($offset)
     {
         return isset($this->results[$offset]);
     }
 
-    /**
-     *
-     */
     public function offsetGet($offset)
     {
         return $this->results[$offset];
     }
 
-    /**
-     *
-     */
     public function jsonSerialize()
     {
         return $this->toArray();

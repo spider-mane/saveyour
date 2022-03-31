@@ -41,9 +41,6 @@ abstract class AbstractCompositeSelectionField extends AbstractFormField impleme
         return $this;
     }
 
-    /**
-     *
-     */
     protected function createSelectionLabel($selection): Label
     {
         return $this->createLabel($this->defineSelectionLabel($selection), $this->labelOptions);

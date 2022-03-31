@@ -17,26 +17,17 @@ class FieldDataManagerCallback implements FieldDataManagerInterface
      */
     private $handleDataCallback;
 
-    /**
-     *
-     */
     public function __construct(callable $getDataCallback, callable $handleDataCallback)
     {
         $this->getDataCallback = $getDataCallback;
         $this->handleDataCallback = $handleDataCallback;
     }
 
-    /**
-     *
-     */
     public function getCurrentData(ServerRequestInterface $request)
     {
         return ($this->getDataCallback)($request);
     }
 
-    /**
-     *
-     */
     public function handleSubmittedData(ServerRequestInterface $request, $data): bool
     {
         return ($this->handleDataCallback)($request, $data);

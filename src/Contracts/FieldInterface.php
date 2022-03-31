@@ -20,18 +20,9 @@ interface FieldInterface
      */
     public function process(ServerRequestInterface $request): FieldOperationCacheInterface;
 
-    /**
-     *
-     */
     public function getRequestVar(): string;
 
-    /**
-     *
-     */
     public function getPresetValue(ServerRequestInterface $request);
 
-    /**
-     *
-     */
     public function canProcessInput(): bool;
 }

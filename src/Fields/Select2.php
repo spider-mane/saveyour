@@ -17,24 +17,12 @@ class Select2 extends Select implements FormFieldInterface
      */
     protected $theme = 'default';
 
-    /**
-     *
-     */
     protected $config = [];
 
-    /**
-     *
-     */
     public const EXPECTED_CLASS = 'saveyour--select2';
 
-    /**
-     *
-     */
     public const EXPECTED_DATA_KEY = 'data-saveyour__select2';
 
-    /**
-     *
-     */
     public function __construct(array $config = [])
     {
         $this->config = $config + $this->config;
@@ -100,9 +88,6 @@ class Select2 extends Select implements FormFieldInterface
         return $this;
     }
 
-    /**
-     *
-     */
     protected function resolveAttributes(): AbstractHtmlElement
     {
         $this->addClass(static::EXPECTED_CLASS);
@@ -111,17 +96,11 @@ class Select2 extends Select implements FormFieldInterface
             ->addAttribute(static::EXPECTED_DATA_KEY, $this->getConfiguration());
     }
 
-    /**
-     *
-     */
     protected function getConfiguration(): string
     {
         return json_encode($this->resolveConfiguration() + $this->config);
     }
 
-    /**
-     *
-     */
     protected function resolveConfiguration(): array
     {
         return [

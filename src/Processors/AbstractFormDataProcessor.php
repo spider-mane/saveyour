@@ -22,9 +22,6 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
         return $this->fields;
     }
 
-    /**
-     *
-     */
     public function getField(string $field)
     {
         return $this->fields[$field];

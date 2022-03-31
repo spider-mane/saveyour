@@ -4,7 +4,7 @@ namespace WebTheory\Saveyour\Contracts;
 
 interface ValidationReportInterface
 {
-    public function getStatus(): bool;
+    public function validationStatus(): bool;
 
-    public function getViolations(): array;
+    public function ruleViolations(): array;
 }

@@ -11,9 +11,6 @@ class CombinationDataFormatter implements DataFormatterInterface
      */
     protected $formatters = [];
 
-    /**
-     *
-     */
     public function __construct(DataFormatterInterface ...$formatters)
     {
         $this->formatters = $formatters;
@@ -29,9 +26,6 @@ class CombinationDataFormatter implements DataFormatterInterface
         return $this->formatters;
     }
 
-    /**
-     *
-     */
     public function formatData($value)
     {
         foreach ($this->formatters as $formatter) {
@@ -41,9 +35,6 @@ class CombinationDataFormatter implements DataFormatterInterface
         return $value;
     }
 
-    /**
-     *
-     */
     public function formatInput($value)
     {
         foreach (array_reverse($this->formatters) as $formatter) {

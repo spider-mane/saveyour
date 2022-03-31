@@ -9,9 +9,6 @@ class Datalist extends AbstractHtmlElement
 {
     use RendersOptionsTrait;
 
-    /**
-     *
-     */
     protected function renderHtmlMarkup(): string
     {
         return $this->tag('datalist', $this->attributes, $this->renderSelection());

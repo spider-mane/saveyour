@@ -7,103 +7,70 @@ use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 
 abstract class AbstractFieldOperationCache implements FieldOperationCacheInterface, JsonSerializable
 {
-    /**
-     *
-     */
-    protected $results = [
-        'request_var_present' => false,
-        'sanitized_input_value' => null,
-        'update_attempted' => false,
-        'update_successful' => false,
-        'rule_violations' => [],
-    ];
+    protected bool $requestVarPresent = false;
 
-    /**
-     * @var bool
-     */
-    protected $requestVarPresent = false;
-
-    /**
-     * @var mixed
-     */
     protected $sanitizedInputValue;
 
-    /**
-     * @var bool
-     */
-    protected $updateAttempted = false;
+    protected bool $updateAttempted = false;
+
+    protected bool $updateSuccessful = false;
+
+    protected bool $validationStatus = false;
 
     /**
-     * @var bool
+     * @var array<int,string>
      */
-    protected $updateSuccessful = false;
+    protected array $ruleViolations = [];
 
-    /**
-     * @var array
-     */
-    protected $ruleViolations = [];
-
-    /**
-     *
-     */
     public function requestVarPresent(): bool
     {
-        return $this->results['request_var_present'];
+        return $this->requestVarPresent;
     }
 
-    /**
-     *
-     */
     public function sanitizedInputValue()
     {
-        return $this->results['sanitized_input_value'];
+        return $this->sanitizedInputValue;
     }
 
-    /**
-     *
-     */
     public function updateAttempted(): bool
     {
-        return $this->results['update_attempted'];
+        return $this->updateAttempted;
     }
 
-    /**
-     *
-     */
     public function updateSuccessful(): bool
     {
-        return $this->results['update_successful'];
+        return $this->updateSuccessful;
     }
 
-    /**
-     *
-     */
     public function ruleViolations(): array
     {
-        return $this->results['rule_violations'];
+        return $this->ruleViolations;
     }
 
-    /**
-     *
-     */
-    public function toArray()
+    public function validationStatus(): bool
     {
-        return (array) $this;
+        return $this->validationStatus;
     }
 
-    /**
-     *
-     */
-    public function toJson()
-    {
-        return json_encode($this);
-    }
-
-    /**
-     *
-     */
     public function jsonSerialize()
     {
-        return $this;
+        return $this->toArray();
+    }
+
+    public function toArray()
+    {
+        return [
+            'request_var_present' => $this->requestVarPresent,
+            'sanitized_input_value' => $this->sanitizedInputValue,
+            'update_attempted' => $this->updateAttempted,
+            'update_successful' => $this->updateSuccessful,
+            'validation_status' => $this->validationStatus,
+            'rule_violations' => $this->ruleViolations,
+        ];
+    }
+
+    public function toJson()
+    {
+        return json_encode($this->jsonSerialize());
     }
 }

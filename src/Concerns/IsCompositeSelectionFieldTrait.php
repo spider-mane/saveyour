@@ -13,17 +13,11 @@ trait IsCompositeSelectionFieldTrait
      */
     protected $selectionProvider;
 
-    /**
-     *
-     */
     protected function defineSelectionLabel($selection): string
     {
         return $this->selectionProvider->defineSelectionLabel($selection);
     }
 
-    /**
-     *
-     */
     protected function defineSelectionId($selection): string
     {
         return $this->selectionProvider->defineSelectionId($selection);

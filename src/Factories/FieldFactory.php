@@ -24,14 +24,8 @@ class FieldFactory
      */
     protected $dataManagerFactory;
 
-    /**
-     *
-     */
     protected $controller = FormFieldController::class;
 
-    /**
-     *
-     */
     public function __construct(iFormFieldFactory $formFieldFactory, iDataManagerFactory $dataManagerFactory, ?string $controller = null)
     {
         $this->formFieldFactory = $formFieldFactory;
@@ -42,9 +36,6 @@ class FieldFactory
         }
     }
 
-    /**
-     *
-     */
     public function create(array $args): FormFieldControllerInterface
     {
         if (isset($args['type'])) {
@@ -60,17 +51,11 @@ class FieldFactory
         return $this->createController($args);
     }
 
-    /**
-     *
-     */
     protected function createController(array $args): FormFieldControllerInterface
     {
         return $this->build($this->controller, $args);
     }
 
-    /**
-     *
-     */
     protected function createFormField(array $args): FormFieldInterface
     {
         $type = $args['@create'];
@@ -79,9 +64,6 @@ class FieldFactory
         return $this->formFieldFactory->create($type, $args);
     }
 
-    /**
-     *
-     */
     protected function createDataManager(array $args): FieldDataManagerInterface
     {
         $manager = $args['@create'];
@@ -90,9 +72,6 @@ class FieldFactory
         return $this->dataManagerFactory->create($manager, $args);
     }
 
-    /**
-     *
-     */
     public function __call($name, $args)
     {
         $args = $args[0];

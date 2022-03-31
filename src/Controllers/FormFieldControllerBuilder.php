@@ -72,17 +72,11 @@ class FormFieldControllerBuilder
      */
     protected $mustAwait = [];
 
-    /**
-     *
-     */
     public function __construct(?string $requestVar)
     {
         $requestVar && $this->requestVar = $requestVar;
     }
 
-    /**
-     *
-     */
     public function create(): FormFieldControllerInterface
     {
         return new FormFieldController(
@@ -290,9 +284,6 @@ class FormFieldControllerBuilder
         return $this->validator;
     }
 
-    /**
-     *
-     */
     public function setValidator(Validatable $validator): FormFieldControllerBuilder
     {
         $this->validator = $validator;
@@ -416,9 +407,6 @@ class FormFieldControllerBuilder
         return $this;
     }
 
-    /**
-     *
-     */
     public function await(string $field)
     {
         $this->mustAwait[] = $field;

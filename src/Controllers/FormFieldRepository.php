@@ -12,9 +12,6 @@ class FormFieldRepository implements FormFieldRepositoryInterface
      */
     protected $fields = [];
 
-    /**
-     *
-     */
     public function __construct(FormFieldControllerInterface ...$fields)
     {
         array_map([$this, 'addField'], $fields);
@@ -30,17 +27,11 @@ class FormFieldRepository implements FormFieldRepositoryInterface
         return empty($fields) ? $this->fields : $this->getDefinedFields(...$fields);
     }
 
-    /**
-     *
-     */
     public function getField(string $field): ?FormFieldControllerInterface
     {
         return $this->fields[$field] ?? null;
     }
 
-    /**
-     *
-     */
     public function getDefinedFields(string ...$fields): array
     {
         return array_filter(
@@ -51,9 +42,6 @@ class FormFieldRepository implements FormFieldRepositoryInterface
         );
     }
 
-    /**
-     *
-     */
     public function addField(FormFieldControllerInterface $field)
     {
         $this->fields[$field->getRequestVar()] = $field;

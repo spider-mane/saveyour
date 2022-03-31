@@ -7,9 +7,6 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Text extends AbstractInput implements FormFieldInterface
 {
-    /**
-     *
-     */
     protected $type = 'text';
 
     /**
@@ -17,9 +14,6 @@ class Text extends AbstractInput implements FormFieldInterface
      */
     protected $pattern;
 
-    /**
-     *
-     */
     protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()

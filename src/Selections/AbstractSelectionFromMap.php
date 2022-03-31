@@ -11,9 +11,6 @@ abstract class AbstractSelectionFromMap implements SelectionProviderInterface
      */
     protected $selection = [];
 
-    /**
-     *
-     */
     public function __construct(array $selection)
     {
         $this->selection = $selection;
@@ -29,17 +26,11 @@ abstract class AbstractSelectionFromMap implements SelectionProviderInterface
         return $this->selection;
     }
 
-    /**
-     *
-     */
     public function provideSelectionsData(): array
     {
         return $this->selection;
     }
 
-    /**
-     *
-     */
     public function defineSelectionValue($item): string
     {
         return array_search($item, $this->selection);

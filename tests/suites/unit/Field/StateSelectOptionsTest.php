@@ -5,9 +5,6 @@ use WebTheory\Saveyour\Selections\StateSelectOptions;
 
 class StateSelectOptionsTest extends TestCase
 {
-    /**
-     *
-     */
     protected function getSelection($provider)
     {
         $value = [];

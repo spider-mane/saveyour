@@ -6,9 +6,6 @@ use WebTheory\Saveyour\Elements\Label;
 
 trait LabelMaker
 {
-    /**
-     *
-     */
     protected function createLabel(string $content, array $options): Label
     {
         $label = new Label($content);

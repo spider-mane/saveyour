@@ -16,9 +16,6 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
         renderSelection as renderSelectionFromProvider;
     }
 
-    /**
-     *
-     */
     protected $value = [];
 
     /**
@@ -36,25 +33,16 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
      */
     protected $size;
 
-    /**
-     *
-     */
     public function getGroups()
     {
         return $this->groups;
     }
 
-    /**
-     *
-     */
     public function setGroups(OptGroup ...$optGroups)
     {
         $this->groups = $optGroups;
     }
 
-    /**
-     *
-     */
     public function addGroup(OptGroup $optGroup)
     {
         $this->groups[] = $optGroup;
@@ -108,9 +96,6 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
         return $this;
     }
 
-    /**
-     *
-     */
     protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
@@ -119,17 +104,11 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
             ->addAttribute('size', $this->size);
     }
 
-    /**
-     *
-     */
     protected function resolveNameAttribute()
     {
         return $this->name . ($this->multiple ? '[]' : '');
     }
 
-    /**
-     *
-     */
     protected function renderHtmlMarkup(): string
     {
         $html = '';
@@ -145,9 +124,6 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
         return $html;
     }
 
-    /**
-     *
-     */
     protected function renderOptions()
     {
         $html = '';
@@ -161,17 +137,11 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
         return $html;
     }
 
-    /**
-     *
-     */
     protected function createPlaceholder(): Option
     {
         return new Option($this->placeholder, '');
     }
 
-    /**
-     *
-     */
     protected function renderSelection(): string
     {
         return empty($this->groups)
@@ -179,9 +149,6 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
             : $this->renderSelectionFromOptGroups();
     }
 
-    /**
-     *
-     */
     protected function renderSelectionFromOptGroups(): string
     {
         $html = '';

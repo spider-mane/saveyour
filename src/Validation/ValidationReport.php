@@ -16,12 +16,15 @@ class ValidationReport implements ValidationReportInterface
         $this->violations = $violations;
     }
 
-    public function getStatus(): bool
+    public function validationStatus(): bool
     {
         return $this->status;
     }
 
-    public function getViolations(): array
+    /**
+     * @return array<int,string>
+     */
+    public function ruleViolations(): array
     {
         return $this->violations;
     }

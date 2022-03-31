@@ -17,9 +17,6 @@ use WebTheory\Saveyour\Processors\FormAddressGeocoder;
 
 class FormAddressGeocoderTest extends TestCase
 {
-    /**
-     *
-     */
     protected function generateDummyDataManager()
     {
         return new class () implements FieldDataManagerInterface {
@@ -35,9 +32,6 @@ class FormAddressGeocoderTest extends TestCase
         };
     }
 
-    /**
-     *
-     */
     public function testGetsProperGeoData()
     {
         if (file_exists($env = dirname(__DIR__) . '/env.php')) {

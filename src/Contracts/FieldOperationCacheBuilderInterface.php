@@ -2,30 +2,15 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-interface FieldOperationCacheBuilderInterface extends FieldOperationCacheInterface
+interface FieldOperationCacheBuilderInterface extends FieldOperationCacheInterface, ValidationReportBuilderInterface
 {
-    /**
-     *
-     */
     public function withRequestVarPresent(bool $result): FieldOperationCacheBuilderInterface;
 
-    /**
-     *
-     */
     public function withSanitizedInputValue($value): FieldOperationCacheBuilderInterface;
 
-    /**
-     *
-     */
     public function withUpdateAttempted(bool $result): FieldOperationCacheBuilderInterface;
 
-    /**
-     *
-     */
     public function withUpdateSuccessful(bool $result): FieldOperationCacheBuilderInterface;
 
-    /**
-     *
-     */
-    public function withRuleViolations(array $violations): FieldOperationCacheBuilderInterface;
+    public function build(): FieldOperationCacheInterface;
 }

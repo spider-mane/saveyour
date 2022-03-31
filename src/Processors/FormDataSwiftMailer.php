@@ -20,18 +20,12 @@ class FormDataSwiftMailer extends AbstractFormDataProcessor implements FormDataP
      */
     protected $message;
 
-    /**
-     *
-     */
     public function __construct(Swift_Mailer $mailer, Swift_Message $message)
     {
         $this->mailer = $mailer;
         $this->message = $message;
     }
 
-    /**
-     *
-     */
     public function process(ServerRequestInterface $request, array $results): ?FormDataProcessingCacheInterface
     {
         $values = $this->extractValues($results);

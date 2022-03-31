@@ -8,24 +8,12 @@ use WebTheory\Saveyour\Controllers\FormSubmissionManager;
 
 abstract class AbstractForm implements FormInterface
 {
-    /**
-     *
-     */
     abstract protected function getAction(): string;
 
-    /**
-     *
-     */
     abstract protected function getMethod(): string;
 
-    /**
-     *
-     */
     abstract protected function getFieldControllers();
 
-    /**
-     *
-     */
     protected function getFormSubmissionManager(): FormSubmissionManager
     {
         return (new FormSubmissionManager())

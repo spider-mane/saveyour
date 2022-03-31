@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Suites\Unit\Controller;
+
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Controllers\FieldOperationCache;
 
@@ -10,9 +12,6 @@ class FieldOperationCacheTest extends TestCase
      */
     protected $testInstance;
 
-    /**
-     *
-     */
     protected $values = [
         'request_var_present' => true,
         'sanitized_input_value' => 'foobar',
@@ -21,9 +20,6 @@ class FieldOperationCacheTest extends TestCase
         'rule_violations' => ['foo' => 'bar'],
     ];
 
-    /**
-     *
-     */
     public function setup(): void
     {
         $this->testInstance = new FieldOperationCache(

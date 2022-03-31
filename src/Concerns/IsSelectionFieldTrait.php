@@ -11,17 +11,11 @@ trait IsSelectionFieldTrait
      */
     protected $selectionProvider;
 
-    /**
-     *
-     */
     protected function getSelectionData(): array
     {
         return $this->selectionProvider->provideSelectionsData();
     }
 
-    /**
-     *
-     */
     protected function defineSelectionValue($selection): string
     {
         return $this->selectionProvider->defineSelectionValue($selection);

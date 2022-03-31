@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Suites\Unit\Controller;
+
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Controllers\FieldOperationCacheBuilder;
 

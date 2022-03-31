@@ -12,9 +12,6 @@ class OptGroup extends AbstractHtmlElement
     use MultiValueSelectionTrait;
     use RendersOptionsTrait;
 
-    /**
-     *
-     */
     protected $value = [];
 
     /**
@@ -32,9 +29,6 @@ class OptGroup extends AbstractHtmlElement
      */
     protected $selectionProvider;
 
-    /**
-     *
-     */
     public function __construct(string $label)
     {
         $this->label = $label;
@@ -66,9 +60,6 @@ class OptGroup extends AbstractHtmlElement
         return $this;
     }
 
-    /**
-     *
-     */
     protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
@@ -76,9 +67,6 @@ class OptGroup extends AbstractHtmlElement
             ->addAttribute('disabled', $this->disabled);
     }
 
-    /**
-     *
-     */
     protected function renderHtmlMarkup(): string
     {
         return $this->tag('optgroup', $this->attributes, $this->renderSelection());

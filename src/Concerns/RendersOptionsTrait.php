@@ -38,17 +38,11 @@ trait RendersOptionsTrait
         return $this;
     }
 
-    /**
-     *
-     */
     protected function defineSelectionText($selection): string
     {
         return $this->selectionProvider->defineSelectionText($selection);
     }
 
-    /**
-     *
-     */
     protected function renderSelection(): string
     {
         $html = '';
@@ -62,9 +56,6 @@ trait RendersOptionsTrait
         return $html;
     }
 
-    /**
-     *
-     */
     protected function createOption($selection): Option
     {
         return new Option(

@@ -8,14 +8,8 @@ use WebTheory\Saveyour\Request;
 
 class ReCaptcha3Validator implements FormValidatorInterface
 {
-    /**
-     *
-     */
     protected $reCaptcha;
 
-    /**
-     *
-     */
     protected $secret;
 
     /**
@@ -30,9 +24,6 @@ class ReCaptcha3Validator implements FormValidatorInterface
 
     public const URL = 'https://www.google.com/recaptcha/api/siteverify';
 
-    /**
-     *
-     */
     public function __construct(string $reCaptcha, string $secret)
     {
         $this->reCaptcha = $reCaptcha;
@@ -87,9 +78,6 @@ class ReCaptcha3Validator implements FormValidatorInterface
         return $this;
     }
 
-    /**
-     *
-     */
     public function isValid(ServerRequestInterface $request): bool
     {
         $response = Request::var($request, $this->reCaptcha);

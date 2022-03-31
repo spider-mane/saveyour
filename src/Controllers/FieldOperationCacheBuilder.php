@@ -3,56 +3,80 @@
 namespace WebTheory\Saveyour\Controllers;
 
 use WebTheory\Saveyour\Contracts\FieldOperationCacheBuilderInterface;
+use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 
 class FieldOperationCacheBuilder extends AbstractFieldOperationCache implements FieldOperationCacheBuilderInterface
 {
-    /**
-     *
-     */
-    public function withRequestVarPresent(bool $result): FieldOperationCacheBuilderInterface
+    public function __construct(?FieldOperationCacheInterface $previous = null)
     {
-        $this->results['request_var_present'] = $result;
+        if ($previous) {
+            $this->requestVarPresent = $previous->requestVarPresent();
+            $this->sanitizedInputValue = $previous->sanitizedInputValue();
+            $this->updateAttempted = $previous->updateAttempted();
+            $this->updateSuccessful = $previous->updateSuccessful();
+            $this->validationStatus = $previous->validationStatus();
+            $this->ruleViolations = $previous->ruleViolations();
+        }
+    }
+
+    public function withRequestVarPresent(bool $result): FieldOperationCacheBuilder
+    {
+        $this->requestVarPresent = $result;
 
         return $this;
     }
 
-    /**
-     *
-     */
-    public function withSanitizedInputValue($value): FieldOperationCacheBuilderInterface
+    public function withSanitizedInputValue($value): FieldOperationCacheBuilder
     {
-        $this->results['sanitized_input_value'] = $value;
+        $this->sanitizedInputValue = $value;
 
         return $this;
     }
 
-    /**
-     *
-     */
-    public function withUpdateAttempted(bool $result): FieldOperationCacheBuilderInterface
+    public function withUpdateAttempted(bool $result): FieldOperationCacheBuilder
     {
-        $this->results['update_attempted'] = $result;
+        $this->updateAttempted = $result;
 
         return $this;
     }
 
-    /**
-     *
-     */
-    public function withUpdateSuccessful(bool $result): FieldOperationCacheBuilderInterface
+    public function withUpdateSuccessful(bool $result): FieldOperationCacheBuilder
     {
-        $this->results['update_successful'] = $result;
+        $this->updateSuccessful = $result;
 
         return $this;
     }
 
-    /**
-     *
-     */
-    public function withRuleViolations(array $violations): FieldOperationCacheBuilderInterface
+    public function withValidationStatus(bool $status): FieldOperationCacheBuilder
     {
-        $this->results['rule_violations'] = $violations;
+        $this->validationStatus = $status;
 
         return $this;
+    }
+
+    public function withRuleViolation(string $violation): FieldOperationCacheBuilder
+    {
+        $this->ruleViolations[] = $violation;
+
+        return $this;
+    }
+
+    public function withRuleViolations(array $violations): FieldOperationCacheBuilder
+    {
+        $this->ruleViolations = $violations;
+
+        return $this;
+    }
+
+    public function build(): FieldOperationCacheInterface
+    {
+        return new FieldOperationCache(
+            $this->requestVarPresent,
+            $this->sanitizedInputValue,
+            $this->updateAttempted,
+            $this->updateSuccessful,
+            $this->validationStatus,
+            $this->ruleViolations
+        );
     }
 }

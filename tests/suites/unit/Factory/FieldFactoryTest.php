@@ -10,9 +10,6 @@ use WebTheory\Saveyour\Managers\FieldDataManagerCallback;
 
 class FieldFactoryTest
 {
-    /**
-     *
-     */
     protected function dummyCallback()
     {
         return function ($data) {

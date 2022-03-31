@@ -8,9 +8,6 @@ use WebTheory\Saveyour\Controllers\FormProcessingCache;
 
 class FormProcessingCacheTest extends TestCase
 {
-    /**
-     *
-     */
     protected $values;
 
     /**
@@ -23,9 +20,6 @@ class FormProcessingCacheTest extends TestCase
      */
     protected $testFieldCache;
 
-    /**
-     *
-     */
     protected $inputValues = [
         'request_var_present' => true,
         'sanitized_input_value' => 'foobar',
@@ -34,9 +28,6 @@ class FormProcessingCacheTest extends TestCase
         'rule_violations' => ['foo' => 'bar'],
     ];
 
-    /**
-     *
-     */
     public function setup(): void
     {
         $this->testFieldCache = new FieldOperationCache(
@@ -61,9 +52,6 @@ class FormProcessingCacheTest extends TestCase
             ->withProcessingResults($this->values['processing_results']);
     }
 
-    /**
-     *
-     */
     public function testCanSetAndGetInputResults()
     {
         $cache = new FormProcessingCache();
@@ -74,9 +62,6 @@ class FormProcessingCacheTest extends TestCase
         $this->assertEquals($results, $cache->inputResults());
     }
 
-    /**
-     *
-     */
     public function testCanSetAndGetInputViolations()
     {
         $cache = new FormProcessingCache();
@@ -87,9 +72,6 @@ class FormProcessingCacheTest extends TestCase
         $this->assertEquals($violations, $cache->inputViolations());
     }
 
-    /**
-     *
-     */
     public function testCanSetAndGetRequestViolations()
     {
         $cache = new FormProcessingCache();
@@ -100,9 +82,6 @@ class FormProcessingCacheTest extends TestCase
         $this->assertEquals($violations, $cache->requestViolations());
     }
 
-    /**
-     *
-     */
     public function testCanGetValueViaArrayAccess()
     {
         $expected = $this->values['input_results'];
@@ -111,9 +90,6 @@ class FormProcessingCacheTest extends TestCase
         $this->assertEquals($expected, $this->testInstance['input_results']);
     }
 
-    /**
-     *
-     */
     public function testCanSerializeToJson()
     {
         $expected = json_encode($this->values);
@@ -121,9 +97,6 @@ class FormProcessingCacheTest extends TestCase
         $this->assertEquals($expected, json_encode($this->testInstance));
     }
 
-    /**
-     *
-     */
     public function testCannotModifyViaArrayAccess()
     {
         $this->expectException(LogicException::class);

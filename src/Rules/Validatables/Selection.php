@@ -12,9 +12,6 @@ class Selection extends AbstractRule implements Validatable
      */
     protected $rule;
 
-    /**
-     *
-     */
     public function __construct(Validatable $rule)
     {
         $this->rule = $rule;

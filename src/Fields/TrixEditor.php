@@ -12,9 +12,6 @@ class TrixEditor extends AbstractFormField implements FormFieldInterface
      */
     protected $controlId;
 
-    /**
-     *
-     */
     public function __construct(string $controlId)
     {
         $this->controlId = $controlId;
@@ -32,18 +29,12 @@ class TrixEditor extends AbstractFormField implements FormFieldInterface
         return $this->controlId;
     }
 
-    /**
-     *
-     */
     protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
             ->addAttribute('input', $this->controlId);
     }
 
-    /**
-     *
-     */
     protected function renderHtmlMarkup(): string
     {
         $control = $this->createEditorFormControl()
@@ -56,17 +47,11 @@ class TrixEditor extends AbstractFormField implements FormFieldInterface
         return $control . $editor;
     }
 
-    /**
-     *
-     */
     protected function createEditorFormControl(): Hidden
     {
         return new Hidden();
     }
 
-    /**
-     *
-     */
     protected function defineControlId(): string
     {
         return $this->id . '-form-control';

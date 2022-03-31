@@ -13,17 +13,11 @@ class PhoneNumberDataFormatter extends LazyDataFormatter implements DataFormatte
      */
     protected $format;
 
-    /**
-     *
-     */
     public function __construct(PhoneNumberFormat $format)
     {
         $this->format = $format;
     }
 
-    /**
-     *
-     */
     public function formatInput($value)
     {
         return Phone::formatUS($value, $this->format->getValue());

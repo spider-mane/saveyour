@@ -14,14 +14,8 @@ class DataManagerFactory implements FieldDataManagerResolverFactoryInterface
     use SmartFactoryTrait;
     use ClassResolverTrait;
 
-    /**
-     *
-     */
     private $managers = [];
 
-    /**
-     *
-     */
     protected $namespaces = [];
 
     public const NAMESPACES = [
@@ -34,9 +28,6 @@ class DataManagerFactory implements FieldDataManagerResolverFactoryInterface
 
     protected const CONVENTION = '%sFieldDataManager';
 
-    /**
-     *
-     */
     public function __construct(array $namespaces = [], array $managers = [])
     {
         $this->namespaces = $namespaces + static::NAMESPACES;
@@ -67,9 +58,6 @@ class DataManagerFactory implements FieldDataManagerResolverFactoryInterface
         return $this;
     }
 
-    /**
-     *
-     */
     public function addManagers(array $managers)
     {
         $this->managers = $managers + $this->managers;
@@ -77,9 +65,6 @@ class DataManagerFactory implements FieldDataManagerResolverFactoryInterface
         return $this;
     }
 
-    /**
-     *
-     */
     public function create(string $manager, array $args = []): FieldDataManagerInterface
     {
         $manager = $this->managers[$manager] ?? null;

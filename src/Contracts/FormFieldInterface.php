@@ -74,9 +74,6 @@ interface FormFieldInterface
      */
     public function isRequired(): bool;
 
-    /**
-     *
-     */
     public function toHtml(): string;
 
     /**

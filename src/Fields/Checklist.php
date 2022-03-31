@@ -44,17 +44,11 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
         return $this;
     }
 
-    /**
-     *
-     */
     protected function getSelectionItemsName(): string
     {
         return $this->name . '[]';
     }
 
-    /**
-     *
-     */
     protected function renderHtmlMarkup(): string
     {
         $clearControl = $this->createClearControlField()
@@ -66,9 +60,6 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
         return $this->tag('div', $this->attributes, $clearControl . $list);
     }
 
-    /**
-     *
-     */
     protected function renderSelection(): string
     {
         $html = '';
@@ -92,9 +83,6 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
         return $html;
     }
 
-    /**
-     *
-     */
     protected function createSelectionCheckbox($selection): Checkbox
     {
         return new Checkbox();

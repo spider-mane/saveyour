@@ -6,9 +6,6 @@ use WebTheory\Saveyour\Fields\Hidden;
 
 trait MultiValueSelectionTrait
 {
-    /**
-     *
-     */
     protected function isSelectionSelected(string $value): bool
     {
         return in_array($value, $this->value);
@@ -28,9 +25,6 @@ trait MultiValueSelectionTrait
         return $this;
     }
 
-    /**
-     *
-     */
     protected function createClearControlField(): Hidden
     {
         return new Hidden();

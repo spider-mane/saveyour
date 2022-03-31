@@ -61,9 +61,6 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
      */
     public const ACCEPTED_FIELDS = ['street', 'city', 'state', 'zip', 'country'];
 
-    /**
-     *
-     */
     public function __construct(
         Provider $provider,
         FieldDataManagerInterface $geoDataManager,
@@ -105,9 +102,6 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
         return $this;
     }
 
-    /**
-     *
-     */
     protected function formatAddress($fields)
     {
         $address = (new Address())
@@ -131,33 +125,21 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
         return str_replace("\n", ", ", $formatter->format($address));
     }
 
-    /**
-     *
-     */
     protected function formatGeoDataInput($value)
     {
         return $this->geoDataFormatter->formatInput($value);
     }
 
-    /**
-     *
-     */
     protected function formatAddressInput($value)
     {
         return $this->addressDataFormatter->formatInput($value);
     }
 
-    /**
-     *
-     */
     protected function createInputPurifier(): InputPurifier
     {
         return new InputPurifier(Validator::floatType());
     }
 
-    /**
-     *
-     */
     public function process(ServerRequestInterface $request, array $results): ?FormDataProcessingCacheInterface
     {
         if ($this->valueUpdated($results)) {
@@ -167,9 +149,6 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
         return null;
     }
 
-    /**
-     *
-     */
     protected function processResults(ServerRequestInterface $request, $results): FormDataProcessingCacheInterface
     {
         $address = $this->formatAddress($this->extractValues($results));

@@ -8,9 +8,6 @@ use WebTheory\Saveyour\Formatters\LazyDataFormatter;
 
 class CombinationDataFormatterTest extends TestCase
 {
-    /**
-     *
-     */
     protected function getDummyFormatter(int $count)
     {
         return new class ($count) implements DataFormatterInterface {

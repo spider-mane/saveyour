@@ -6,9 +6,6 @@ use WebTheory\Saveyour\Fields\Select;
 
 class FormFieldFactoryTest extends TestCase
 {
-    /**
-     *
-     */
     public function testCreatesFormFieldFactory()
     {
         $factory = new FormFieldFactory();

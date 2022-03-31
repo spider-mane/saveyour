@@ -27,9 +27,6 @@ abstract class AbstractInput extends AbstractStandardFormControl implements Form
         return $this->type;
     }
 
-    /**
-     *
-     */
     protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
@@ -38,9 +35,6 @@ abstract class AbstractInput extends AbstractStandardFormControl implements Form
             ->addAttribute('datalist', $this->dataList);
     }
 
-    /**
-     *
-     */
     protected function renderHtmlMarkup(): string
     {
         return $this->open('input', $this->attributes);

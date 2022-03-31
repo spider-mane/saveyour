@@ -26,9 +26,6 @@ class Option extends AbstractHtmlElement
      */
     protected $disabled = false;
 
-    /**
-     *
-     */
     public function __construct(string $text, string $value)
     {
         $this->text = $text;
@@ -105,9 +102,6 @@ class Option extends AbstractHtmlElement
         return $this;
     }
 
-    /**
-     *
-     */
     protected function resolveAttributes(): AbstractHtmlElement
     {
         return parent::resolveAttributes()
@@ -116,9 +110,6 @@ class Option extends AbstractHtmlElement
             ->addAttribute('disabled', $this->disabled);
     }
 
-    /**
-     *
-     */
     protected function renderHtmlMarkup(): string
     {
         return $this->tag('option', $this->attributes, $this->text);

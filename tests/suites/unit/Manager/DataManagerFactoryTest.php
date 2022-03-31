@@ -6,9 +6,6 @@ use WebTheory\Saveyour\Managers\FieldDataManagerCallback;
 
 class DataManagerFactoryTest extends TestCase
 {
-    /**
-     *
-     */
     public function testCreatesFieldDataManager()
     {
         $factory = new DataManagerFactory();

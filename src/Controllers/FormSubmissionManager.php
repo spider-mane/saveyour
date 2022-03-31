@@ -3,6 +3,7 @@
 namespace WebTheory\Saveyour\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface;
+use WebTheory\HttpPolicy\ServerRequestPolicyInterface;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
@@ -17,7 +18,7 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
     /**
      * Array of FormFieldControllerInterface instances
      *
-     * @var FormFieldControllerInterface[]
+     * @var array<int,FormFieldControllerInterface>
      */
     protected $fields = [];
 
@@ -29,26 +30,26 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
     /**
      * Array of FormDataProcessorInterface instances
      *
-     * @var FormDataProcessorInterface[]
+     * @var array<int,FormDataProcessorInterface>
      */
     protected $processors = [];
 
     /**
      * Array of form FormValidatorInterface instances
      *
-     * @var FormValidatorInterface[]
+     * @var array<int,ServerRequestPolicyInterface>
      */
     protected $validators = [];
 
     /**
-     * @var FieldOperationCacheInterface[]
+     * @var array<int,FieldOperationCacheInterface>
      */
     protected $results = [];
 
     /**
      * Array of alerts to display in after form submission
      *
-     * @var string[]
+     * @var array<string,string>
      */
     protected $alerts = [];
 
@@ -85,9 +86,6 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         return $this;
     }
 
-    /**
-     *
-     */
     public function addValidator(string $rule, FormValidatorInterface $validator, ?string $alert = null)
     {
         $this->validators[$rule] = $validator;
@@ -109,9 +107,6 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         return $this->alerts;
     }
 
-    /**
-     *
-     */
     public function getAlert(string $rule): string
     {
         return $this->alerts[$rule];
@@ -133,9 +128,6 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         }
     }
 
-    /**
-     *
-     */
     public function addAlert(string $rule, string $alert)
     {
         $this->alerts[$rule] = $alert;
@@ -239,9 +231,6 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         return $this;
     }
 
-    /**
-     *
-     */
     public function process(ServerRequestInterface $request): FormProcessingCacheInterface
     {
         $cache = new FormProcessingCache();
@@ -255,9 +244,6 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         return $cache;
     }
 
-    /**
-     *
-     */
     protected function isSafe(ServerRequestInterface $request, FormProcessingCache $cache): bool
     {
         $violations = [];
@@ -273,9 +259,6 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         return empty($violations);
     }
 
-    /**
-     *
-     */
     protected function sortFieldsForProcessing()
     {
         usort($this->fields, function (FormFieldControllerInterface $a, FormFieldControllerInterface $b) {
@@ -287,17 +270,11 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         });
     }
 
-    /**
-     *
-     */
     protected function fieldPresentInRequest(FormFieldControllerInterface $field, ServerRequestInterface $request): bool
     {
         return Request::has($request, $field->getRequestVar());
     }
 
-    /**
-     *
-     */
     protected function processFields(ServerRequestInterface $request, FormProcessingCache $cache)
     {
         $inputResults = [];
@@ -319,32 +296,27 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         return $this;
     }
 
-    /**
-     *
-     */
     protected function processField(FormFieldControllerInterface $field, ServerRequestInterface $request): FieldOperationCacheInterface
     {
         $requestVarPresent = $this->fieldPresentInRequest($field, $request);
 
         if ($requestVarPresent) {
-            $base = $field->process($request);
-            $results = new FieldOperationCache(
-                true,
-                $base->sanitizedInputValue(),
-                $base->updateAttempted(),
-                $base->updateSuccessful(),
-                $base->ruleViolations()
-            );
+            $base = new FieldOperationCacheBuilder($field->process($request));
+            $results = $base->build();
         } else {
-            $results = new FieldOperationCache(false, null, false, false, []);
+            $results = new FieldOperationCache(
+                false,
+                null,
+                false,
+                false,
+                false,
+                []
+            );
         }
 
         return $results;
     }
 
-    /**
-     *
-     */
     protected function runProcessors(ServerRequestInterface $request, FormProcessingCache $cache)
     {
         $fields = $cache->inputResults();
@@ -365,9 +337,6 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         return $this;
     }
 
-    /**
-     *
-     */
     protected function processResults(ServerRequestInterface $request, FormProcessingCache $cache)
     {
         return $this;

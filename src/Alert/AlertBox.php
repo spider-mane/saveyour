@@ -19,9 +19,6 @@ class AlertBox
         return $this->alerts;
     }
 
-    /**
-     *
-     */
     protected function add(string $name, string $alert)
     {
         $this->alerts[$name] = $alert;
@@ -29,9 +26,6 @@ class AlertBox
         return $this;
     }
 
-    /**
-     *
-     */
     protected function extend(array $alerts)
     {
         foreach ($alerts as $name => $alert) {
@@ -41,17 +35,11 @@ class AlertBox
         return $this;
     }
 
-    /**
-     *
-     */
     protected function get(string $alert): string
     {
         return $this->alerts[$alert];
     }
 
-    /**
-     *
-     */
     protected function rebuke(string $alert)
     {
         unset($this->alerts[$alert]);

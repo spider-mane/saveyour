@@ -19,9 +19,6 @@ class FormFieldControllerTest extends TestCase
      */
     public $testBase;
 
-    /**
-     *
-     */
     public $baseInterface = FormFieldControllerInterface::class;
 
     public function testCanGetRequestVar()

@@ -7,14 +7,8 @@ use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
 
 class StateSelectOptions implements OptionsProviderInterface
 {
-    /**
-     *
-     */
     protected $groups = [];
 
-    /**
-     *
-     */
     protected $text = 'name';
 
     /**
@@ -22,9 +16,6 @@ class StateSelectOptions implements OptionsProviderInterface
      */
     protected $reSort = false;
 
-    /**
-     *
-     */
     public const STATES = [
         'AL' => 'Alabama',
         'AK' => 'Alaska',
@@ -79,9 +70,6 @@ class StateSelectOptions implements OptionsProviderInterface
         'WY' => 'Wyoming',
     ];
 
-    /**
-     *
-     */
     public const TERRITORIES = [
         "AS" => "American Samoa",
         "GU" => "Guam",
@@ -91,37 +79,22 @@ class StateSelectOptions implements OptionsProviderInterface
         "VI" => "Virgin Islands",
     ];
 
-    /**
-     *
-     */
     public const ARMED_FORCES = [
         "AA" => "Armed Forces Americas",
         "AP" => "Armed Forces Pacific",
         "AE" => "Armed Forces Other",
     ];
 
-    /**
-     *
-     */
     protected const MAP = [
         'States' => self::STATES,
         'Territories' => self::TERRITORIES,
         'ArmedForces' => self::ARMED_FORCES,
     ];
 
-    /**
-     *
-     */
     protected const ALLOWED_GROUPS = ['States', 'Territories', 'ArmedForces'];
 
-    /**
-     *
-     */
     protected const ALLOWED_TEXT = ['abbr', 'name'];
 
-    /**
-     *
-     */
     public function __construct(array $groups = ['States'], string $text = 'name', $reSort = false)
     {
         $this->setGroups($groups);
@@ -130,9 +103,6 @@ class StateSelectOptions implements OptionsProviderInterface
         $this->reSort = $reSort;
     }
 
-    /**
-     *
-     */
     protected function setGroups(array $groups)
     {
         foreach ($groups as $group) {
@@ -149,9 +119,6 @@ class StateSelectOptions implements OptionsProviderInterface
         return $this;
     }
 
-    /**
-     *
-     */
     protected function setText(string $text)
     {
         if (!in_array($text, static::ALLOWED_TEXT)) {
@@ -166,9 +133,6 @@ class StateSelectOptions implements OptionsProviderInterface
         return $this;
     }
 
-    /**
-     *
-     */
     protected function getOptions()
     {
         $options = [];
@@ -189,25 +153,16 @@ class StateSelectOptions implements OptionsProviderInterface
         return $options;
     }
 
-    /**
-     *
-     */
     public function provideSelectionsData(): array
     {
         return $this->getOptions();
     }
 
-    /**
-     *
-     */
     public function defineSelectionText($item): string
     {
         return $item[$this->text];
     }
 
-    /**
-     *
-     */
     public function defineSelectionValue($item): string
     {
         return $item['abbr'];
