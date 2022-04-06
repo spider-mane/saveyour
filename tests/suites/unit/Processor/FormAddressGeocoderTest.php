@@ -12,7 +12,7 @@ use Http\Adapter\Guzzle6\Client;
 use Psr\Http\Message\ServerRequestInterface;
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
-use WebTheory\Saveyour\Controllers\FieldOperationCacheBuilder;
+use WebTheory\Saveyour\Controllers\ProcessedFieldReportBuilder;
 use WebTheory\Saveyour\Processors\FormAddressGeocoder;
 
 class FormAddressGeocoderTest extends TestCase
@@ -48,19 +48,19 @@ class FormAddressGeocoderTest extends TestCase
         $request = ServerRequest::fromGlobals();
 
         $results = [
-            'street' => (new FieldOperationCacheBuilder())
+            'street' => (new ProcessedFieldReportBuilder())
                 ->withSanitizedInputValue($address['street'])
                 ->withUpdateSuccessful(true),
 
-            'city' => (new FieldOperationCacheBuilder())
+            'city' => (new ProcessedFieldReportBuilder())
                 ->withSanitizedInputValue($address['city'])
                 ->withUpdateSuccessful(true),
 
-            'state' => (new FieldOperationCacheBuilder())
+            'state' => (new ProcessedFieldReportBuilder())
                 ->withSanitizedInputValue($address['state'])
                 ->withUpdateSuccessful(true),
 
-            'zip' => (new FieldOperationCacheBuilder())
+            'zip' => (new ProcessedFieldReportBuilder())
                 ->withSanitizedInputValue($address['zip'])
                 ->withUpdateSuccessful(true),
         ];
@@ -98,7 +98,7 @@ class FormAddressGeocoderTest extends TestCase
             ->addField('state', 'state')
             ->addField('zip', 'zip');
 
-        $results = $processor->process($request, $results)->getResultOf('coordinates');
+        $results = $processor->process($request, $results)->results('coordinates');
 
         $this->assertEquals($coordinates, $results);
     }

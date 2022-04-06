@@ -1,10 +1,10 @@
 <?php
 
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
-use WebTheory\Saveyour\Controllers\FieldOperationCache;
-use WebTheory\Saveyour\Controllers\FormDataProcessingCache;
+use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Controllers\FormProcessingCache;
+use WebTheory\Saveyour\Controllers\FormProcessReport;
+use WebTheory\Saveyour\Controllers\ProcessedFieldReport;
 
 class FormProcessingCacheTest extends TestCase
 {
@@ -16,7 +16,7 @@ class FormProcessingCacheTest extends TestCase
     protected $testInstance;
 
     /**
-     * @var FieldOperationCacheInterface
+     * @var ProcessedFieldReportInterface
      */
     protected $testFieldCache;
 
@@ -30,7 +30,7 @@ class FormProcessingCacheTest extends TestCase
 
     public function setup(): void
     {
-        $this->testFieldCache = new FieldOperationCache(
+        $this->testFieldCache = new ProcessedFieldReport(
             $this->inputValues['request_var_present'],
             $this->inputValues['sanitized_input_value'],
             $this->inputValues['update_attempted'],
@@ -42,7 +42,7 @@ class FormProcessingCacheTest extends TestCase
             'request_violations' => ['foo' => 'bar'],
             'input_violations' => ['test' => $this->testFieldCache->ruleViolations()],
             'input_results' => ['test' => $this->testFieldCache],
-            'processing_results' => ['test' => new FormDataProcessingCache()],
+            'processing_results' => ['test' => new FormProcessReport()],
         ];
 
         $this->testInstance = (new FormProcessingCache())

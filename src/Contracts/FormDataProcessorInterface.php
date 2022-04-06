@@ -8,9 +8,9 @@ interface FormDataProcessorInterface
 {
     /**
      * @param ServerRequestInterface $request
-     * @param array<string,FieldOperationCacheInterface> $results
+     * @param array<string,ProcessedFieldReportInterface> $results
      */
-    public function process(ServerRequestInterface $request, array $results): ?FormDataProcessingCacheInterface;
+    public function process(ServerRequestInterface $request, array $results): ?FormProcessReportInterface;
 
     /**
      * @return null|array<int,string>

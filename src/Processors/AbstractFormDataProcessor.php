@@ -2,8 +2,8 @@
 
 namespace WebTheory\Saveyour\Processors;
 
-use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
+use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 
 abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
 {
@@ -53,7 +53,7 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
     }
 
     /**
-     * @param FieldOperationCacheInterface[] $results
+     * @param ProcessedFieldReportInterface[] $results
      */
     protected function valueUpdated(array $results): bool
     {
@@ -67,7 +67,7 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
     }
 
     /**
-     * @param FieldOperationCacheInterface[] $results
+     * @param ProcessedFieldReportInterface[] $results
      */
     protected function allFieldsPresent(array $results): bool
     {
@@ -81,7 +81,7 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
     }
 
     /**
-     * @param FieldOperationCacheInterface[] $results
+     * @param ProcessedFieldReportInterface[] $results
      */
     protected function extractValues(array $results): array
     {

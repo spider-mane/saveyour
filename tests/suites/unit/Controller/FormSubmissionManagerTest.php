@@ -4,14 +4,14 @@ namespace Tests\Suites\Unit\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormShieldInterface;
 use WebTheory\Saveyour\Contracts\FormShieldReportInterface;
 use WebTheory\Saveyour\Contracts\FormSubmissionManagerInterface;
+use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
-use WebTheory\Saveyour\Controllers\FormDataProcessingCache;
+use WebTheory\Saveyour\Controllers\FormProcessReport;
 use WebTheory\Saveyour\Controllers\FormSubmissionManager;
 
 class FormSubmissionManagerTest extends TestCase
@@ -26,19 +26,19 @@ class FormSubmissionManagerTest extends TestCase
 
     protected ServerRequestInterface $stubRequest;
 
-    protected FieldOperationCacheInterface $stubFieldReport;
+    protected ProcessedFieldReportInterface $stubFieldReport;
 
     protected FormShieldReportInterface $stubShieldReport;
 
-    protected FormDataProcessingCache $stubProcessReport;
+    protected FormProcessReport $stubProcessReport;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->stubShieldReport = $this->createStub(FormShieldReportInterface::class);
-        $this->stubFieldReport = $this->createStub(FieldOperationCacheInterface::class);
-        $this->stubProcessReport = $this->createStub(FormDataProcessingCache::class);
+        $this->stubFieldReport = $this->createStub(ProcessedFieldReportInterface::class);
+        $this->stubProcessReport = $this->createStub(FormProcessReport::class);
 
         $this->stubShield = $this->createStub(FormShieldInterface::class);
         $this->stubShield->method('analyzeRequest')->willReturn($this->stubShieldReport);

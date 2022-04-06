@@ -13,9 +13,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
-use WebTheory\Saveyour\Contracts\FormDataProcessingCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
-use WebTheory\Saveyour\Controllers\FormDataProcessingCache;
+use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
+use WebTheory\Saveyour\Controllers\FormProcessReport;
 use WebTheory\Saveyour\Formatters\LazyDataFormatter;
 use WebTheory\Saveyour\InputPurifier;
 
@@ -140,7 +140,7 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
         return new InputPurifier(Validator::floatType());
     }
 
-    public function process(ServerRequestInterface $request, array $results): ?FormDataProcessingCacheInterface
+    public function process(ServerRequestInterface $request, array $results): ?FormProcessReportInterface
     {
         if ($this->valueUpdated($results)) {
             return $this->processResults($request, $results);
@@ -149,7 +149,7 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
         return null;
     }
 
-    protected function processResults(ServerRequestInterface $request, $results): FormDataProcessingCacheInterface
+    protected function processResults(ServerRequestInterface $request, $results): FormProcessReportInterface
     {
         $address = $this->formatAddress($this->extractValues($results));
         $data = $this->provider
@@ -174,7 +174,7 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
             );
         }
 
-        return (new FormDataProcessingCache())
+        return (new FormProcessReport())
             ->withResult('coordinates', $coordinates)
             ->withResult('coordinates_updated', $geoUpdated)
             ->withResult('address_updated', $addressUpdated ?? false);

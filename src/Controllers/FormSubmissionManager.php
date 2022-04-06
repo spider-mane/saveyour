@@ -3,12 +3,12 @@
 namespace WebTheory\Saveyour\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface;
-use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormShieldInterface;
 use WebTheory\Saveyour\Contracts\FormShieldReportInterface;
 use WebTheory\Saveyour\Contracts\FormSubmissionManagerInterface;
+use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportBuilderInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
 use WebTheory\Saveyour\Request;
@@ -150,11 +150,11 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         });
     }
 
-    protected function processField(FormFieldControllerInterface $field, ServerRequestInterface $request): FieldOperationCacheInterface
+    protected function processField(FormFieldControllerInterface $field, ServerRequestInterface $request): ProcessedFieldReportInterface
     {
         return $this->fieldPresentInRequest($field, $request)
             ? $field->process($request)
-            : new FieldOperationCache();
+            : new ProcessedFieldReport();
     }
 
     protected function runProcessors(ServerRequestInterface $request)

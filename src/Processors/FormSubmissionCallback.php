@@ -3,8 +3,8 @@
 namespace WebTheory\Saveyour\Processors;
 
 use Psr\Http\Message\ServerRequestInterface;
-use WebTheory\Saveyour\Contracts\FormDataProcessingCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
+use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
 
 class FormSubmissionCallback extends AbstractFormDataProcessor implements FormDataProcessorInterface
 {
@@ -45,7 +45,7 @@ class FormSubmissionCallback extends AbstractFormDataProcessor implements FormDa
     /**
      * {@inheritDoc}
      */
-    public function process(ServerRequestInterface $request, array $results): ?FormDataProcessingCacheInterface
+    public function process(ServerRequestInterface $request, array $results): ?FormProcessReportInterface
     {
         foreach ($this->callbacks as $cb) {
             $cb($request, $results);

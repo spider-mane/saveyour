@@ -7,12 +7,12 @@ interface ProcessedFormReportInterface
     public function shieldReport(): FormShieldReportInterface;
 
     /**
-     * @return array<string,FieldOperationCacheInterface>
+     * @return array<string,ProcessedFieldReportInterface>
      */
     public function fieldReports(): array;
 
     /**
-     * @return array<string,FormDataProcessingCacheInterface>
+     * @return array<string,FormProcessReportInterface>
      */
     public function processReports(): array;
 }

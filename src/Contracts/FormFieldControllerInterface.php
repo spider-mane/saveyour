@@ -29,7 +29,7 @@ interface FormFieldControllerInterface extends ValidatorInterface
     /**
      * @param ServerRequestInterface $request
      *
-     * @return FieldOperationCacheInterface
+     * @return ProcessedFieldReportInterface
      */
-    public function process(ServerRequestInterface $request): FieldOperationCacheInterface;
+    public function process(ServerRequestInterface $request): ProcessedFieldReportInterface;
 }

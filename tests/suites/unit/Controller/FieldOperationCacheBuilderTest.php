@@ -3,13 +3,13 @@
 namespace Tests\Suites\Unit\Controller;
 
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Controllers\FieldOperationCacheBuilder;
+use WebTheory\Saveyour\Controllers\ProcessedFieldReportBuilder;
 
 class FieldOperationCacheBuilderTest extends TestCase
 {
     public function testCanSetRequestVarPresent()
     {
-        $builder = new FieldOperationCacheBuilder();
+        $builder = new ProcessedFieldReportBuilder();
 
         $builder->withRequestVarPresent(true);
 
@@ -22,7 +22,7 @@ class FieldOperationCacheBuilderTest extends TestCase
 
     public function testCanSetSanitizedInputValue()
     {
-        $builder = new FieldOperationCacheBuilder();
+        $builder = new ProcessedFieldReportBuilder();
 
         $value = 'foobar';
 
@@ -33,7 +33,7 @@ class FieldOperationCacheBuilderTest extends TestCase
 
     public function testCanSetUpdateAttempted()
     {
-        $builder = new FieldOperationCacheBuilder();
+        $builder = new ProcessedFieldReportBuilder();
 
         $builder->withUpdateAttempted(true);
 
@@ -46,7 +46,7 @@ class FieldOperationCacheBuilderTest extends TestCase
 
     public function testCanSetUpdateSuccessful()
     {
-        $builder = new FieldOperationCacheBuilder();
+        $builder = new ProcessedFieldReportBuilder();
 
         $builder->withUpdateSuccessful(true);
 
@@ -59,7 +59,7 @@ class FieldOperationCacheBuilderTest extends TestCase
 
     public function testCanSetRuleViolations()
     {
-        $builder = new FieldOperationCacheBuilder();
+        $builder = new ProcessedFieldReportBuilder();
 
         $violations = [
             'test1' => 'foo',

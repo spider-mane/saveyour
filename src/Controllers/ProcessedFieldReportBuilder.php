@@ -2,12 +2,12 @@
 
 namespace WebTheory\Saveyour\Controllers;
 
-use WebTheory\Saveyour\Contracts\FieldOperationCacheBuilderInterface;
-use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
+use WebTheory\Saveyour\Contracts\ProcessedFieldReportBuilderInterface;
+use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 
-class FieldOperationCacheBuilder extends AbstractFieldOperationCache implements FieldOperationCacheBuilderInterface
+class ProcessedFieldReportBuilder extends AbstractProcessedFieldReport implements ProcessedFieldReportBuilderInterface
 {
-    public function __construct(?FieldOperationCacheInterface $previous = null)
+    public function __construct(?ProcessedFieldReportInterface $previous = null)
     {
         if ($previous) {
             $this->requestVarPresent = $previous->requestVarPresent();
@@ -19,58 +19,58 @@ class FieldOperationCacheBuilder extends AbstractFieldOperationCache implements 
         }
     }
 
-    public function withRequestVarPresent(bool $result): FieldOperationCacheBuilder
+    public function withRequestVarPresent(bool $result): ProcessedFieldReportBuilder
     {
         $this->requestVarPresent = $result;
 
         return $this;
     }
 
-    public function withSanitizedInputValue($value): FieldOperationCacheBuilder
+    public function withSanitizedInputValue($value): ProcessedFieldReportBuilder
     {
         $this->sanitizedInputValue = $value;
 
         return $this;
     }
 
-    public function withUpdateAttempted(bool $result): FieldOperationCacheBuilder
+    public function withUpdateAttempted(bool $result): ProcessedFieldReportBuilder
     {
         $this->updateAttempted = $result;
 
         return $this;
     }
 
-    public function withUpdateSuccessful(bool $result): FieldOperationCacheBuilder
+    public function withUpdateSuccessful(bool $result): ProcessedFieldReportBuilder
     {
         $this->updateSuccessful = $result;
 
         return $this;
     }
 
-    public function withValidationStatus(bool $status): FieldOperationCacheBuilder
+    public function withValidationStatus(bool $status): ProcessedFieldReportBuilder
     {
         $this->validationStatus = $status;
 
         return $this;
     }
 
-    public function withRuleViolation(string $violation): FieldOperationCacheBuilder
+    public function withRuleViolation(string $violation): ProcessedFieldReportBuilder
     {
         $this->ruleViolations[] = $violation;
 
         return $this;
     }
 
-    public function withRuleViolations(array $violations): FieldOperationCacheBuilder
+    public function withRuleViolations(array $violations): ProcessedFieldReportBuilder
     {
         $this->ruleViolations = $violations;
 
         return $this;
     }
 
-    public function build(): FieldOperationCacheInterface
+    public function build(): ProcessedFieldReportInterface
     {
-        return new FieldOperationCache(
+        return new ProcessedFieldReport(
             $this->requestVarPresent,
             $this->sanitizedInputValue,
             $this->updateAttempted,

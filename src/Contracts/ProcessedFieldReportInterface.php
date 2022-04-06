@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-interface FieldOperationCacheInterface extends ValidationReportInterface
+interface ProcessedFieldReportInterface extends ValidationReportInterface
 {
     public function requestVarPresent(): bool;
 

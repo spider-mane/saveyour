@@ -2,9 +2,9 @@
 
 namespace WebTheory\Saveyour\Controllers;
 
-use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
-use WebTheory\Saveyour\Contracts\FormDataProcessingCacheInterface;
+use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
 use WebTheory\Saveyour\Contracts\FormShieldReportInterface;
+use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportBuilderInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
 
@@ -26,14 +26,14 @@ class ProcessedFormReportBuilder extends ProcessedFormReport implements Processe
         return $this;
     }
 
-    public function withFieldReport(string $field, FieldOperationCacheInterface $report): ProcessedFormReportBuilderInterface
+    public function withFieldReport(string $field, ProcessedFieldReportInterface $report): ProcessedFormReportBuilderInterface
     {
         $this->fieldReports[$field] = $report;
 
         return $this;
     }
 
-    public function withProcessReport(string $process, FormDataProcessingCacheInterface $report): ProcessedFormReportBuilderInterface
+    public function withProcessReport(string $process, FormProcessReportInterface $report): ProcessedFormReportBuilderInterface
     {
         $this->processReports[$process] = $report;
 

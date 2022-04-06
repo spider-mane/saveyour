@@ -3,12 +3,11 @@
 namespace WebTheory\Saveyour\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Respect\Validation\Validatable;
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
-use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 
 abstract class AbstractField implements FormFieldControllerInterface
 {
@@ -71,41 +70,9 @@ abstract class AbstractField implements FormFieldControllerInterface
         return $this->__coreController->render($request);
     }
 
-    public function process(ServerRequestInterface $request): FieldOperationCacheInterface
+    public function process(ServerRequestInterface $request): ProcessedFieldReportInterface
     {
         return $this->__coreController->process($request);
-    }
-
-    /**
-     * @return Validatable
-     */
-    public function getValidator(): Validatable
-    {
-        return $this->__coreController->getValidator();
-    }
-
-    /**
-     * @return callable[]
-     */
-    public function getFilters(): array
-    {
-        return $this->__coreController->getFilters();
-    }
-
-    /**
-     * @return bool|mixed
-     */
-    public function filterInput($input)
-    {
-        return $this->__coreController->filterInput($input);
-    }
-
-    /**
-     * @return array
-     */
-    public function getAlerts(): array
-    {
-        return $this->__coreController->getAlerts();
     }
 
     protected function createFormFieldController(): FormFieldControllerInterface

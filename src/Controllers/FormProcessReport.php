@@ -1,0 +1,20 @@
+<?php
+
+namespace WebTheory\Saveyour\Controllers;
+
+use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
+
+class FormProcessReport implements FormProcessReportInterface
+{
+    protected array $results = [];
+
+    public function __construct(array $results = [])
+    {
+        $this->results = $results;
+    }
+
+    public function results(): array
+    {
+        return $this->results;
+    }
+}

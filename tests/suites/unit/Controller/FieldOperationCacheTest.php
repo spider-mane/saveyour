@@ -3,12 +3,12 @@
 namespace Tests\Suites\Unit\Controller;
 
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Controllers\FieldOperationCache;
+use WebTheory\Saveyour\Controllers\ProcessedFieldReport;
 
 class FieldOperationCacheTest extends TestCase
 {
     /**
-     * @var FieldOperationCache
+     * @var ProcessedFieldReport
      */
     protected $testInstance;
 
@@ -22,7 +22,7 @@ class FieldOperationCacheTest extends TestCase
 
     public function setup(): void
     {
-        $this->testInstance = new FieldOperationCache(
+        $this->testInstance = new ProcessedFieldReport(
             $this->values['request_var_present'],
             $this->values['sanitized_input_value'],
             $this->values['update_attempted'],

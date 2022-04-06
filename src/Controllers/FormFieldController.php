@@ -5,10 +5,10 @@ namespace WebTheory\Saveyour\Controllers;
 use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
-use WebTheory\Saveyour\Contracts\FieldOperationCacheBuilderInterface;
-use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\ProcessedFieldReportBuilderInterface;
+use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\ValidationReportInterface;
 use WebTheory\Saveyour\Contracts\ValidatorInterface;
 use WebTheory\Saveyour\Formatters\LazyDataFormatter;
@@ -27,7 +27,7 @@ class FormFieldController implements FormFieldControllerInterface
 
     protected DataFormatterInterface $dataFormatter;
 
-    protected FieldOperationCacheBuilderInterface $cacheBuilder;
+    protected ProcessedFieldReportBuilderInterface $cacheBuilder;
 
     protected bool $processingDisabled = false;
 
@@ -140,7 +140,7 @@ class FormFieldController implements FormFieldControllerInterface
     /**
      * {@inheritDoc}
      */
-    public function process(ServerRequestInterface $request): FieldOperationCacheInterface
+    public function process(ServerRequestInterface $request): ProcessedFieldReportInterface
     {
         $this->initCacheBuilder();
 
@@ -153,7 +153,7 @@ class FormFieldController implements FormFieldControllerInterface
 
     protected function initCacheBuilder()
     {
-        $this->cacheBuilder = new FieldOperationCacheBuilder();
+        $this->cacheBuilder = new ProcessedFieldReportBuilder();
 
         return $this;
     }

@@ -3,9 +3,9 @@
 namespace WebTheory\Saveyour\Controllers;
 
 use JsonSerializable;
-use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
+use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 
-abstract class AbstractFieldOperationCache implements FieldOperationCacheInterface, JsonSerializable
+abstract class AbstractProcessedFieldReport implements ProcessedFieldReportInterface, JsonSerializable
 {
     protected bool $requestVarPresent = false;
 
