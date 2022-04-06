@@ -4,7 +4,7 @@ namespace WebTheory\Saveyour\Formatters;
 
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 
-class CombinationDataFormatter implements DataFormatterInterface
+class CompositeDataFormatter implements DataFormatterInterface
 {
     /**
      * @var DataFormatterInterface[]

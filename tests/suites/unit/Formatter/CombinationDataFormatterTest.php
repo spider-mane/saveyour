@@ -3,7 +3,7 @@
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Formatters\ArrayToListDataFormatter;
-use WebTheory\Saveyour\Formatters\CombinationDataFormatter;
+use WebTheory\Saveyour\Formatters\CompositeDataFormatter;
 use WebTheory\Saveyour\Formatters\LazyDataFormatter;
 
 class CombinationDataFormatterTest extends TestCase
@@ -40,7 +40,7 @@ class CombinationDataFormatterTest extends TestCase
             new ArrayToListDataFormatter(),
         ];
 
-        $combination = new CombinationDataFormatter(...$formatters);
+        $combination = new CompositeDataFormatter(...$formatters);
 
         $this->assertEquals($formatters, $combination->getFormatters());
     }
@@ -53,7 +53,7 @@ class CombinationDataFormatterTest extends TestCase
         $test = 'foobar';
         $expected = 'foobar, foobar, foobar, foobar, foobar';
 
-        $formatter = new CombinationDataFormatter(
+        $formatter = new CompositeDataFormatter(
             $this->getDummyFormatter(count(explode(', ', $expected))),
             new ArrayToListDataFormatter()
         );
@@ -69,7 +69,7 @@ class CombinationDataFormatterTest extends TestCase
         $test = 'foobar, foobar, foobar, foobar, foobar';
         $expected = 'foobar';
 
-        $formatter = new CombinationDataFormatter(
+        $formatter = new CompositeDataFormatter(
             $this->getDummyFormatter(count(explode(', ', $test))),
             new ArrayToListDataFormatter()
         );

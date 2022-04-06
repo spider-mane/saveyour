@@ -8,19 +8,13 @@ use WebTheory\Saveyour\Request;
 
 class ReCaptcha3Policy implements ServerRequestPolicyInterface
 {
-    protected $reCaptcha;
+    protected string $reCaptcha;
 
-    protected $secret;
+    protected string $secret;
 
-    /**
-     * @var string
-     */
-    protected $action = '';
+    protected string $action = '';
 
-    /**
-     * @var float
-     */
-    protected $minScore = 0.5;
+    protected float $minScore = 0.5;
 
     public const URL = 'https://www.google.com/recaptcha/api/siteverify';
 
@@ -80,20 +74,22 @@ class ReCaptcha3Policy implements ServerRequestPolicyInterface
 
     public function approvesRequest(ServerRequestInterface $request): bool
     {
-        $response = Request::var($request, $this->reCaptcha);
+        $status = $this->getStatus(Request::var($request, $this->reCaptcha));
 
+        return $this->reCaptchaIsValid($status);
+    }
+
+    protected function getStatus(string $response): ?array
+    {
         $url = static::URL . "?secret={$this->secret}&response={$response}";
 
-        $status = json_decode(file_get_contents($url), true);
+        return json_decode(file_get_contents($url), true);
+    }
 
-        if (
-            true === $status['success']
+    protected function reCaptchaIsValid(array $status): bool
+    {
+        return true === $status['success']
             && $status['score'] >= $this->minScore
-            && ($status['action'] == $this->action || empty($this->action))
-        ) {
-            return true;
-        }
-
-        return false;
+            && ($status['action'] == $this->action || empty($this->action));
     }
 }
