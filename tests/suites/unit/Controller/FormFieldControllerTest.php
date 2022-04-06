@@ -1,6 +1,7 @@
 <?php
 
 use Tests\Support\TestCase;
+use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
@@ -9,7 +10,7 @@ use WebTheory\Saveyour\Controllers\FormFieldController;
 
 class FormFieldControllerTest extends TestCase
 {
-    protected FormFieldController $stubController;
+    protected FormFieldController $controller;
 
     protected FormFieldInterface $stubField;
 
@@ -17,12 +18,39 @@ class FormFieldControllerTest extends TestCase
 
     protected ValidatorInterface $stubValidator;
 
-    protected $baseInterface = FormFieldControllerInterface::class;
+    protected DataFormatterInterface $stubDataFormatter;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->stubController = new FormFieldController('test', ['test'], false);
+        $this->stubField = $this->createStub(FormFieldInterface::class);
+        $this->stubDataManager = $this->createStub(FieldDataManagerInterface::class);
+        $this->stubValidator = $this->createStub(ValidatorInterface::class);
+        $this->stubDataFormatter = $this->createStub(DataFormatterInterface::class);
+
+        $this->controller = new FormFieldController(
+            $this->faker->slug,
+            $this->stubField,
+            $this->stubDataManager,
+            $this->stubValidator,
+            $this->stubDataFormatter
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_is_instance_of_FormFieldControllerInterface()
+    {
+        $this->assertInstanceOf(FormFieldControllerInterface::class, $this->controller);
+    }
+
+    /**
+     * @test
+     */
+    public function it_processes()
+    {
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 }
