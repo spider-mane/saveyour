@@ -3,263 +3,143 @@
 namespace WebTheory\Saveyour\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface;
-use WebTheory\HttpPolicy\ServerRequestPolicyInterface;
 use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
-use WebTheory\Saveyour\Contracts\FormFieldRepositoryInterface;
-use WebTheory\Saveyour\Contracts\FormProcessingCacheInterface;
+use WebTheory\Saveyour\Contracts\FormShieldInterface;
+use WebTheory\Saveyour\Contracts\FormShieldReportInterface;
 use WebTheory\Saveyour\Contracts\FormSubmissionManagerInterface;
-use WebTheory\Saveyour\Contracts\FormValidatorInterface;
+use WebTheory\Saveyour\Contracts\ProcessedFormReportBuilderInterface;
+use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
 use WebTheory\Saveyour\Request;
+use WebTheory\Saveyour\Shield\HolyShield;
 
 class FormSubmissionManager implements FormSubmissionManagerInterface
 {
     /**
-     * Array of FormFieldControllerInterface instances
-     *
      * @var array<int,FormFieldControllerInterface>
      */
-    protected $fields = [];
+    protected array $fields = [];
 
     /**
-     * @var FormFieldRepositoryInterface
-     */
-    protected $fieldRepository;
-
-    /**
-     * Array of FormDataProcessorInterface instances
-     *
      * @var array<int,FormDataProcessorInterface>
      */
-    protected $processors = [];
+    protected array $processors = [];
+
+    protected FormShieldInterface $shield;
+
+    protected ProcessedFormReportBuilderInterface $reportBuilder;
 
     /**
-     * Array of form FormValidatorInterface instances
-     *
-     * @var array<int,ServerRequestPolicyInterface>
+     * @param array<int,FormFieldControllerInterface> $fields
+     * @param array<string,FormDataProcessorInterface> $processors
      */
-    protected $validators = [];
-
-    /**
-     * @var array<int,FieldOperationCacheInterface>
-     */
-    protected $results = [];
-
-    /**
-     * Array of alerts to display in after form submission
-     *
-     * @var array<string,string>
-     */
-    protected $alerts = [];
-
-    /**
-     * Get the value of validators
-     *
-     * @return mixed
-     */
-    public function getValidators()
-    {
-        return $this->validators;
-    }
-
-    /**
-     * Set array of form FormValidatorInterface instances
-     *
-     * @param array $validators Array of form FormValidatorInterface instances
-     *
-     * @return self
-     */
-    public function setValidators(array $validators)
-    {
-        $this->validators = [];
-
-        foreach ($validators as $rule => $validator) {
-            if (is_array($validator)) {
-                $alert = $validator['alert'] ?? null;
-                $validator = $validator['validator'];
-            }
-
-            $this->addValidator($rule, $validator, $alert ?? null);
-        }
-
-        return $this;
-    }
-
-    public function addValidator(string $rule, FormValidatorInterface $validator, ?string $alert = null)
-    {
-        $this->validators[$rule] = $validator;
-
-        if ($alert) {
-            $this->addAlert($rule, $alert);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get array of alerts to display in after form submission
-     *
-     * @return string[]
-     */
-    public function getAlerts(): array
-    {
-        return $this->alerts;
-    }
-
-    public function getAlert(string $rule): string
-    {
-        return $this->alerts[$rule];
-    }
-
-    /**
-     * Set array of alerts to display in after form submission
-     *
-     * @param string[] $alert Array of alerts to display in after form submission
-     *
-     * @return self
-     */
-    public function setAlerts(array $alerts)
-    {
-        $this->alerts = [];
-
-        foreach ($alerts as $rule => $alert) {
-            $this->addAlert($rule, $alert);
-        }
-    }
-
-    public function addAlert(string $rule, string $alert)
-    {
-        $this->alerts[$rule] = $alert;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of fields
-     *
-     * @return mixed
-     */
-    public function getFields()
-    {
-        return $this->fields;
-    }
-
-    /**
-     * Set the value of fields
-     *
-     * @param FormFieldControllerInterface[] $fields
-     *
-     * @return self
-     */
-    public function setFields(FormFieldControllerInterface ...$fields)
+    public function __construct(array $fields, array $processors = [], FormShieldInterface $shield = null)
     {
         $this->fields = $fields;
-
-        return $this;
-    }
-
-    /**
-     * @param FormFieldControllerInterface $field
-     */
-    public function addField(FormFieldControllerInterface $field)
-    {
-        $this->fields[] = $field;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of fieldRepository
-     *
-     * @return FormFieldRepositoryInterface
-     */
-    public function getFieldRepository(): FormFieldRepositoryInterface
-    {
-        return $this->fieldRepository;
-    }
-
-    /**
-     * Set the value of fieldRepository
-     *
-     * @param FormFieldRepositoryInterface $fieldRepository
-     *
-     * @return self
-     */
-    public function setFieldRepository(FormFieldRepositoryInterface $fieldRepository)
-    {
-        $this->fieldRepository = $fieldRepository;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of groups
-     *
-     * @return array
-     */
-    public function getProcessors(): array
-    {
-        return $this->processors;
-    }
-
-    /**
-     * Set the value of groups
-     *
-     * @param FormDataProcessorInterface[] $processors
-     *
-     * @return self
-     */
-    public function setProcessors(FormDataProcessorInterface ...$processors)
-    {
         $this->processors = $processors;
-
-        return $this;
+        $this->shield = $shield ?? new HolyShield();
     }
 
-    /**
-     * Add a group
-     *
-     * @param string $groups
-     *
-     * @return self
-     */
-    public function addProcessor(FormDataProcessorInterface $processor)
+    public function verify(ServerRequestInterface $request): bool
     {
-        $this->processors[] = $processor;
-
-        return $this;
+        return $this->shield->approvesRequest($request);
     }
 
-    public function process(ServerRequestInterface $request): FormProcessingCacheInterface
+    public function validate(ServerRequestInterface $request): bool
     {
-        $cache = new FormProcessingCache();
-
-        if ($this->isSafe($request, $cache)) {
-            $this->processFields($request, $cache);
-            $this->runProcessors($request, $cache);
-            $this->processResults($request, $cache);
-        }
-
-        return $cache;
-    }
-
-    protected function isSafe(ServerRequestInterface $request, FormProcessingCache $cache): bool
-    {
-        $violations = [];
-
-        foreach ($this->validators as $rule => $validator) {
-            if (!$validator->isValid($request)) {
-                $violations[$rule] = $this->alerts[$rule] ?? '';
+        foreach ($this->fields as $field) {
+            if (!$field->validate($request)) {
+                return false;
             }
         }
 
-        $cache->withRequestViolations($violations);
-
-        return empty($violations);
+        return true;
     }
 
-    protected function sortFieldsForProcessing()
+    public function validated(ServerRequestInterface $request): array
+    {
+        return $this->mapValidated($request);
+    }
+
+    public function processed(ServerRequestInterface $request): array
+    {
+        return $this->mapValidated(
+            $request,
+            fn (FormFieldControllerInterface $field) => $field->getUpdatedValue($request)
+        );
+    }
+
+    public function process(ServerRequestInterface $request): ProcessedFormReportInterface
+    {
+        $this->initReportBuilder();
+
+        $report = $this->analyzeRequest($request);
+
+        if (true === $report->verificationStatus()) {
+            $this->processFields($request);
+            $this->runProcessors($request);
+            $this->processResults($request);
+        }
+
+        return $this->reportBuilder->withShieldReport($report)->build();
+    }
+
+    protected function mapValidated(ServerRequestInterface $request, callable $callback = null): array
+    {
+        $mapped = [];
+
+        foreach ($this->fields as $field) {
+            if (!$this->fieldPresentInRequest($field, $request)) {
+                continue;
+            }
+
+            $name = $field->getRequestVar();
+            $value = $this->getFieldInputValue($field, $request);
+
+            if ($field->validate($value)) {
+                $mapped[$name] = $callback ? $callback($field) : $value;
+            }
+        }
+
+        return $mapped;
+    }
+
+    protected function fieldPresentInRequest(FormFieldControllerInterface $field, ServerRequestInterface $request): bool
+    {
+        return Request::has($request, $field->getRequestVar());
+    }
+
+    protected function getFieldInputValue(FormFieldControllerInterface $field, ServerRequestInterface $request): string
+    {
+        return Request::var($request, $field->getRequestVar());
+    }
+
+    protected function initReportBuilder()
+    {
+        $this->reportBuilder = new ProcessedFormReportBuilder();
+    }
+
+    protected function analyzeRequest(ServerRequestInterface $request): FormShieldReportInterface
+    {
+        return $this->shield->analyzeRequest($request);
+    }
+
+    protected function processFields(ServerRequestInterface $request)
+    {
+        $this->sortFieldQueue();
+
+        foreach ($this->fields as $field) {
+            $this->reportBuilder->withFieldReport(
+                $field->getRequestVar(),
+                $this->processField($field, $request)
+            );
+        }
+
+        return $this;
+    }
+
+    protected function sortFieldQueue()
     {
         usort($this->fields, function (FormFieldControllerInterface $a, FormFieldControllerInterface $b) {
             // because usort will not compare values that it infers from
@@ -270,75 +150,36 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         });
     }
 
-    protected function fieldPresentInRequest(FormFieldControllerInterface $field, ServerRequestInterface $request): bool
-    {
-        return Request::has($request, $field->getRequestVar());
-    }
-
-    protected function processFields(ServerRequestInterface $request, FormProcessingCache $cache)
-    {
-        $inputResults = [];
-        $inputViolations = [];
-
-        $this->sortFieldsForProcessing();
-
-        foreach ($this->fields as $field) {
-            $name = $field->getRequestVar();
-            $results = $this->processField($field, $request);
-
-            $inputResults[$name] = $results;
-            $inputViolations[$name] = $results->ruleViolations();
-        }
-
-        $cache->withInputResults($inputResults);
-        $cache->withInputViolations(array_filter($inputViolations));
-
-        return $this;
-    }
-
     protected function processField(FormFieldControllerInterface $field, ServerRequestInterface $request): FieldOperationCacheInterface
     {
-        $requestVarPresent = $this->fieldPresentInRequest($field, $request);
-
-        if ($requestVarPresent) {
-            $base = new FieldOperationCacheBuilder($field->process($request));
-            $results = $base->build();
-        } else {
-            $results = new FieldOperationCache(
-                false,
-                null,
-                false,
-                false,
-                false,
-                []
-            );
-        }
-
-        return $results;
+        return $this->fieldPresentInRequest($field, $request)
+            ? $field->process($request)
+            : new FieldOperationCache();
     }
 
-    protected function runProcessors(ServerRequestInterface $request, FormProcessingCache $cache)
+    protected function runProcessors(ServerRequestInterface $request)
     {
-        $fields = $cache->inputResults();
-        $responses = [];
+        $fields = $this->reportBuilder->fieldReports();
+        $all = array_keys($fields);
 
         foreach ($this->processors as $processor) {
             $results = [];
 
-            foreach ($processor->getFields() as $field) {
+            foreach ($processor->getFields() ?? $all as $field) {
                 $results[$field] = $fields[$field];
             }
 
-            $responses[] = $processor->process($request, $results);
+            $this->reportBuilder->withProcessReport(
+                $processor->getName(),
+                $processor->process($request, $results)
+            );
         }
-
-        $cache->withProcessingResults(array_filter($responses));
 
         return $this;
     }
 
-    protected function processResults(ServerRequestInterface $request, FormProcessingCache $cache)
+    protected function processResults(ServerRequestInterface $request)
     {
-        return $this;
+        //
     }
 }

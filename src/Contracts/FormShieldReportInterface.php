@@ -2,9 +2,9 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-interface ValidationReportInterface
+interface FormShieldReportInterface
 {
-    public function validationStatus(): bool;
+    public function verificationStatus(): bool;
 
     /**
      * @return array<int,string>

@@ -172,7 +172,7 @@ class FormFieldController implements FormFieldControllerInterface
 
     protected function processData(ServerRequestInterface $request)
     {
-        $filteredInput = $this->getSanitizedInput($request);
+        $filteredInput = $this->getUpdatedValue($request);
 
         $this->cacheBuilder->withSanitizedInputValue($filteredInput);
 
@@ -194,7 +194,7 @@ class FormFieldController implements FormFieldControllerInterface
     {
         $data = $this->hasDataManager() ? $this->dataManager->getCurrentData($request) : '';
 
-        return $this->escapeValue($this->formatData($data));
+        return $this->formatData($data);
     }
 
     public function requestVarPresent(ServerRequestInterface $request): bool
@@ -207,7 +207,7 @@ class FormFieldController implements FormFieldControllerInterface
         return Request::var($request, $this->requestVar);
     }
 
-    public function getSanitizedInput(ServerRequestInterface $request)
+    public function getUpdatedValue(ServerRequestInterface $request)
     {
         return $this->formatInput($this->getRawInput($request));
     }
@@ -225,17 +225,6 @@ class FormFieldController implements FormFieldControllerInterface
     protected function formatInput($input)
     {
         return $this->dataFormatter->formatInput($input);
-    }
-
-    protected function escapeValue($value)
-    {
-        if (!isset($this->escaper)) {
-            return $value;
-        }
-
-        return !is_array($value)
-            ? ($this->escaper)($value)
-            : array_filter($value, $this->escaper);
     }
 
     protected function setFormFieldName()

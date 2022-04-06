@@ -3,7 +3,7 @@
 namespace WebTheory\Saveyour;
 
 use WebTheory\Saveyour\Contracts\FormInterface;
-use WebTheory\Saveyour\Contracts\FormValidatorInterface;
+use WebTheory\Saveyour\Contracts\FormShieldInterface;
 use WebTheory\Saveyour\Controllers\FormSubmissionManager;
 
 abstract class AbstractForm implements FormInterface
@@ -16,12 +16,11 @@ abstract class AbstractForm implements FormInterface
 
     protected function getFormSubmissionManager(): FormSubmissionManager
     {
-        return (new FormSubmissionManager())
-            ->setValidators($this->getFormValidators());
+        return (new FormSubmissionManager());
     }
 
     /**
-     * @return array|FormValidatorInterface[]
+     * @return array|FormShieldInterface[]
      */
     protected function getFormValidators(): array
     {

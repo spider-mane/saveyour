@@ -29,4 +29,7 @@ Exterminator::debug([
         'theme' => env('VAR_DUMP_THEME'),
         'server_host' => env('VAR_DUMP_SERVER_HOST'),
     ],
+    'xdebug' => [
+        'file_link_format' => Exterminator::EDITOR_FORMATS[env('DEBUG_EDITOR') ?? 'phpstorm'],
+    ],
 ]);

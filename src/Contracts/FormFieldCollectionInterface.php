@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-interface FormFieldRepositoryInterface
+interface FormFieldCollectionInterface
 {
     public function getField(string $field): ?FormFieldControllerInterface;
 

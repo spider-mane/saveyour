@@ -2,13 +2,13 @@
 
 namespace WebTheory\Saveyour\Controllers;
 
+use WebTheory\Saveyour\Contracts\FormFieldCollectionInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
-use WebTheory\Saveyour\Contracts\FormFieldRepositoryInterface;
 
-class FormFieldRepository implements FormFieldRepositoryInterface
+class FormFieldCollection implements FormFieldCollectionInterface
 {
     /**
-     * @var FormFieldControllerInterface[]
+     * @var array<string,FormFieldControllerInterface>
      */
     protected $fields = [];
 

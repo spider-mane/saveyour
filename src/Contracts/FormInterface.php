@@ -16,5 +16,5 @@ interface FormInterface
 
     public function getInputFieldsData(): array;
 
-    public function process(ServerRequestInterface $request): FormProcessingCacheInterface;
+    public function process(ServerRequestInterface $request): ProcessedFormReportInterface;
 }

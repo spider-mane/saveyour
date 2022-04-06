@@ -8,12 +8,12 @@ use WebTheory\Saveyour\Contracts\FieldOperationCacheInterface;
 class FieldOperationCache extends AbstractFieldOperationCache implements FieldOperationCacheInterface, JsonSerializable
 {
     public function __construct(
-        bool $requestVarPresent,
-        $sanitizedInputValue,
-        bool $updateAttempted,
-        bool $updateSuccessful,
-        bool $validationStatus,
-        array $ruleViolations
+        bool $requestVarPresent = false,
+        $sanitizedInputValue = null,
+        bool $updateAttempted = false,
+        bool $updateSuccessful = false,
+        bool $validationStatus = false,
+        array $ruleViolations = []
     ) {
         $this->requestVarPresent = $requestVarPresent;
         $this->sanitizedInputValue = $sanitizedInputValue;

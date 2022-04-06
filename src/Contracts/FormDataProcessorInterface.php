@@ -8,12 +8,14 @@ interface FormDataProcessorInterface
 {
     /**
      * @param ServerRequestInterface $request
-     * @param FieldOperationCacheInterface[] $results
+     * @param array<string,FieldOperationCacheInterface> $results
      */
     public function process(ServerRequestInterface $request, array $results): ?FormDataProcessingCacheInterface;
 
     /**
-     * @return string[]
+     * @return null|array<int,string>
      */
-    public function getFields(): array;
+    public function getFields(): ?array;
+
+    public function getName(): string;
 }

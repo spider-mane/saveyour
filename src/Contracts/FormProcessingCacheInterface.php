@@ -5,7 +5,7 @@ namespace WebTheory\Saveyour\Contracts;
 interface FormProcessingCacheInterface
 {
     /**
-     * @return FieldOperationCacheInterface[]
+     * @return array<int,FieldOperationCacheInterface>
      */
     public function inputResults(): array;
 
@@ -20,7 +20,7 @@ interface FormProcessingCacheInterface
     public function requestViolations(): array;
 
     /**
-     * @return FormDataProcessingCacheInterface[]
+     * @return array<int,FormDataProcessingCacheInterface>
      */
     public function processingResults(): array;
 }

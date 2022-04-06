@@ -1,12 +1,12 @@
 <?php
 
-namespace WebTheory\Saveyour\Validators;
+namespace WebTheory\Saveyour\Shield\Policy;
 
 use Psr\Http\Message\ServerRequestInterface;
-use WebTheory\Saveyour\Contracts\FormValidatorInterface;
+use WebTheory\HttpPolicy\ServerRequestPolicyInterface;
 use WebTheory\Saveyour\Request;
 
-class ReCaptcha3Validator implements FormValidatorInterface
+class ReCaptcha3Policy implements ServerRequestPolicyInterface
 {
     protected $reCaptcha;
 
@@ -78,7 +78,7 @@ class ReCaptcha3Validator implements FormValidatorInterface
         return $this;
     }
 
-    public function isValid(ServerRequestInterface $request): bool
+    public function approvesRequest(ServerRequestInterface $request): bool
     {
         $response = Request::var($request, $this->reCaptcha);
 
