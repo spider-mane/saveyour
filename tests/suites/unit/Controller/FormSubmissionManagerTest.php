@@ -2,7 +2,6 @@
 
 namespace Tests\Suites\Unit\Controller;
 
-use Faker\Factory;
 use Psr\Http\Message\ServerRequestInterface;
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
@@ -14,10 +13,7 @@ use WebTheory\Saveyour\Contracts\FormSubmissionManagerInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
-use WebTheory\Saveyour\Controllers\FormProcessReport;
 use WebTheory\Saveyour\Controllers\FormSubmissionManager;
-use WebTheory\Saveyour\Controllers\ProcessedFieldReport;
-use WebTheory\Saveyour\Controllers\ProcessedInputReport;
 
 class FormSubmissionManagerTest extends TestCase
 {

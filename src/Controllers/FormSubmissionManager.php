@@ -8,7 +8,6 @@ use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormShieldInterface;
 use WebTheory\Saveyour\Contracts\FormShieldReportInterface;
 use WebTheory\Saveyour\Contracts\FormSubmissionManagerInterface;
-use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportBuilderInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
