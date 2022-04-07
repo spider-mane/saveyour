@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-interface ValidationReportBuilderInterface extends ValidationReportInterface
+interface ValidationReportBuilderInterface
 {
     public function withValidationStatus(bool $status): ValidationReportBuilderInterface;
 

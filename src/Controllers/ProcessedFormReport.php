@@ -9,14 +9,14 @@ class ProcessedFormReport implements ProcessedFormReportInterface
 {
     protected FormShieldReportInterface $shieldReport;
 
-    protected array $fieldReports = [];
+    protected array $inputReports = [];
 
     protected array $processReports = [];
 
-    public function __construct(FormShieldReportInterface $shieldReport, array $fieldReports, array $processReports)
+    public function __construct(FormShieldReportInterface $shieldReport, array $inputReports, array $processReports)
     {
         $this->shieldReport = $shieldReport;
-        $this->fieldReports = $fieldReports;
+        $this->inputReports = $inputReports;
         $this->processReports = $processReports;
     }
 
@@ -25,9 +25,9 @@ class ProcessedFormReport implements ProcessedFormReportInterface
         return $this->shieldReport;
     }
 
-    public function fieldReports(): array
+    public function inputReports(): array
     {
-        return $this->fieldReports;
+        return $this->inputReports;
     }
 
     public function processReports(): array

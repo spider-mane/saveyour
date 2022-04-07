@@ -15,6 +15,6 @@ class HolyShield implements FormShieldInterface
 
     public function analyzeRequest(ServerRequestInterface $request): FormShieldReportInterface
     {
-        return new FormShieldReport(true, []);
+        return new FormShieldReport(true);
     }
 }

@@ -11,6 +11,7 @@ use WebTheory\Saveyour\Contracts\FormSubmissionManagerInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportBuilderInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
+use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
 use WebTheory\Saveyour\Request;
 use WebTheory\Saveyour\Shield\HolyShield;
 
@@ -77,8 +78,8 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         $report = $this->analyzeRequest($request);
 
         if (true === $report->verificationStatus()) {
-            $this->processFields($request);
-            $this->runProcessors($request);
+            $inputReports = $this->processFields($request);
+            $this->runProcessors($request, $inputReports);
             $this->processResults($request);
         }
 
@@ -125,18 +126,44 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         return $this->shield->analyzeRequest($request);
     }
 
-    protected function processFields(ServerRequestInterface $request)
+    protected function processFields(ServerRequestInterface $request): array
     {
         $this->sortFieldQueue();
 
+        $fields = [];
+
         foreach ($this->fields as $field) {
-            $this->reportBuilder->withFieldReport(
-                $field->getRequestVar(),
+            $report = $this->processField($field, $request);
+            $name = $field->getRequestVar();
+
+            $this->reportBuilder->withInputReport(
+                $name,
                 $this->processField($field, $request)
+            );
+
+            $fields[$name] = $report;
+        }
+
+        return $fields;
+    }
+
+    protected function processField(FormFieldControllerInterface $field, ServerRequestInterface $request): ProcessedInputReportInterface
+    {
+        if ($this->fieldPresentInRequest($field, $request)) {
+            $fieldReport = $field->process($request);
+
+            return new ProcessedInputReport(
+                true,
+                $this->getFieldInputValue($field, $request),
+                $fieldReport->sanitizedInputValue(),
+                $fieldReport->updateAttempted(),
+                $fieldReport->updateSuccessful(),
+                $fieldReport->validationStatus(),
+                $fieldReport->ruleViolations()
             );
         }
 
-        return $this;
+        return ProcessedInputReport::voided();
     }
 
     protected function sortFieldQueue()
@@ -150,23 +177,15 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         });
     }
 
-    protected function processField(FormFieldControllerInterface $field, ServerRequestInterface $request): ProcessedFieldReportInterface
+    protected function runProcessors(ServerRequestInterface $request, array $fields)
     {
-        return $this->fieldPresentInRequest($field, $request)
-            ? $field->process($request)
-            : new ProcessedFieldReport();
-    }
-
-    protected function runProcessors(ServerRequestInterface $request)
-    {
-        $fields = $this->reportBuilder->fieldReports();
         $all = array_keys($fields);
 
         foreach ($this->processors as $processor) {
             $results = [];
 
             foreach ($processor->getFields() ?? $all as $field) {
-                $results[$field] = $fields[$field];
+                $results[$field] = $fields[$field] ?? null;
             }
 
             $this->reportBuilder->withProcessReport(

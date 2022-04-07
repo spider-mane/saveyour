@@ -7,9 +7,9 @@ interface ProcessedFormReportInterface
     public function shieldReport(): FormShieldReportInterface;
 
     /**
-     * @return array<string,ProcessedFieldReportInterface>
+     * @return array<string,ProcessedInputReportInterface>
      */
-    public function fieldReports(): array;
+    public function inputReports(): array;
 
     /**
      * @return array<string,FormProcessReportInterface>

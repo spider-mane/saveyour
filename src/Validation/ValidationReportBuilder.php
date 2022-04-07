@@ -11,11 +11,6 @@ class ValidationReportBuilder implements ValidationReportBuilderInterface
 
     protected array $violations = [];
 
-    public function validationStatus(): bool
-    {
-        return $this->status;
-    }
-
     public function withValidationStatus(bool $status): ValidationReportBuilderInterface
     {
         $this->status = $status;
@@ -30,9 +25,11 @@ class ValidationReportBuilder implements ValidationReportBuilderInterface
         return $this;
     }
 
-    public function ruleViolations(): array
+    public function withRuleViolations(array $violations): ValidationReportBuilderInterface
     {
-        return $this->violations;
+        array_map([$this, 'withRuleViolation'], $violations);
+
+        return $this;
     }
 
     public function build(): ValidationReportInterface

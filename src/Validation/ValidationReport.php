@@ -28,4 +28,9 @@ class ValidationReport implements ValidationReportInterface
     {
         return $this->violations;
     }
+
+    public static function voided(): ValidationReportInterface
+    {
+        return new static(false);
+    }
 }

@@ -2,11 +2,11 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-interface ProcessedFormReportBuilderInterface extends ProcessedFormReportInterface
+interface ProcessedFormReportBuilderInterface
 {
     public function withShieldReport(FormShieldReportInterface $report): ProcessedFormReportBuilderInterface;
 
-    public function withFieldReport(string $field, ProcessedFieldReportInterface $report): ProcessedFormReportBuilderInterface;
+    public function withInputReport(string $input, ProcessedInputReportInterface $report): ProcessedFormReportBuilderInterface;
 
     public function withProcessReport(string $process, FormProcessReportInterface $report): ProcessedFormReportBuilderInterface;
 

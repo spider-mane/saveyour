@@ -10,7 +10,7 @@ class FormShieldReport implements FormShieldReportInterface
 
     protected array $ruleViolations;
 
-    public function __construct(bool $verificationStatus, array $ruleViolations)
+    public function __construct(bool $verificationStatus, string ...$ruleViolations)
     {
         $this->verificationStatus = $verificationStatus;
         $this->ruleViolations = $ruleViolations;

@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-interface FormShieldReportBuilderInterface extends FormShieldReportInterface
+interface FormShieldReportBuilderInterface
 {
     public function withVerificationStatus(bool $status): FormShieldReportBuilderInterface;
 

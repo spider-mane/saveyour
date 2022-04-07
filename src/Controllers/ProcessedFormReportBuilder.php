@@ -4,16 +4,22 @@ namespace WebTheory\Saveyour\Controllers;
 
 use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
 use WebTheory\Saveyour\Contracts\FormShieldReportInterface;
-use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportBuilderInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
+use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
 
-class ProcessedFormReportBuilder extends ProcessedFormReport implements ProcessedFormReportBuilderInterface
+class ProcessedFormReportBuilder implements ProcessedFormReportBuilderInterface
 {
+    protected array $inputReports = [];
+
+    protected array $processReports = [];
+
+    protected FormShieldReportInterface $shieldReport;
+
     public function __construct(ProcessedFormReportInterface $previous = null)
     {
         if ($previous) {
-            $this->fieldReports = $previous->fieldReports();
+            $this->inputReports = $previous->inputReports();
             $this->processReports = $previous->processReports();
             $this->shieldReport = $previous->shieldReport();
         }
@@ -26,9 +32,9 @@ class ProcessedFormReportBuilder extends ProcessedFormReport implements Processe
         return $this;
     }
 
-    public function withFieldReport(string $field, ProcessedFieldReportInterface $report): ProcessedFormReportBuilderInterface
+    public function withInputReport(string $input, ProcessedInputReportInterface $report): ProcessedFormReportBuilderInterface
     {
-        $this->fieldReports[$field] = $report;
+        $this->inputReports[$input] = $report;
 
         return $this;
     }
@@ -44,7 +50,7 @@ class ProcessedFormReportBuilder extends ProcessedFormReport implements Processe
     {
         return new ProcessedFormReport(
             $this->shieldReport,
-            $this->fieldReports,
+            $this->inputReports,
             $this->processReports
         );
     }
