@@ -57,4 +57,8 @@
     <text outputFile="build/phpunit/logs/logfile.txt"/>
   </logging>
 
+  <listeners>
+    <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
+  </listeners>
+
 </phpunit>
