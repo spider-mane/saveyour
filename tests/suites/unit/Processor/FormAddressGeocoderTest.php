@@ -1,105 +1,167 @@
 <?php
 
-use CommerceGuys\Addressing\Address;
-use CommerceGuys\Addressing\AddressFormat\AddressFormatRepository;
-use CommerceGuys\Addressing\Country\CountryRepository;
-use CommerceGuys\Addressing\Formatter\DefaultFormatter;
-use CommerceGuys\Addressing\Subdivision\SubdivisionRepository;
-use Geocoder\Provider\GoogleMaps\GoogleMaps;
+namespace Tests\Suites\Unit\Processor;
+
+use Geocoder\Collection;
+use Geocoder\Location;
+use Geocoder\Model\Coordinates;
+use Geocoder\Provider\Provider;
 use Geocoder\Query\GeocodeQuery;
-use GuzzleHttp\Psr7\ServerRequest;
-use Http\Adapter\Guzzle6\Client;
 use Psr\Http\Message\ServerRequestInterface;
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
-use WebTheory\Saveyour\Controllers\ProcessedFieldReportBuilder;
+use WebTheory\Saveyour\Contracts\InputFormatterInterface;
+use WebTheory\Saveyour\Controllers\ProcessedInputReport;
 use WebTheory\Saveyour\Processors\FormAddressGeocoder;
 
 class FormAddressGeocoderTest extends TestCase
 {
-    protected function generateDummyDataManager()
+    protected FormAddressGeocoder $sut;
+
+    protected ServerRequestInterface $mockRequest;
+
+    protected Provider $mockProvider;
+
+    protected FieldDataManagerInterface $mockGeoDataManager;
+
+    protected InputFormatterInterface $mockGeoDataFormatter;
+
+    protected FieldDataManagerInterface $mockAddressDataManager;
+
+    protected InputFormatterInterface $mockAddressDataFormatter;
+
+    protected Coordinates $coordinatesInstance;
+
+    protected Location $mockLocation;
+
+    protected Collection $mockCollection;
+
+    protected string $dummyCountryCode;
+
+    protected array $dummyFieldResults;
+
+    protected float $dummyLatitude;
+
+    protected float $dummyLongitude;
+
+    protected array $dummyCoordinates;
+
+    protected function setUp(): void
     {
-        return new class () implements FieldDataManagerInterface {
-            public function getCurrentData(ServerRequestInterface $request)
-            {
-                return '';
-            }
+        parent::setUp();
 
-            public function handleSubmittedData(ServerRequestInterface $request, $data): bool
-            {
-                return true;
-            }
-        };
-    }
+        $this->dummyCountryCode = $this->fake->countryCode;
 
-    public function testGetsProperGeoData()
-    {
-        if (file_exists($env = dirname(__DIR__) . '/env.php')) {
-            require $env;
-        }
-
-        $address = [
-            'street' => 'One Microsoft Way',
-            'city' => 'Redmond',
-            'state' => 'WA',
-            'zip' => '98052',
+        $this->dummyLatitude = $this->fake->latitude;
+        $this->dummyLongitude = $this->fake->longitude;
+        $this->dummyCoordinates = [
+            'lat' => $this->dummyLatitude,
+            'lng' => $this->dummyLongitude,
         ];
 
-        $request = ServerRequest::fromGlobals();
+        $this->mockRequest = $this->createMock(ServerRequestInterface::class);
+
+        $this->coordinatesInstance = new Coordinates($this->dummyLatitude, $this->dummyLongitude);
+
+        $this->mockLocation = $this->createMock(Location::class);
+        $this->mockLocation->method('getCoordinates')->willReturn($this->coordinatesInstance);
+
+        $this->mockCollection = $this->createMock(Collection::class);
+        $this->mockCollection->method('first')->willReturn($this->mockLocation);
+
+        $this->mockProvider = $this->createMock(Provider::class);
+
+        $this->mockGeoDataManager = $this->createMock(FieldDataManagerInterface::class);
+        $this->mockGeoDataFormatter = $this->createMock(InputFormatterInterface::class);
+
+        $this->mockAddressDataManager = $this->createMock(FieldDataManagerInterface::class);
+        $this->mockAddressDataFormatter = $this->createMock(InputFormatterInterface::class);
+
+        $fields = [
+            'street' => $this->unique->slug,
+            'city' => $this->unique->slug,
+            'state' => $this->unique->slug,
+            'zip' => $this->unique->slug,
+            'country' => $this->unique->slug,
+        ];
 
         $results = [
-            'street' => (new ProcessedFieldReportBuilder())
-                ->withSanitizedInputValue($address['street'])
-                ->withUpdateSuccessful(true),
-
-            'city' => (new ProcessedFieldReportBuilder())
-                ->withSanitizedInputValue($address['city'])
-                ->withUpdateSuccessful(true),
-
-            'state' => (new ProcessedFieldReportBuilder())
-                ->withSanitizedInputValue($address['state'])
-                ->withUpdateSuccessful(true),
-
-            'zip' => (new ProcessedFieldReportBuilder())
-                ->withSanitizedInputValue($address['zip'])
-                ->withUpdateSuccessful(true),
+            $fields['street'] => $this->fake->streetAddress,
+            $fields['city'] => $this->fake->city,
+            $fields['state'] => $this->fake->state,
+            $fields['zip'] => $this->fake->postcode,
+            $fields['country'] => $this->dummyCountryCode,
         ];
 
-        $address = (new Address())
-            ->withAddressLine1($address['street'])
-            ->withLocality($address['city'])
-            ->withAdministrativeArea($address['state'])
-            ->withPostalCode($address['zip'])
-            ->withCountryCode('US');
+        foreach ($results as $param => $value) {
+            $report = $this->createMock(ProcessedInputReport::class);
+            $report->method('rawInputValue')->willReturn($value);
+            $report->method('updateSuccessful')->willReturn(true);
 
-        $formatter = new DefaultFormatter(
-            new AddressFormatRepository(),
-            new CountryRepository(),
-            new SubdivisionRepository(),
-            ['html' => false]
+            $this->dummyFieldResults[$param] = $report;
+        }
+
+        $this->sut = new FormAddressGeocoder(
+            $this->fake->slug,
+            $fields,
+            $this->mockProvider,
+            $this->mockGeoDataManager,
+            $this->mockGeoDataFormatter,
+            $this->mockAddressDataManager,
+            $this->mockAddressDataFormatter,
+            $this->dummyCountryCode
         );
+    }
 
-        $client = new Client();
-        $geocoder = new GoogleMaps($client, null, getenv('GOOGLE_MAPS'));
+    /**
+     * @test
+     */
+    public function it_retrieves_geo_data_using_geo_library_api()
+    {
+        # Arrange
+        $coordinates = $this->makeMockeryOf($this->coordinatesInstance);
 
-        $collection = $geocoder->geocodeQuery(GeocodeQuery::create($formatter->format($address)));
-        $coordinates = $collection->get(0)->getCoordinates();
+        $location = $this->createMock(Location::class);
+        $location->method('getCoordinates')->willReturn($coordinates);
 
-        $coordinates = [
-            'lat' => $coordinates->getLatitude(),
-            'lng' => $coordinates->getLongitude(),
-        ];
+        $collection = $this->createMock(Collection::class);
+        $collection->method('first')->willReturn($location);
 
-        $manager = $this->generateDummyDataManager();
+        # Expect
+        $this->mockProvider->expects($this->once())
+            ->method('geocodeQuery')
+            ->with($this->isInstanceOf(GeocodeQuery::class))
+            ->willReturn($collection);
 
-        $processor = (new FormAddressGeocoder($geocoder, $manager))
-            ->addField('street', 'street')
-            ->addField('city', 'city')
-            ->addField('state', 'state')
-            ->addField('zip', 'zip');
+        $coordinates->shouldReceive('getLatitude')->once()->andReturn($this->dummyLatitude);
+        $coordinates->shouldReceive('getLongitude')->once()->andReturn($this->dummyLongitude);
 
-        $results = $processor->process($request, $results)->results('coordinates');
+        # Act
+        $results = $this->sut->process($this->mockRequest, $this->dummyFieldResults);
 
-        $this->assertEquals($coordinates, $results);
+        # Assert
+        $this->assertEquals($this->dummyCoordinates, $results->resultFor('coordinates'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_passes_coordinates_to_data_manager_after_formatting()
+    {
+        # Arrange
+        $this->mockProvider->method('geocodeQuery')->willReturn($this->mockCollection);
+
+        # Expect
+        $this->mockGeoDataFormatter->expects($this->once())
+            ->method('formatInput')
+            ->with($this->dummyCoordinates)
+            ->willReturn($this->dummyCoordinates);
+
+        $this->mockGeoDataManager->expects($this->once())
+            ->method('handleSubmittedData')
+            ->with($this->mockRequest, $this->dummyCoordinates);
+
+        # Act
+        $this->sut->process($this->mockRequest, $this->dummyFieldResults);
     }
 }

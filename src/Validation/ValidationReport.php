@@ -6,19 +6,19 @@ use WebTheory\Saveyour\Contracts\ValidationReportInterface;
 
 class ValidationReport implements ValidationReportInterface
 {
-    protected bool $status;
+    protected bool $validationStatus;
 
-    protected array $violations = [];
+    protected array $ruleViolations = [];
 
     public function __construct(bool $status, string ...$violations)
     {
-        $this->status = $status;
-        $this->violations = $violations;
+        $this->validationStatus = $status;
+        $this->ruleViolations = $violations;
     }
 
     public function validationStatus(): bool
     {
-        return $this->status;
+        return $this->validationStatus;
     }
 
     /**
@@ -26,7 +26,7 @@ class ValidationReport implements ValidationReportInterface
      */
     public function ruleViolations(): array
     {
-        return $this->violations;
+        return $this->ruleViolations;
     }
 
     public static function voided(): ValidationReportInterface

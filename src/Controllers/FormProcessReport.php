@@ -17,4 +17,9 @@ class FormProcessReport implements FormProcessReportInterface
     {
         return $this->results;
     }
+
+    public function resultFor(string $process)
+    {
+        return $this->results[$process] ?? null;
+    }
 }

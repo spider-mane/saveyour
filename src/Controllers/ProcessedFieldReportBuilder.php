@@ -4,9 +4,8 @@ namespace WebTheory\Saveyour\Controllers;
 
 use WebTheory\Saveyour\Contracts\ProcessedFieldReportBuilderInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
-use WebTheory\Saveyour\Validation\ValidationReportBuilder;
 
-class ProcessedFieldReportBuilder extends ValidationReportBuilder implements ProcessedFieldReportBuilderInterface
+class ProcessedFieldReportBuilder implements ProcessedFieldReportBuilderInterface
 {
     protected $sanitizedInputValue = null;
 
@@ -20,8 +19,6 @@ class ProcessedFieldReportBuilder extends ValidationReportBuilder implements Pro
             $this->sanitizedInputValue = $previous->sanitizedInputValue();
             $this->updateAttempted = $previous->updateAttempted();
             $this->updateSuccessful = $previous->updateSuccessful();
-            $this->validationStatus = $previous->validationStatus();
-            $this->ruleViolations = $previous->ruleViolations();
         }
     }
 
@@ -51,9 +48,7 @@ class ProcessedFieldReportBuilder extends ValidationReportBuilder implements Pro
         return new ProcessedFieldReport(
             $this->sanitizedInputValue,
             $this->updateAttempted,
-            $this->updateSuccessful,
-            $this->validationStatus,
-            $this->ruleViolations
+            $this->updateSuccessful
         );
     }
 }

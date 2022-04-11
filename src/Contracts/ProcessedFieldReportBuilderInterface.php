@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-interface ProcessedFieldReportBuilderInterface extends ValidationReportBuilderInterface
+interface ProcessedFieldReportBuilderInterface
 {
     public function withSanitizedInputValue($value): ProcessedFieldReportBuilderInterface;
 

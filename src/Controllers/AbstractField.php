@@ -8,34 +8,36 @@ use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
+use WebTheory\Saveyour\Contracts\ValidationReportInterface;
+use WebTheory\Saveyour\Validation\Validator;
 
 abstract class AbstractField implements FormFieldControllerInterface
 {
     /**
      * @var string
      */
-    protected $__requestVar;
+    protected string $__requestVar;
 
     /**
      * @var bool
      */
-    protected $__processingDisabled = false;
+    protected bool $__isPermittedToProcess = true;
 
     /**
-     * @var array
+     * @var array<int,string>
      */
-    protected $__mustAwait = [];
+    protected array $__mustAwait = [];
 
     /**
      * @var FormFieldControllerInterface
      */
     protected $__coreController;
 
-    public function __construct(string $requestVar, array $mustAwait = [], $processingDisabled = false)
+    public function __construct(string $requestVar, array $mustAwait = [], $processingEnabled = true)
     {
         $this->__requestVar = $requestVar;
         $this->__mustAwait = $mustAwait;
-        $this->__processingDisabled = $processingDisabled;
+        $this->__isPermittedToProcess = $processingEnabled;
 
         $this->__coreController = $this->createFormFieldController();
     }
@@ -55,9 +57,29 @@ abstract class AbstractField implements FormFieldControllerInterface
         return $this->__coreController->getFormField();
     }
 
+    public function requestVarPresent(ServerRequestInterface $request): bool
+    {
+        return $this->__coreController->requestVarPresent($request);
+    }
+
+    public function inspect($value): ValidationReportInterface
+    {
+        return $this->__coreController->inspect($value);
+    }
+
+    public function validate($value): bool
+    {
+        return $this->__coreController->validate($value);
+    }
+
     public function getPresetValue(ServerRequestInterface $request)
     {
         return $this->__coreController->getPresetValue($request);
+    }
+
+    public function getUpdatedValue(ServerRequestInterface $request): ?array
+    {
+        return $this->__coreController->getUpdatedValue($request);
     }
 
     public function mustAwait(): array
@@ -65,9 +87,19 @@ abstract class AbstractField implements FormFieldControllerInterface
         return $this->__coreController->mustAwait();
     }
 
-    public function render(ServerRequestInterface $request): ?FormFieldInterface
+    public function render(ServerRequestInterface $request): string
     {
         return $this->__coreController->render($request);
+    }
+
+    public function compose(ServerRequestInterface $request): FormFieldInterface
+    {
+        return $this->__coreController->compose($request);
+    }
+
+    public function isPermittedToProcess(): bool
+    {
+        return $this->__coreController->isPermittedToProcess();
     }
 
     public function process(ServerRequestInterface $request): ProcessedFieldReportInterface
@@ -83,10 +115,8 @@ abstract class AbstractField implements FormFieldControllerInterface
             $this->defineDataManager(),
             $this->defineValidator(),
             $this->defineDataFormatter(),
-            $this->defineFilters(),
-            $this->defineProcessingDisabled(),
+            $this->definePermissionProcessStatus(),
             $this->defineMustAwait(),
-            $this->defineEscaper()
         );
     }
 
@@ -110,24 +140,14 @@ abstract class AbstractField implements FormFieldControllerInterface
         return null;
     }
 
-    protected function defineFilters(): ?array
+    protected function defineValidator(): ?Validator
     {
         return null;
     }
 
-    protected function defineValidator(): ?array
+    protected function definePermissionProcessStatus(): ?bool
     {
-        return null;
-    }
-
-    protected function defineEscaper(): ?callable
-    {
-        return null;
-    }
-
-    protected function defineProcessingDisabled(): ?bool
-    {
-        return $this->__processingDisabled;
+        return $this->__isPermittedToProcess;
     }
 
     protected function defineMustAwait(): ?array

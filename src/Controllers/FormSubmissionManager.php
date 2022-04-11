@@ -132,14 +132,10 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         $fields = [];
 
         foreach ($this->fields as $field) {
-            $report = $this->processField($field, $request);
             $name = $field->getRequestVar();
+            $report = $this->processField($field, $request);
 
-            $this->reportBuilder->withInputReport(
-                $name,
-                $this->processField($field, $request)
-            );
-
+            $this->reportBuilder->withInputReport($name, $report);
             $fields[$name] = $report;
         }
 
@@ -148,21 +144,22 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
 
     protected function processField(FormFieldControllerInterface $field, ServerRequestInterface $request): ProcessedInputReportInterface
     {
-        if ($this->fieldPresentInRequest($field, $request)) {
-            $fieldReport = $field->process($request);
-
-            return new ProcessedInputReport(
-                true,
-                $this->getFieldInputValue($field, $request),
-                $fieldReport->sanitizedInputValue(),
-                $fieldReport->updateAttempted(),
-                $fieldReport->updateSuccessful(),
-                $fieldReport->validationStatus(),
-                $fieldReport->ruleViolations()
-            );
+        if (!$this->fieldPresentInRequest($field, $request)) {
+            return ProcessedInputReport::voided();
         }
 
-        return ProcessedInputReport::voided();
+        $input = $this->getFieldInputValue($field, $request);
+        $validation = $field->inspect($input);
+
+        if (false === $validation->validationStatus()) {
+            return ProcessedInputReport::invalid($input, $validation->ruleViolations());
+        }
+
+        if (!$field->isPermittedToProcess()) {
+            return ProcessedInputReport::unprocessed($input);
+        }
+
+        return ProcessedInputReport::processed($input, $field->process($request));
     }
 
     protected function sortFieldQueue()

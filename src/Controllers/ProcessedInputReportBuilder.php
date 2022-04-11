@@ -5,12 +5,17 @@ namespace WebTheory\Saveyour\Controllers;
 use WebTheory\Saveyour\Contracts\ProcessedFieldReportBuilderInterface;
 use WebTheory\Saveyour\Contracts\ProcessedInputReportBuilderInterface;
 use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
+use WebTheory\Saveyour\Contracts\ValidationReportBuilderInterface;
 
 class ProcessedInputReportBuilder extends ProcessedFieldReportBuilder implements ProcessedInputReportBuilderInterface
 {
     protected bool $requestVarPresent;
 
-    protected ?string $rawInputValue = null;
+    protected string $rawInputValue;
+
+    protected bool $validationStatus;
+
+    protected array $ruleViolations;
 
     public function __construct(ProcessedInputReportInterface $previous = null)
     {
@@ -35,6 +40,27 @@ class ProcessedInputReportBuilder extends ProcessedFieldReportBuilder implements
     public function withRawInputValue(string $value): ProcessedInputReportBuilderInterface
     {
         $this->rawInputValue = $value;
+
+        return $this;
+    }
+
+    public function withValidationStatus(bool $result): ProcessedInputReportBuilderInterface
+    {
+        $this->validationStatus = $result;
+
+        return $this;
+    }
+
+    public function withRuleViolations(array $violations): ProcessedInputReportBuilderInterface
+    {
+        $this->ruleViolations = $violations;
+
+        return $this;
+    }
+
+    public function withRuleViolation(string $violation): ValidationReportBuilderInterface
+    {
+        $this->ruleViolations[] = $violation;
 
         return $this;
     }

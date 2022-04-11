@@ -4,48 +4,34 @@ namespace WebTheory\Saveyour\Processors;
 
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
+use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
 
 abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
 {
-    /**
-     * @var array
-     */
-    protected $fields = [];
+    protected string $name;
 
-    /**
-     * Get the value of fields
-     *
-     * @return mixed
-     */
-    public function getFields(): array
-    {
-        return $this->fields;
-    }
+    protected array $fields = [];
 
-    public function getField(string $field)
+    public function __construct(string $name, array $fields)
     {
-        return $this->fields[$field];
-    }
+        $this->name = $name;
 
-    /**
-     * Set the value of fields
-     *
-     * @param mixed $fields
-     *
-     * @return self
-     */
-    public function setFields(array $fields)
-    {
         foreach ($fields as $field => $param) {
             $this->addField($field, $param);
         }
     }
 
-    /**
-     * @param string $id
-     * @param string $field
-     */
-    public function addField(string $id, string $field)
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getFields(): array
+    {
+        return $this->fields;
+    }
+
+    protected function addField(string $id, string $field)
     {
         $this->fields[$id] = $field;
 
@@ -67,12 +53,14 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
     }
 
     /**
-     * @param ProcessedFieldReportInterface[] $results
+     * @param array<string,ProcessedInputReportInterface> $results
      */
     protected function allFieldsPresent(array $results): bool
     {
         foreach ($this->fields as $field) {
-            if (!isset($results[$field])) {
+            $field = $results[$field] ?? null;
+
+            if (!$field || !$this->fieldIsPresentAndValid($field)) {
                 return false;
             }
         }
@@ -80,16 +68,21 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
         return true;
     }
 
+    protected function fieldIsPresentAndValid(ProcessedInputReportInterface $report): bool
+    {
+        return $report->requestVarPresent() && $report->validationStatus();
+    }
+
     /**
-     * @param ProcessedFieldReportInterface[] $results
+     * @param array<string,ProcessedInputReportInterface> $results
      */
     protected function extractValues(array $results): array
     {
         $values = [];
         $keys = array_flip($this->fields);
 
-        foreach ($results as $id => $cache) {
-            $values[$keys[$id]] = $cache->sanitizedInputValue();
+        foreach ($results as $id => $report) {
+            $values[$keys[$id]] = $report->rawInputValue();
         }
 
         return $values;

@@ -7,20 +7,20 @@ use WebTheory\Saveyour\Contracts\ValidationReportInterface;
 
 class ValidationReportBuilder implements ValidationReportBuilderInterface
 {
-    protected bool $status;
+    protected bool $validationStatus;
 
-    protected array $violations = [];
+    protected array $ruleViolations = [];
 
     public function withValidationStatus(bool $status): ValidationReportBuilderInterface
     {
-        $this->status = $status;
+        $this->validationStatus = $status;
 
         return $this;
     }
 
     public function withRuleViolation(string $violation): ValidationReportBuilderInterface
     {
-        $this->violations[] = $violation;
+        $this->ruleViolations[] = $violation;
 
         return $this;
     }
@@ -34,6 +34,6 @@ class ValidationReportBuilder implements ValidationReportBuilderInterface
 
     public function build(): ValidationReportInterface
     {
-        return new ValidationReport($this->status, ...$this->violations);
+        return new ValidationReport($this->validationStatus, ...$this->ruleViolations);
     }
 }

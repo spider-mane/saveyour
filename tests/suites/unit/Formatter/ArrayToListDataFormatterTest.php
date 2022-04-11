@@ -1,29 +1,48 @@
 <?php
 
+namespace Tests\Suites\Unit\Formatter;
+
+use Faker\UniqueGenerator;
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Formatters\ArrayToListDataFormatter;
 
 class ArrayToListDataFormatterTest extends TestCase
 {
-    public function testProperlyFormats()
+    /**
+     * @test
+     */
+    public function it_converts_data_as_an_array_to_a_delimiter_separated_list()
     {
-        $formatter = new ArrayToListDataFormatter();
+        // Arrange
+        $delimiter = ',';
+        $array = $this->dummyList(fn (UniqueGenerator $unique) => $unique->word);
 
-        $expected = 'foo, bar';
+        $sut = new ArrayToListDataFormatter($delimiter);
+        $expected = implode($delimiter, $array);
 
-        $value = ['foo', 'bar'];
+        // Act
+        $result = $sut->formatData($array);
 
-        $this->assertEquals($expected, $formatter->formatData($value));
+        // Assert
+        $this->assertEquals($expected, $result);
     }
 
-    public function testProperlyReverseFormats()
+    /**
+     * @test
+     */
+    public function it_converts_input_as_a_delimiter_separated_list_to_an_array()
     {
-        $formatter = new ArrayToListDataFormatter();
+        // Arrange
+        $delimiter = ',';
+        $expected = $this->dummyList(fn (UniqueGenerator $unique) => $unique->word);
+        $list = implode($delimiter, $expected);
 
-        $expected = ['foo', 'bar'];
+        $sut = new ArrayToListDataFormatter($delimiter);
 
-        $value = 'foo, bar';
+        // Act
+        $result = $sut->formatInput($list);
 
-        $this->assertEquals($expected, $formatter->formatInput($value));
+        // Assert
+        $this->assertEquals($expected, $result);
     }
 }

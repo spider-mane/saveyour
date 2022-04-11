@@ -2,6 +2,7 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
+use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 
 interface FormFieldControllerInterface extends ValidatorInterface
@@ -22,9 +23,21 @@ interface FormFieldControllerInterface extends ValidatorInterface
     /**
      * @param ServerRequestInterface $request
      *
-     * @return FormFieldInterface
+     * @throws LogicException if $formField property is null
+     *
+     * @return FormFieldInterface FormFieldInterface instance with filled in
+     * name and value
      */
-    public function render(ServerRequestInterface $request): ?FormFieldInterface;
+    public function compose(ServerRequestInterface $request): FormFieldInterface;
+
+    /**
+     * @param ServerRequestInterface $request
+     *
+     * @throws LogicException if $formField property is null
+     *
+     * @return string FormFieldInterface instance as html string
+     */
+    public function render(ServerRequestInterface $request): string;
 
     /**
      * @param ServerRequestInterface $request
@@ -32,4 +45,8 @@ interface FormFieldControllerInterface extends ValidatorInterface
      * @return ProcessedFieldReportInterface
      */
     public function process(ServerRequestInterface $request): ProcessedFieldReportInterface;
+
+    public function requestVarPresent(ServerRequestInterface $request): bool;
+
+    public function isPermittedToProcess(): bool;
 }

@@ -1,19 +1,28 @@
 <?php
 
+namespace Tests\Suites\Unit\Field;
+
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Elements\Label;
 
 class LabelTest extends TestCase
 {
-    public function testEvenIsLabel()
+    /**
+     * @test
+     */
+    public function it_outputs_a_valid_label_element()
     {
-        $html = '<label id="foo" for="bar">Foobar</label>';
+        $id = $this->unique->slug;
+        $for = $this->unique->slug;
+        $text = $this->fake->word;
 
-        $label = new Label('Foobar');
-        $label->setId('foo');
-        $label->setFor('bar');
+        $html = "<label id=\"$id\" for=\"$for\">$text</label>";
+
+        $label = new Label($text);
+        $label->setId($id);
+        $label->setFor($for);
 
         $this->assertEquals($html, $label->toHtml());
-        $this->assertEquals('Foobar', $label->getContent());
+        $this->assertEquals($text, $label->getContent());
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
 use Dotenv\Dotenv;
-use function Env\env;
-
 use WebTheory\Exterminate\Exterminator;
+
+use function Env\env;
 
 $root = dirname(__DIR__);
 

@@ -1,12 +1,11 @@
 <?php
 
-namespace WebTheory\Saveyour\Policy;
+namespace WebTheory\Saveyour\Shield;
 
 use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\HttpPolicy\ServerRequestPolicyInterface;
 use WebTheory\Saveyour\Contracts\FormShieldInterface;
 use WebTheory\Saveyour\Contracts\FormShieldReportInterface;
-use WebTheory\Saveyour\Shield\FormShieldReportBuilder;
 
 class FormShield implements FormShieldInterface
 {

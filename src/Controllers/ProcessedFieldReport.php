@@ -3,9 +3,8 @@
 namespace WebTheory\Saveyour\Controllers;
 
 use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
-use WebTheory\Saveyour\Validation\ValidationReport;
 
-class ProcessedFieldReport extends ValidationReport implements ProcessedFieldReportInterface
+class ProcessedFieldReport implements ProcessedFieldReportInterface
 {
     protected $sanitizedInputValue;
 
@@ -16,12 +15,8 @@ class ProcessedFieldReport extends ValidationReport implements ProcessedFieldRep
     public function __construct(
         $sanitizedInputValue = null,
         bool $updateAttempted = false,
-        bool $updateSuccessful = false,
-        bool $validationStatus = false,
-        array $ruleViolations = []
+        bool $updateSuccessful = false
     ) {
-        parent::__construct($validationStatus, ...$ruleViolations);
-
         $this->sanitizedInputValue = $sanitizedInputValue;
         $this->updateAttempted = $updateAttempted;
         $this->updateSuccessful = $updateSuccessful;
@@ -50,17 +45,14 @@ class ProcessedFieldReport extends ValidationReport implements ProcessedFieldRep
     public function toArray()
     {
         return [
-            'request_var_present' => $this->requestVarPresent,
             'sanitized_input_value' => $this->sanitizedInputValue,
             'update_attempted' => $this->updateAttempted,
             'update_successful' => $this->updateSuccessful,
-            'validation_status' => $this->validationStatus,
-            'rule_violations' => $this->ruleViolations,
         ];
     }
 
     public static function voided(): ProcessedFieldReportInterface
     {
-        return new static(null, false, false, false, []);
+        return new static(null, false, false);
     }
 }

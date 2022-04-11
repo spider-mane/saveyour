@@ -1,12 +1,17 @@
 <?php
 
+namespace Tests\Suites\Unit\Manager\Factory;
+
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Factories\DataManagerFactory;
 use WebTheory\Saveyour\Managers\FieldDataManagerCallback;
 
 class DataManagerFactoryTest extends TestCase
 {
-    public function testCreatesFieldDataManager()
+    /**
+     * @test
+     */
+    public function it_creates_a_data_manager()
     {
         $factory = new DataManagerFactory();
 

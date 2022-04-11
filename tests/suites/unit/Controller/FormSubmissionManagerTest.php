@@ -13,53 +13,91 @@ use WebTheory\Saveyour\Contracts\FormSubmissionManagerInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
+use WebTheory\Saveyour\Contracts\ValidationReportInterface;
 use WebTheory\Saveyour\Controllers\FormSubmissionManager;
 
 class FormSubmissionManagerTest extends TestCase
 {
-    protected FormSubmissionManager $manager;
+    protected FormSubmissionManager $sut;
 
-    protected FormShieldInterface $stubShield;
+    protected FormShieldInterface $mockShield;
 
-    protected FormFieldControllerInterface $stubField;
+    protected FormFieldControllerInterface $mockField;
 
-    protected FormDataProcessorInterface $stubProcessor;
+    protected FormDataProcessorInterface $mockProcessor;
 
-    protected ServerRequestInterface $stubRequest;
+    protected ServerRequestInterface $mockRequest;
 
-    protected ProcessedFieldReportInterface $stubFieldReport;
+    protected ValidationReportInterface $mockValidationReport;
 
-    protected FormShieldReportInterface $stubShieldReport;
+    protected ProcessedFieldReportInterface $mockFieldReport;
 
-    protected FormProcessReportInterface $stubProcessReport;
+    protected FormShieldReportInterface $mockShieldReport;
+
+    protected FormProcessReportInterface $mockProcessReport;
+
+    protected string $dummyRequestVar;
+
+    protected string $dummyInputValue;
+
+    protected array $dummyRequestBody;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->stubShieldReport = $this->createStub(FormShieldReportInterface::class);
-        $this->stubFieldReport = $this->createStub(ProcessedFieldReportInterface::class);
-        $this->stubProcessReport = $this->createStub(FormProcessReportInterface::class);
+        $requestVar = $this->fake->slug;
+        $inputValue = $this->fake->word;
+        $requestBody = [$requestVar => $inputValue];
 
-        $this->stubShield = $this->createStub(FormShieldInterface::class);
-        $this->stubShield->method('analyzeRequest')->willReturn($this->stubShieldReport);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getParsedBody')->willReturn($requestBody);
 
-        $this->stubField = $this->createStub(FormFieldControllerInterface::class);
-        $this->stubField->method('process')->willReturn($this->stubFieldReport);
-        $this->stubField->method('getRequestVar')->willReturn($this->faker->slug);
+        $shieldReport = $this->createMock(FormShieldReportInterface::class);
+        // $shieldReport->method('verificationStatus')->willReturn(true);
 
-        $this->stubProcessor = $this->createStub(FormDataProcessorInterface::class);
-        $this->stubProcessor->method('process')->willReturn($this->stubProcessReport);
+        $validationReport = $this->createMock(ValidationReportInterface::class);
+        $validationReport->method('validationStatus')->willReturn(true);
+        $validationReport->method('ruleViolations')->willReturn([]);
 
-        $this->stubRequest = $this->createStub(ServerRequestInterface::class);
-        $this->stubRequest->method('getParsedBody')->willReturn([
-            $this->stubField->getRequestVar() => $this->faker->text,
-        ]);
+        $fieldReport = $this->createMock(ProcessedFieldReportInterface::class);
+        // $fieldReport->method('validationStatus')->willReturn(true);
+        // $fieldReport->method('ruleViolations')->willReturn([]);
 
-        $this->manager = new FormSubmissionManager(
-            [$this->stubField],
-            [$this->stubProcessor],
-            $this->stubShield
+        $processReport = $this->createMock(FormProcessReportInterface::class);
+
+        $shield = $this->createMock(FormShieldInterface::class);
+        $shield->method('analyzeRequest')->willReturn($shieldReport);
+
+        $field = $this->createMock(FormFieldControllerInterface::class);
+        $field->method('inspect')->willReturn($validationReport);
+        $field->method('validate')->willReturn(true);
+        $field->method('process')->willReturn($fieldReport);
+        $field->method('getRequestVar')->willReturn($requestVar);
+        $field->method('isPermittedToProcess')->willReturn(true);
+
+        $processor = $this->createMock(FormDataProcessorInterface::class);
+        $processor->method('process')->willReturn($processReport);
+
+        $this->dummyRequestVar = $requestVar;
+        $this->dummyInputValue = $inputValue;
+        $this->dummyRequestBody = $requestBody;
+
+        $this->mockRequest = $request;
+
+        $this->mockValidationReport = $validationReport;
+        $this->mockFieldReport = $fieldReport;
+        $this->mockShieldReport = $shieldReport;
+        $this->mockProcessReport = $processReport;
+
+        $this->mockShield = $shield;
+        $this->mockField = $field;
+        $this->mockProcessor = $processor;
+
+        $this->sut = new FormSubmissionManager(
+            [$this->mockField],
+            [$this->mockProcessor],
+            $this->mockShield
         );
     }
 
@@ -68,7 +106,7 @@ class FormSubmissionManagerTest extends TestCase
      */
     public function it_is_instance_of_FormSubmissionManagerInterface()
     {
-        $this->assertInstanceOf(FormSubmissionManagerInterface::class, $this->manager);
+        $this->assertInstanceOf(FormSubmissionManagerInterface::class, $this->sut);
     }
 
     /**
@@ -76,16 +114,16 @@ class FormSubmissionManagerTest extends TestCase
      */
     public function it_processes_form_and_generates_report()
     {
-        $this->stubShieldReport->method('verificationStatus')->willReturn(true);
+        $this->mockShieldReport->method('verificationStatus')->willReturn(true);
 
-        $this->stubFieldReport->method('sanitizedInputValue')->willReturn($this->faker->dateTime);
-        $this->stubFieldReport->method('updateAttempted')->willReturn(true);
-        $this->stubFieldReport->method('updateSuccessful')->willReturn(true);
-        $this->stubFieldReport->method('validationStatus')->willReturn(true);
-        $this->stubFieldReport->method('ruleViolations')->willReturn([]);
+        $this->mockFieldReport->method('sanitizedInputValue')->willReturn($this->fake->dateTime);
+        $this->mockFieldReport->method('updateAttempted')->willReturn(true);
+        $this->mockFieldReport->method('updateSuccessful')->willReturn(true);
+        // $this->mockFieldReport->method('validationStatus')->willReturn(true);
+        // $this->mockFieldReport->method('ruleViolations')->willReturn([]);
 
         /** @var ProcessedFormReportInterface $report */
-        $report = $this->manager->process($this->stubRequest);
+        $report = $this->sut->process($this->mockRequest);
 
         $this->assertExpectedProcessedFormReport($report);
     }
@@ -93,36 +131,48 @@ class FormSubmissionManagerTest extends TestCase
     protected function assertExpectedProcessedFormReport(ProcessedFormReportInterface $report)
     {
         $inputReports = $report->inputReports();
-        $input = $this->stubField->getRequestVar();
+        $input = $this->mockField->getRequestVar();
         $inputReport = $inputReports[$input];
 
         $this->assertInstanceOf(ProcessedFormReportInterface::class, $report);
-        $this->assertSame($this->stubShieldReport, $report->shieldReport());
-        $this->assertContains($this->stubProcessReport, $report->processReports());
+        $this->assertSame($this->mockShieldReport, $report->shieldReport());
+        $this->assertContains($this->mockProcessReport, $report->processReports());
 
         $this->assertInputReportHasExpectedValues($inputReport);
     }
 
     protected function assertInputReportHasExpectedValues(ProcessedInputReportInterface $report)
     {
-        $params = $this->stubRequest->getParsedBody();
-        $rawInput = $params[$this->stubField->getRequestVar()];
+        $params = $this->mockRequest->getParsedBody();
+        $rawInput = $params[$this->mockField->getRequestVar()];
         $requestVarPresent = true;
-        $fieldReport = $this->stubFieldReport;
 
-        $comparisons = [
+        $validationComparisons = [
+            'validationStatus',
+            'ruleViolations',
+        ];
+
+        $processComparisons = [
             'sanitizedInputValue',
             'updateAttempted',
             'updateSuccessful',
-            'validationStatus',
-            'ruleViolations',
         ];
 
         $this->assertSame($rawInput, $report->rawInputValue());
         $this->assertSame($requestVarPresent, $report->requestVarPresent());
 
-        foreach ($comparisons as $comparison) {
-            $this->assertSame($fieldReport->{$comparison}(), $report->{$comparison}());
+        foreach ($validationComparisons as $comparison) {
+            $this->assertSame(
+                $this->mockValidationReport->$comparison(),
+                $report->$comparison()
+            );
+        }
+
+        foreach ($processComparisons as $comparison) {
+            $this->assertSame(
+                $this->mockFieldReport->{$comparison}(),
+                $report->{$comparison}()
+            );
         }
     }
 
@@ -131,13 +181,13 @@ class FormSubmissionManagerTest extends TestCase
      */
     public function it_halts_processing_if_shield_rejects_request()
     {
-        $this->stubShieldReport->method('verificationStatus')->willReturn(false);
+        $this->mockShieldReport->method('verificationStatus')->willReturn(false);
 
         /** @var ProcessedFormReportInterface $report */
-        $report = $this->manager->process($this->stubRequest);
+        $report = $this->sut->process($this->mockRequest);
 
         $this->assertInstanceOf(ProcessedFormReportInterface::class, $report);
-        $this->assertSame($this->stubShieldReport, $report->shieldReport());
+        $this->assertSame($this->mockShieldReport, $report->shieldReport());
         $this->assertEmpty($report->inputReports());
         $this->assertEmpty($report->processReports());
     }
@@ -148,9 +198,9 @@ class FormSubmissionManagerTest extends TestCase
      */
     public function it_provides_the_verification_status(bool $valid)
     {
-        $this->stubShield->method('approvesRequest')->willReturn($valid);
+        $this->mockShield->method('approvesRequest')->willReturn($valid);
 
-        $status = $this->manager->verify($this->stubRequest);
+        $status = $this->sut->verify($this->mockRequest);
 
         if ($valid) {
             $this->assertTrue($status);
@@ -162,59 +212,88 @@ class FormSubmissionManagerTest extends TestCase
     public function verificationDataProvider(): array
     {
         return [
-            'passed verification' => [true],
-            'failed verification' => [false],
+            'successful verification' => [true],
+            'unsuccessful verification' => [false],
         ];
     }
 
     /**
      * @test
-     * @dataProvider validatedDataProvider
+     * @dataProvider validationDataProvider
      */
-    public function it_returns_an_array_of_validated_inputs(bool $valid)
+    public function it_returns_an_array_of_validated_inputs(bool $isValid)
     {
-        $this->stubField->method('validate')->willReturn($valid);
+        $field = $this->createMock(FormFieldControllerInterface::class);
+        $field->method('getRequestVar')->willReturn($this->dummyRequestVar);
 
-        $all = $this->stubRequest->getParsedBody();
-        $validated = $this->manager->validated($this->stubRequest);
+        $sut = new FormSubmissionManager([$field]);
+        $field->method('validate')->willReturn($isValid);
 
-        if ($valid) {
+        $all = $this->mockRequest->getParsedBody();
+        $validated = $sut->validated($this->mockRequest);
+
+        if ($isValid) {
             $this->assertEquals($all, $validated);
         } else {
             $this->assertNotEquals($all, $validated);
         }
     }
 
-    public function validatedDataProvider(): array
-    {
-        return [
-            'passed validation' => [true],
-            'failed validation' => [false],
-        ];
-    }
-
     /**
      * @test
-     * @dataProvider validateDataProvider
+     * @dataProvider validationDataProvider
      */
-    public function it_provides_complete_validation_status(bool $valid)
+    public function it_provides_complete_validation_status(bool $isValid)
     {
-        $this->stubField->method('validate')->willReturn($valid);
+        $field = $this->createMock(FormFieldControllerInterface::class);
+        $field->method('getRequestVar')->willReturn($this->dummyRequestVar);
 
-        $status = $this->manager->validate($this->stubRequest);
+        $sut = new FormSubmissionManager([$field]);
+        $field->method('validate')->willReturn($isValid);
 
-        if ($valid) {
+        $status = $sut->validate($this->mockRequest);
+
+        if ($isValid) {
             $this->assertTrue($status);
         } else {
             $this->assertFalse($status);
         }
     }
 
-    public function validateDataProvider(): array
+    /**
+     * @test
+     * @dataProvider validationDataProvider
+     */
+    public function it_processes_fields_only_if_input_is_valid(bool $isValid, array $violations)
     {
+        # Arrange
+        $validationReport = $this->createMock(ValidationReportInterface::class);
+        $validationReport->method('validationStatus')->willReturn($isValid);
+        $validationReport->method('ruleViolations')->willReturn($violations);
+
+        $field = $this->createMock(FormFieldControllerInterface::class);
+        $field->method('getRequestVar')->willReturn($this->dummyRequestVar);
+        $field->method('isPermittedToProcess')->willReturn(true);
+        $field->method('inspect')->willReturn($validationReport);
+        $field->method('validate')->willReturn($isValid);
+
+        $sut = new FormSubmissionManager([$field]);
+
+        # Expect
+        $field->expects($isValid ? $this->atLeastOnce() : $this->never())
+            ->method('process');
+
+        # Act
+        $sut->process($this->mockRequest);
+    }
+
+    public function validationDataProvider(): array
+    {
+        $fake = $this->createFaker();
+
         return [
-            'passes validation' => [true],
-            'fails validation' => [false],
+            'successful validation' => [true, []],
+            'unsuccessful validation' => [false, [$fake->slug]],
         ];
     }
 
@@ -223,14 +302,14 @@ class FormSubmissionManagerTest extends TestCase
      */
     public function it_provides_an_array_of_processed_fields()
     {
-        $processed = $this->faker->dateTime;
+        $processed = $this->fake->dateTime;
 
-        $this->stubField->method('validate')->willReturn(true);
-        $this->stubField->method('getUpdatedValue')->willReturn($processed);
+        $this->mockField->method('validate')->willReturn(true);
+        $this->mockField->method('getUpdatedValue')->willReturn($processed);
 
         $this->assertEquals(
-            [$this->stubField->getRequestVar() => $processed],
-            $this->manager->processed($this->stubRequest)
+            [$this->mockField->getRequestVar() => $processed],
+            $this->sut->processed($this->mockRequest)
         );
     }
 
@@ -239,11 +318,11 @@ class FormSubmissionManagerTest extends TestCase
      */
     public function it_processes_fields_specified_in_mustAwait_first()
     {
-        // arrange
+        // Arrange
         $names = [
-            $this->faker->word,
-            $this->faker->word,
-            $this->faker->word,
+            $this->fake->word,
+            $this->fake->word,
+            $this->fake->word,
         ];
 
         $field1 = $this->createStub(FormFieldControllerInterface::class);
@@ -253,24 +332,24 @@ class FormSubmissionManagerTest extends TestCase
         $fields = [$field1, $field2, $field3];
         $await = $names[1];
 
-        $manager = new FormSubmissionManager($fields);
+        $sut = new FormSubmissionManager($fields);
 
         $field1->method('mustAwait')->willReturn([$await]);
 
         foreach ($fields as $field) {
-            $field->method('process')->willReturn($this->stubFieldReport);
+            $field->method('process')->willReturn($this->mockFieldReport);
 
             $field->method('getRequestVar')->willReturn(current($names));
             next($names);
         }
         reset($names);
 
-        // act
+        // Act
         $processed = array_keys(
-            $manager->process($this->stubRequest)->inputReports()
+            $sut->process($this->mockRequest)->inputReports()
         );
 
-        // assert
+        // Assert
         $this->assertEquals($await, $processed[0]);
     }
 
@@ -282,7 +361,7 @@ class FormSubmissionManagerTest extends TestCase
         $request = $this->createStub(ServerRequestInterface::class);
         $request->method('getParsedBody')->willReturn([]);
 
-        $this->assertEmpty($this->manager->process($request)->inputReports());
+        $this->assertEmpty($this->sut->process($request)->inputReports());
     }
 
     /**
@@ -293,9 +372,63 @@ class FormSubmissionManagerTest extends TestCase
         $request = $this->createStub(ServerRequestInterface::class);
         $request->method('getParsedBody')->willReturn([]);
 
-        $this->stubField->method('validate')->willReturn(true);
+        $this->mockField->method('validate')->willReturn(true);
 
-        $this->assertEmpty($this->manager->validated($request));
+        $this->assertEmpty($this->sut->validated($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_passes_same_request_to_fields()
+    {
+        $this->mockShieldReport->method('verificationStatus')->willReturn(true);
+
+        $this->mockField->expects($this->atLeastOnce())
+            ->method('process')
+            ->with($this->mockRequest);
+
+        $this->sut->process($this->mockRequest);
+    }
+
+    /**
+     * @test
+     */
+    public function it_passes_same_request_to_processors()
+    {
+        $this->mockShieldReport->method('verificationStatus')->willReturn(true);
+        $this->mockProcessor->method('getFields')->willReturn([$this->mockField->getRequestVar()]);
+
+        $this->mockProcessor->expects($this->atLeastOnce())
+            ->method('process')
+            ->with($this->mockRequest, $this->anything());
+
+        $this->sut->process($this->mockRequest);
+    }
+
+    /**
+     * @test
+     */
+    public function it_calls_FormFieldControllerInterface_instance_process_method_only_once()
+    {
+        $this->mockShieldReport->method('verificationStatus')->willReturn(true);
+
+        $this->mockField->expects($this->once())->method('process');
+
+        $this->sut->process($this->mockRequest);
+    }
+
+    /**
+     * @test
+     */
+    public function it_calls_FormProcessorInterface_instance_process_method_only_once()
+    {
+        $this->mockShieldReport->method('verificationStatus')->willReturn(true);
+        $this->mockProcessor->method('getFields')->willReturn([$this->mockField->getRequestVar()]);
+
+        $this->mockProcessor->expects($this->once())->method('process');
+
+        $this->sut->process($this->mockRequest);
     }
 
     /**
@@ -304,14 +437,16 @@ class FormSubmissionManagerTest extends TestCase
      */
     public function it_passes_appropriate_field_reports_to_processor(string $requestVar, ?array $fields)
     {
-        // arrange
+        // Arrange
         $requestVarPresent = true;
-        $rawInputValue = $this->faker->word;
+        $rawInputValue = $this->fake->word;
 
         $field = $this->createStub(FormFieldControllerInterface::class);
         $field->method('getRequestVar')->willReturn($requestVar);
-        $field->method('process')->willReturn($this->stubFieldReport);
+        $field->method('isPermittedToProcess')->willReturn(true);
+        $field->method('process')->willReturn($this->mockFieldReport);
         $field->method('validate')->willReturn(true);
+        $field->method('inspect')->willReturn($this->mockValidationReport);
 
         $request = $this->createStub(ServerRequestInterface::class);
         $request->method('getMethod')->willReturn('POST');
@@ -320,41 +455,40 @@ class FormSubmissionManagerTest extends TestCase
         ]);
 
         $processor = $this->createMock(FormDataProcessorInterface::class);
-        $processor->method('process')->willReturn($this->stubProcessReport);
+        $processor->method('process')->willReturn($this->mockProcessReport);
         $processor->method('getFields')->willReturn($fields);
 
-        $manager = new FormSubmissionManager([$field], [$processor]);
+        $sut = new FormSubmissionManager([$field], [$processor]);
 
-        $this->stubFieldReport->method('sanitizedInputValue')->willReturn($this->faker->dateTime);
-        $this->stubFieldReport->method('updateAttempted')->willReturn(true);
-        $this->stubFieldReport->method('updateSuccessful')->willReturn(true);
-        $this->stubFieldReport->method('validationStatus')->willReturn(true);
-        $this->stubFieldReport->method('ruleViolations')->willReturn([]);
+        $this->mockFieldReport->method('sanitizedInputValue')->willReturn($this->fake->dateTime);
+        $this->mockFieldReport->method('updateAttempted')->willReturn(true);
+        $this->mockFieldReport->method('updateSuccessful')->willReturn(true);
 
-        if (isset($fields) && !in_array($requestVar, $fields)) {
+        if (isset($fields) && !in_array($requestVar, $fields)) { // specified field not present
             $expected = [$fields[0] => null];
         } else {
             $expected = $this->callback(function ($reports) use ($requestVar, $requestVarPresent, $rawInputValue) {
                 $report = $reports[$requestVar] ?? null;
 
                 return $report
+                    && $report instanceof ProcessedInputReportInterface
                     && $report->requestVarPresent() === $requestVarPresent
                     && $report->rawInputValue() === $rawInputValue
-                    && $report->sanitizedInputValue() === $this->stubFieldReport->sanitizedInputValue()
-                    && $report->updateAttempted() === $this->stubFieldReport->updateAttempted()
-                    && $report->updateSuccessful() === $this->stubFieldReport->updateSuccessful()
-                    && $report->validationStatus() === $this->stubFieldReport->validationStatus()
-                    && $report->ruleViolations() === $this->stubFieldReport->ruleViolations();
+                    && $report->sanitizedInputValue() === $this->mockFieldReport->sanitizedInputValue()
+                    && $report->updateAttempted() === $this->mockFieldReport->updateAttempted()
+                    && $report->updateSuccessful() === $this->mockFieldReport->updateSuccessful()
+                    && $report->validationStatus() === $this->mockValidationReport->validationStatus()
+                    && $report->ruleViolations() === $this->mockValidationReport->ruleViolations();
             });
         }
 
-        // expect
+        // Expect
         $processor->expects($this->once())
             ->method('process')
-            ->with($request, $expected);
+            ->with($this->anything(), $expected);
 
-        // act
-        $manager->process($request);
+        // Act
+        $sut->process($request);
     }
 
     public function processDataProvider(): array
@@ -366,6 +500,40 @@ class FormSubmissionManagerTest extends TestCase
             'null (default all)' => [$var, null],
             'specified - present' => [$var, [$var]],
             'specified - not present' => [$var, [$faker->slug]],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider fieldProcessPermissionDataProvider
+     */
+    public function it_allows_field_process_operation_to_run_only_if_field_is_permitted_to_process(bool $canProcess)
+    {
+        # Arrange
+        $field = $this->createStub(FormFieldControllerInterface::class);
+        $field->method('getRequestVar')->willReturn($this->dummyRequestVar);
+        $field->method('process')->willReturn($this->mockFieldReport);
+        $field->method('inspect')->willReturn($this->mockValidationReport);
+
+        $sut = new FormSubmissionManager([$field]);
+        $field->method('isPermittedToProcess')->willReturn($canProcess);
+
+        # Expect
+        $field->expects($canProcess ? $this->atLeastOnce() : $this->never())
+            ->method('process');
+
+        # Act
+        $result = $sut->process($this->mockRequest);
+
+        # Assert
+        // $this->assertEquals()
+    }
+
+    public function fieldProcessPermissionDataProvider(): array
+    {
+        return [
+            'permitted' => [true],
+            'not permitted' => [false],
         ];
     }
 }

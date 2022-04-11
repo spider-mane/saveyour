@@ -16,16 +16,6 @@ class CompositeDataFormatter implements DataFormatterInterface
         $this->formatters = $formatters;
     }
 
-    /**
-     * Get the value of formatters
-     *
-     * @return array
-     */
-    public function getFormatters(): array
-    {
-        return $this->formatters;
-    }
-
     public function formatData($value)
     {
         foreach ($this->formatters as $formatter) {

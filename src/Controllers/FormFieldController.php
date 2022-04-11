@@ -2,6 +2,7 @@
 
 namespace WebTheory\Saveyour\Controllers;
 
+use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
@@ -12,6 +13,7 @@ use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\ValidationReportInterface;
 use WebTheory\Saveyour\Contracts\ValidatorInterface;
 use WebTheory\Saveyour\Formatters\LazyDataFormatter;
+use WebTheory\Saveyour\Managers\LazyManager;
 use WebTheory\Saveyour\Request;
 use WebTheory\Saveyour\Validation\PermissiveValidator;
 
@@ -21,7 +23,7 @@ class FormFieldController implements FormFieldControllerInterface
 
     protected ?FormFieldInterface $formField = null;
 
-    protected ?FieldDataManagerInterface $dataManager = null;
+    protected FieldDataManagerInterface $dataManager;
 
     protected ValidatorInterface $validator;
 
@@ -29,7 +31,7 @@ class FormFieldController implements FormFieldControllerInterface
 
     protected ProcessedFieldReportBuilderInterface $cacheBuilder;
 
-    protected bool $processingDisabled = false;
+    protected bool $isPermittedToProcess = true;
 
     /**
      * @var array<int,string>
@@ -42,17 +44,17 @@ class FormFieldController implements FormFieldControllerInterface
         ?FieldDataManagerInterface $dataManager = null,
         ?ValidatorInterface $validator = null,
         ?DataFormatterInterface $formatter = null,
-        ?bool $processingDisabled = null,
+        ?bool $processingEnabled = null,
         ?array $await = null
     ) {
         $this->requestVar = $requestVar;
         $this->formField = $formField;
-        $this->dataManager = $dataManager;
 
+        $this->dataManager = $dataManager ?? new LazyManager();
         $this->validator = $validator ?? new PermissiveValidator();
         $this->dataFormatter = $formatter ?? new LazyDataFormatter();
 
-        $this->processingDisabled = $processingDisabled ?? $this->processingDisabled;
+        $this->isPermittedToProcess = $processingEnabled ?? $this->isPermittedToProcess;
 
         $await && $this->setMustAwait(...$await);
     }
@@ -65,26 +67,6 @@ class FormFieldController implements FormFieldControllerInterface
     public function getFormField(): ?FormFieldInterface
     {
         return $this->formField;
-    }
-
-    public function getDataManager(): ?FieldDataManagerInterface
-    {
-        return $this->dataManager;
-    }
-
-    public function getDataFormatter(): ?DataFormatterInterface
-    {
-        return $this->dataFormatter;
-    }
-
-    /**
-     * Get hasDataManager
-     *
-     * @return bool
-     */
-    public function hasDataManager(): bool
-    {
-        return isset($this->dataManager);
     }
 
     /**
@@ -116,9 +98,9 @@ class FormFieldController implements FormFieldControllerInterface
      *
      * @return bool
      */
-    public function isProcessingDisabled(): bool
+    public function isPermittedToProcess(): bool
     {
-        return $this->processingDisabled;
+        return $this->isPermittedToProcess;
     }
 
     /**
@@ -143,10 +125,7 @@ class FormFieldController implements FormFieldControllerInterface
     public function process(ServerRequestInterface $request): ProcessedFieldReportInterface
     {
         $this->initCacheBuilder();
-
-        if ($this->validateInput($request)) {
-            $this->processData($request);
-        }
+        $this->processData($request);
 
         return $this->cacheBuilder->build();
     }
@@ -158,25 +137,13 @@ class FormFieldController implements FormFieldControllerInterface
         return $this;
     }
 
-    protected function validateInput(ServerRequestInterface $request): bool
-    {
-        $report = $this->inspect($this->getRawInput($request));
-        $status = $report->validationStatus();
-
-        $this->cacheBuilder
-            ->withValidationStatus($status)
-            ->withRuleViolations($report->ruleViolations());
-
-        return $status;
-    }
-
     protected function processData(ServerRequestInterface $request)
     {
         $filteredInput = $this->getUpdatedValue($request);
 
         $this->cacheBuilder->withSanitizedInputValue($filteredInput);
 
-        if (false !== $filteredInput && $this->canProcessInput()) {
+        if (false !== $filteredInput && $this->isPermittedToProcess()) {
             $updated = $this->processInput($request, $filteredInput);
 
             $this->cacheBuilder->withUpdateAttempted(true)->withUpdateSuccessful($updated);
@@ -192,9 +159,7 @@ class FormFieldController implements FormFieldControllerInterface
 
     public function getPresetValue(ServerRequestInterface $request)
     {
-        $data = $this->hasDataManager() ? $this->dataManager->getCurrentData($request) : '';
-
-        return $this->formatData($data);
+        return $this->formatData($this->dataManager->getCurrentData($request));
     }
 
     public function requestVarPresent(ServerRequestInterface $request): bool
@@ -212,11 +177,6 @@ class FormFieldController implements FormFieldControllerInterface
         return $this->formatInput($this->getRawInput($request));
     }
 
-    public function canProcessInput(): bool
-    {
-        return $this->hasDataManager() && !$this->isProcessingDisabled();
-    }
-
     protected function formatData($data)
     {
         return $this->dataFormatter->formatData($data);
@@ -225,6 +185,25 @@ class FormFieldController implements FormFieldControllerInterface
     protected function formatInput($input)
     {
         return $this->dataFormatter->formatInput($input);
+    }
+
+    public function render(ServerRequestInterface $request): string
+    {
+        return $this->compose($request)->toHtml();
+    }
+
+    public function compose(ServerRequestInterface $request): FormFieldInterface
+    {
+        if (isset($this->formField)) {
+            return $this->prepareFormFieldForRendering($request)->getFormField();
+        }
+
+        throw $this->noFormFieldForOperationException(__METHOD__);
+    }
+
+    protected function prepareFormFieldForRendering(ServerRequestInterface $request)
+    {
+        return $this->setFormFieldName()->setFormFieldValue($request);
     }
 
     protected function setFormFieldName()
@@ -241,13 +220,10 @@ class FormFieldController implements FormFieldControllerInterface
         return $this;
     }
 
-    public function render(ServerRequestInterface $request): ?FormFieldInterface
+    protected function noFormFieldForOperationException(string $method): LogicException
     {
-        return $this->prepareFormFieldForRendering($request)->getFormField();
-    }
-
-    protected function prepareFormFieldForRendering(ServerRequestInterface $request)
-    {
-        return $this->setFormFieldName()->setFormFieldValue($request);
+        return new LogicException(
+            'Instance of ' . FormFieldInterface::class . ' must be provided to perform ' . $method . ' operation.'
+        );
     }
 }

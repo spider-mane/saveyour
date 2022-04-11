@@ -10,51 +10,26 @@ use CommerceGuys\Addressing\Subdivision\SubdivisionRepository;
 use Geocoder\Provider\Provider;
 use Geocoder\Query\GeocodeQuery;
 use Psr\Http\Message\ServerRequestInterface;
-use Respect\Validation\Validator;
-use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
-use WebTheory\Saveyour\Controllers\FormProcessReport;
+use WebTheory\Saveyour\Contracts\InputFormatterInterface;
+use WebTheory\Saveyour\Controllers\Report\FormProcessReportBuilder;
 use WebTheory\Saveyour\Formatters\LazyDataFormatter;
-use WebTheory\Saveyour\InputPurifier;
 
 class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements FormDataProcessorInterface
 {
-    /**
-     * @var array
-     */
-    protected $fields = [];
+    protected string $countryCode = 'US';
 
-    /**
-     * @var string
-     */
-    protected $countryCode = 'US';
+    protected Provider $provider;
 
-    /**
-     * @var Provider
-     */
-    protected $provider;
+    protected FieldDataManagerInterface $addressDataManager;
 
-    /**
-     * @var FieldDataManagerInterface
-     */
-    protected $addressDataManager;
+    protected InputFormatterInterface $geoDataFormatter;
 
-    /**
-     * @var DataFormatterInterface
-     */
-    protected $geoDataFormatter;
+    protected FieldDataManagerInterface $geoDataManager;
 
-    /**
-     * @var FieldDataManagerInterface
-     */
-    protected $geoDataManager;
-
-    /**
-     * @var DataFormatterInterface
-     */
-    protected $addressDataFormatter;
+    protected InputFormatterInterface $addressDataFormatter;
 
     /**
      * {@inheritDoc}
@@ -62,12 +37,17 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
     public const ACCEPTED_FIELDS = ['street', 'city', 'state', 'zip', 'country'];
 
     public function __construct(
+        string $name,
+        array $fields,
         Provider $provider,
         FieldDataManagerInterface $geoDataManager,
-        ?DataFormatterInterface $geoDataFormatter = null,
+        ?InputFormatterInterface $geoDataFormatter = null,
         ?FieldDataManagerInterface $addressDataManager = null,
-        ?DataFormatterInterface $addressDataFormatter = null
+        ?InputFormatterInterface $addressDataFormatter = null,
+        string $countryCode = 'US'
     ) {
+        parent::__construct($name, $fields);
+
         $this->provider = $provider;
         $this->geoDataManager = $geoDataManager;
         $this->geoDataFormatter = $geoDataFormatter ?? new LazyDataFormatter();
@@ -76,33 +56,51 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
             $this->addressDataManager = $addressDataManager;
             $this->addressDataFormatter = $addressDataFormatter ?? new LazyDataFormatter();
         }
-    }
 
-    /**
-     * Get the value of countryCode
-     *
-     * @return string
-     */
-    public function getCountryCode(): string
-    {
-        return $this->countryCode;
-    }
-
-    /**
-     * Set the value of countryCode
-     *
-     * @param string $countryCode
-     *
-     * @return self
-     */
-    public function setCountryCode(string $countryCode)
-    {
         $this->countryCode = $countryCode;
-
-        return $this;
     }
 
-    protected function formatAddress($fields)
+    public function process(ServerRequestInterface $request, array $results): ?FormProcessReportInterface
+    {
+        return $this->valueUpdated($results)
+            ? $this->processResults($request, $results)
+            : null;
+    }
+
+    protected function processResults(ServerRequestInterface $request, $results): FormProcessReportInterface
+    {
+        $address = $this->getFormattedAddress($this->extractValues($results));
+
+        $query = $this->provider->geocodeQuery(GeocodeQuery::create($address));
+        $data = $query->first()->getCoordinates();
+
+        $coordinates = [
+            'lat' => $data->getLatitude(),
+            'lng' => $data->getLongitude(),
+        ];
+
+        $geoUpdated = $this->geoDataManager->handleSubmittedData(
+            $request,
+            $this->formatGeoDataInput($coordinates)
+        );
+
+        if (isset($this->addressDataManager)) {
+            $addressUpdated = $this->addressDataManager->handleSubmittedData(
+                $request,
+                $this->formatAddressInput($address)
+            );
+        }
+
+        $reportBuilder = new FormProcessReportBuilder();
+
+        return $reportBuilder
+            ->withProcessResult('coordinates', $coordinates)
+            ->withProcessResult('coordinates_updated', $geoUpdated)
+            ->withProcessResult('address_updated', $addressUpdated ?? false)
+            ->build();
+    }
+
+    protected function getFormattedAddress(array $fields)
     {
         $address = (new Address())
             ->withAddressLine1($fields['street'])
@@ -133,50 +131,5 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
     protected function formatAddressInput($value)
     {
         return $this->addressDataFormatter->formatInput($value);
-    }
-
-    protected function createInputPurifier(): InputPurifier
-    {
-        return new InputPurifier(Validator::floatType());
-    }
-
-    public function process(ServerRequestInterface $request, array $results): ?FormProcessReportInterface
-    {
-        if ($this->valueUpdated($results)) {
-            return $this->processResults($request, $results);
-        }
-
-        return null;
-    }
-
-    protected function processResults(ServerRequestInterface $request, $results): FormProcessReportInterface
-    {
-        $address = $this->formatAddress($this->extractValues($results));
-        $data = $this->provider
-            ->geocodeQuery(GeocodeQuery::create($address))
-            ->get(0)
-            ->getCoordinates();
-
-        $coordinates = $this->createInputPurifier()->filterInput([
-            'lat' => $data->getLatitude(),
-            'lng' => $data->getLongitude(),
-        ]);
-
-        $geoUpdated = $this->geoDataManager->handleSubmittedData(
-            $request,
-            $this->formatGeoDataInput($coordinates)
-        );
-
-        if (isset($this->addressDataManager)) {
-            $addressUpdated = $this->addressDataManager->handleSubmittedData(
-                $request,
-                $this->formatAddressInput($address)
-            );
-        }
-
-        return (new FormProcessReport())
-            ->withResult('coordinates', $coordinates)
-            ->withResult('coordinates_updated', $geoUpdated)
-            ->withResult('address_updated', $addressUpdated ?? false);
     }
 }

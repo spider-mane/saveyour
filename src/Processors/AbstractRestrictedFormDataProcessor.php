@@ -9,7 +9,7 @@ abstract class AbstractRestrictedFormDataProcessor extends AbstractFormDataProce
 {
     public const ACCEPTED_FIELDS = [];
 
-    public function addField(string $field, string $param)
+    protected function addField(string $field, string $param)
     {
         if (!in_array($field, static::ACCEPTED_FIELDS, true)) {
             throw new InvalidArgumentException("{$field} is not an accepted value");

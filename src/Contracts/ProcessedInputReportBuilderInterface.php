@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-interface ProcessedInputReportBuilderInterface extends ProcessedFieldReportBuilderInterface
+interface ProcessedInputReportBuilderInterface extends ValidationReportBuilderInterface, ProcessedFieldReportBuilderInterface
 {
     public function withRequestVarPresent(bool $result): ProcessedFieldReportBuilderInterface;
 

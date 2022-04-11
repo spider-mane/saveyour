@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Suites\Unit\Field;
+
+use InvalidArgumentException;
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Selections\StateSelectOptions;
 
@@ -19,7 +22,7 @@ class StateSelectOptionsTest extends TestCase
     /**
      * @test
      */
-    public function test_generates_list_of_states()
+    public function it_generates_list_of_states()
     {
         $states = StateSelectOptions::STATES;
 
@@ -31,7 +34,7 @@ class StateSelectOptionsTest extends TestCase
     /**
      * @test
      */
-    public function test_generates_armed_forces_and_territories()
+    public function it_generates_armed_forces_and_territories()
     {
         $expected = array_merge(
             StateSelectOptions::STATES,
@@ -47,7 +50,7 @@ class StateSelectOptionsTest extends TestCase
     /**
      * @test
      */
-    public function test_sorts_states_with_armed_forces_and_territories()
+    public function it_sorts_states_with_armed_forces_and_territories()
     {
         $values = array_merge(
             StateSelectOptions::STATES,
@@ -64,7 +67,7 @@ class StateSelectOptionsTest extends TestCase
     /**
      * @test
      */
-    public function test_throws_exception_with_invalid_group()
+    public function it_throws_exception_with_invalid_group()
     {
         $this->expectException(InvalidArgumentException::class);
 
