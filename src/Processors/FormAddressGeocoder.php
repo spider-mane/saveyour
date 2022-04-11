@@ -100,7 +100,7 @@ class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements
             ->build();
     }
 
-    protected function getFormattedAddress(array $fields)
+    protected function getFormattedAddress(array $fields): string
     {
         $address = (new Address())
             ->withAddressLine1($fields['street'])

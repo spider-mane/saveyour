@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\Saveyour;
+namespace WebTheory\Saveyour\Controllers;
 
 use WebTheory\Saveyour\Contracts\InputFormatterInterface;
 use WebTheory\Saveyour\Contracts\InputPurifierInterface;

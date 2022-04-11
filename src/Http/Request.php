@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\Saveyour;
+namespace WebTheory\Saveyour\Http;
 
 use Psr\Http\Message\ServerRequestInterface;
 

@@ -4,7 +4,7 @@ namespace WebTheory\Saveyour\Shield\Policy;
 
 use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\HttpPolicy\ServerRequestPolicyInterface;
-use WebTheory\Saveyour\Request;
+use WebTheory\Saveyour\Http\Request;
 
 class ReCaptcha3Policy implements ServerRequestPolicyInterface
 {

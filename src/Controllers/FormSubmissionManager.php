@@ -11,7 +11,7 @@ use WebTheory\Saveyour\Contracts\FormSubmissionManagerInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportBuilderInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
-use WebTheory\Saveyour\Request;
+use WebTheory\Saveyour\Http\Request;
 use WebTheory\Saveyour\Shield\HolyShield;
 
 class FormSubmissionManager implements FormSubmissionManagerInterface

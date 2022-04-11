@@ -10,15 +10,12 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
 {
     protected string $name;
 
-    protected array $fields = [];
+    protected ?array $fields;
 
-    public function __construct(string $name, array $fields)
+    public function __construct(string $name, ?array $fields)
     {
         $this->name = $name;
-
-        foreach ($fields as $field => $param) {
-            $this->addField($field, $param);
-        }
+        $this->setFields($fields);
     }
 
     public function getName(): string
@@ -26,16 +23,25 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
         return $this->name;
     }
 
-    public function getFields(): array
+    public function getFields(): ?array
     {
         return $this->fields;
     }
 
-    protected function addField(string $id, string $field)
+    protected function setFields(?array $fields): void
+    {
+        if (empty($fields)) {
+            $this->fields = $fields;
+        } else {
+            foreach ($fields as $field => $param) {
+                $this->addField($field, $param);
+            }
+        }
+    }
+
+    protected function addField(string $id, string $field): void
     {
         $this->fields[$id] = $field;
-
-        return $this;
     }
 
     /**

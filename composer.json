@@ -55,6 +55,7 @@
     "psr/http-client": "^1.0",
     "psr/http-factory": "^1.0",
     "psy/psysh": "^0.11",
+    "rector/rector": "^0.12.20",
     "respect/validation": "^2.2",
     "spatie/phpunit-watcher": "^1.12",
     "squizlabs/php_codesniffer": "^3.0",
@@ -106,7 +107,8 @@
     ],
     "env": [
       "cp -n .env.example .env",
-      "bin/build-paths"
+      "bin/build-paths",
+      "bin/make-playground"
     ],
     "post-install-cmd": [
       "@env"
@@ -130,8 +132,7 @@
         "phpunit": {},
         "php-cs-fixer": {}
       },
-      "logs": {},
-      "temp": {}
+      "logs": {}
     }
   }
 }

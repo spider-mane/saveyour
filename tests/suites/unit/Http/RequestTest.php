@@ -4,7 +4,7 @@ namespace Tests\Suites\Unit\Http;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Request;
+use WebTheory\Saveyour\Http\Request;
 
 class RequestTest extends TestCase
 {

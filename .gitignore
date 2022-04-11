@@ -1,5 +1,7 @@
 # Dev and CI
 *.cache
+/.playground
+/.playground.php
 /build/
 /dist/
 /logs/
@@ -17,9 +19,6 @@ composer.lock
 .env.*
 .*.env
 !.env.example
-!.env.*.example
-!.example.env
-!example.env
 
 # Editor/ IDE
 *.code-workspace

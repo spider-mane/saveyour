@@ -14,7 +14,7 @@ use WebTheory\Saveyour\Contracts\ValidationReportInterface;
 use WebTheory\Saveyour\Contracts\ValidatorInterface;
 use WebTheory\Saveyour\Formatters\LazyDataFormatter;
 use WebTheory\Saveyour\Managers\LazyManager;
-use WebTheory\Saveyour\Request;
+use WebTheory\Saveyour\Http\Request;
 use WebTheory\Saveyour\Validation\PermissiveValidator;
 
 class FormFieldController implements FormFieldControllerInterface

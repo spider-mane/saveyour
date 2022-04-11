@@ -46,6 +46,8 @@ class FormAddressGeocoderTest extends TestCase
 
     protected array $dummyCoordinates;
 
+    protected array $dummyFields;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -70,6 +72,7 @@ class FormAddressGeocoderTest extends TestCase
         $this->mockCollection->method('first')->willReturn($this->mockLocation);
 
         $this->mockProvider = $this->createMock(Provider::class);
+        $this->mockProvider->method('geocodeQuery')->willReturn($this->mockCollection);
 
         $this->mockGeoDataManager = $this->createMock(FieldDataManagerInterface::class);
         $this->mockGeoDataFormatter = $this->createMock(InputFormatterInterface::class);
@@ -101,9 +104,11 @@ class FormAddressGeocoderTest extends TestCase
             $this->dummyFieldResults[$param] = $report;
         }
 
+        $this->dummyFields = $fields;
+
         $this->sut = new FormAddressGeocoder(
             $this->fake->slug,
-            $fields,
+            $this->dummyFields,
             $this->mockProvider,
             $this->mockGeoDataManager,
             $this->mockGeoDataFormatter,
@@ -127,8 +132,17 @@ class FormAddressGeocoderTest extends TestCase
         $collection = $this->createMock(Collection::class);
         $collection->method('first')->willReturn($location);
 
+        $provider = $this->createMock(Provider::class);
+
+        $sut = new FormAddressGeocoder(
+            $this->fake->slug,
+            $this->dummyFields,
+            $provider,
+            $this->mockGeoDataManager,
+        );
+
         # Expect
-        $this->mockProvider->expects($this->once())
+        $provider->expects($this->once())
             ->method('geocodeQuery')
             ->with($this->isInstanceOf(GeocodeQuery::class))
             ->willReturn($collection);
@@ -136,6 +150,15 @@ class FormAddressGeocoderTest extends TestCase
         $coordinates->shouldReceive('getLatitude')->once()->andReturn($this->dummyLatitude);
         $coordinates->shouldReceive('getLongitude')->once()->andReturn($this->dummyLongitude);
 
+        # Act
+        $sut->process($this->mockRequest, $this->dummyFieldResults);
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_coordinates_entry_to_report()
+    {
         # Act
         $results = $this->sut->process($this->mockRequest, $this->dummyFieldResults);
 
@@ -148,9 +171,6 @@ class FormAddressGeocoderTest extends TestCase
      */
     public function it_passes_coordinates_to_data_manager_after_formatting()
     {
-        # Arrange
-        $this->mockProvider->method('geocodeQuery')->willReturn($this->mockCollection);
-
         # Expect
         $this->mockGeoDataFormatter->expects($this->once())
             ->method('formatInput')

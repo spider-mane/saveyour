@@ -2,9 +2,7 @@
 
 namespace WebTheory\Saveyour\Contracts;
 
-interface DataFormatterInterface
+interface DataFormatterInterface extends InputFormatterInterface
 {
     public function formatData($value);
-
-    public function formatInput($value);
 }

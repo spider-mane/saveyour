@@ -9,37 +9,15 @@ use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
 class FormSubmissionCallback extends AbstractFormDataProcessor implements FormDataProcessorInterface
 {
     /**
-     * @var callable[]
+     * @var callable
      */
-    protected $callbacks = [];
+    protected $callback;
 
-    public function __construct(callable ...$callbacks)
+    public function __construct(string $name, ?array $fields, callable $callback)
     {
-        $this->callbacks = $callbacks;
-    }
+        parent::__construct($name, $fields);
 
-    /**
-     * Get the value of callbacks
-     *
-     * @return callable[]
-     */
-    public function getCallbacks(): array
-    {
-        return $this->callbacks;
-    }
-
-    /**
-     * add a callback function
-     *
-     * @param callable $callback
-     *
-     * @return self
-     */
-    public function addCallBack(callable $callback)
-    {
-        $this->callbacks[] = $callback;
-
-        return $this;
+        $this->callback = $callback;
     }
 
     /**
@@ -47,10 +25,6 @@ class FormSubmissionCallback extends AbstractFormDataProcessor implements FormDa
      */
     public function process(ServerRequestInterface $request, array $results): ?FormProcessReportInterface
     {
-        foreach ($this->callbacks as $cb) {
-            $cb($request, $results);
-        }
-
-        return null;
+        return ($this->callback)($request, $results);
     }
 }
