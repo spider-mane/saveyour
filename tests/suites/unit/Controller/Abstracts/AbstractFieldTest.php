@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Suites\Unit\Controller;
+namespace Tests\Suites\Unit\Controller\Abstracts;
 
 use Faker\UniqueGenerator;
 use Tests\Support\TestCase;
@@ -37,7 +37,7 @@ class AbstractFieldTest extends TestCase
     public function it_does_not_throw_exception_on_construction()
     {
         # Arrange
-        $sut = $this->getMockForAbstractClass(AbstractField::class, [
+        $this->getMockForAbstractClass(AbstractField::class, [
             $this->dummyRequestVar,
             [],
             true,

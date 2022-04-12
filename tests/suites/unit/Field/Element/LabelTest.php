@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Suites\Unit\Field;
+namespace Tests\Suites\Unit\Field\Element;
 
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Field\Element\Label;

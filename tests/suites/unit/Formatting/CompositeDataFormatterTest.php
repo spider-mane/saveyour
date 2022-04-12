@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Suites\Unit\Formatter;
+namespace Tests\Suites\Unit\Formatting;
 
 use Faker\UniqueGenerator;
 use Tests\Support\TestCase;

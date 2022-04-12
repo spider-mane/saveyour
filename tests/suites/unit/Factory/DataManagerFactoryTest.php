@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Suites\Unit\Manager\Factory;
+namespace Tests\Suites\Unit\Factory;
 
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Data\FieldDataManagerCallback;

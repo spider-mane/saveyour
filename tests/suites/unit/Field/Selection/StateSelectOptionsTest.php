@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Suites\Unit\Field;
+namespace Tests\Suites\Unit\Field\Selection;
 
 use InvalidArgumentException;
 use Tests\Support\TestCase;

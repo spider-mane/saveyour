@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Suites\Unit\Field;
+namespace Tests\Suites\Unit\Field\Abstracts;
 
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Field\Abstracts\LabelMakerTrait;
 use WebTheory\Saveyour\Field\Element\Label;
 
-class LabelMakerTest extends TestCase
+class LabelMakerTraitTest extends TestCase
 {
     public function generateDummyClass()
     {
