@@ -3,7 +3,7 @@
 namespace WebTheory\Saveyour\Field\Type;
 
 use WebTheory\Html\AbstractHtmlElement;
-use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
 use WebTheory\Saveyour\Field\Type\Abstracts\AbstractInput;
 
 class Text extends AbstractInput implements FormFieldInterface

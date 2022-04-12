@@ -4,7 +4,7 @@ namespace Tests\Suites\Unit\Formatter;
 
 use Faker\UniqueGenerator;
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Contracts\DataFormatterInterface;
+use WebTheory\Saveyour\Contracts\Formatting\DataFormatterInterface;
 use WebTheory\Saveyour\Formatting\CompositeDataFormatter;
 
 class CompositeDataFormatterTest extends TestCase

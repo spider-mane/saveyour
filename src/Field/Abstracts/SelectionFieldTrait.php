@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Field\Abstracts;
 
-use WebTheory\Saveyour\Contracts\SelectionProviderInterface;
+use WebTheory\Saveyour\Contracts\Field\Selection\SelectionProviderInterface;
 
 trait SelectionFieldTrait
 {

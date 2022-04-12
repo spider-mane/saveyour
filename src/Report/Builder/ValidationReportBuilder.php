@@ -2,8 +2,8 @@
 
 namespace WebTheory\Saveyour\Report\Builder;
 
-use WebTheory\Saveyour\Contracts\ValidationReportBuilderInterface;
-use WebTheory\Saveyour\Contracts\ValidationReportInterface;
+use WebTheory\Saveyour\Contracts\Report\Builder\ValidationReportBuilderInterface;
+use WebTheory\Saveyour\Contracts\Report\ValidationReportInterface;
 use WebTheory\Saveyour\Report\ValidationReport;
 
 class ValidationReportBuilder implements ValidationReportBuilderInterface

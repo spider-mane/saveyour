@@ -3,11 +3,11 @@
 namespace WebTheory\Saveyour\Factory;
 
 use WebTheory\Factory\Traits\SmartFactoryTrait;
-use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
-use WebTheory\Saveyour\Contracts\FieldDataManagerResolverFactoryInterface as iDataManagerFactory;
-use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
-use WebTheory\Saveyour\Contracts\FormFieldInterface;
-use WebTheory\Saveyour\Contracts\FormFieldResolverFactoryInterface as iFormFieldFactory;
+use WebTheory\Saveyour\Contracts\Controller\FormFieldControllerInterface;
+use WebTheory\Saveyour\Contracts\Data\FieldDataManagerInterface;
+use WebTheory\Saveyour\Contracts\Factory\FieldDataManagerResolverFactoryInterface as iDataManagerFactory;
+use WebTheory\Saveyour\Contracts\Factory\FormFieldResolverFactoryInterface as iFormFieldFactory;
+use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
 use WebTheory\Saveyour\Controller\FormFieldController;
 
 class FieldFactory

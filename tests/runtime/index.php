@@ -1,9 +1,9 @@
 <?php
 
 use WebTheory\Html\Html;
-use WebTheory\Saveyour\Contracts\ChecklistItemsProviderInterface;
-use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
-use WebTheory\Saveyour\Contracts\RadioGroupSelectionInterface;
+use WebTheory\Saveyour\Contracts\Field\Selection\ChecklistItemsProviderInterface;
+use WebTheory\Saveyour\Contracts\Field\Selection\OptionsProviderInterface;
+use WebTheory\Saveyour\Contracts\Field\Selection\RadioGroupSelectionInterface;
 use WebTheory\Saveyour\Field\Element\OptGroup;
 use WebTheory\Saveyour\Field\Selection\StateSelectOptions;
 use WebTheory\Saveyour\Field\Type\Checklist;

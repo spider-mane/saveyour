@@ -3,7 +3,7 @@
 namespace WebTheory\Saveyour\Formatting;
 
 use WebTheory\GuctilityBelt\Phone;
-use WebTheory\Saveyour\Contracts\DataFormatterInterface;
+use WebTheory\Saveyour\Contracts\Formatting\DataFormatterInterface;
 use WebTheory\Saveyour\Enum\PhoneNumberFormat;
 
 class PhoneNumberDataFormatter extends LazyDataFormatter implements DataFormatterInterface

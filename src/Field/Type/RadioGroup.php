@@ -2,8 +2,8 @@
 
 namespace WebTheory\Saveyour\Field\Type;
 
-use WebTheory\Saveyour\Contracts\FormFieldInterface;
-use WebTheory\Saveyour\Contracts\RadioGroupSelectionInterface;
+use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\Field\Selection\RadioGroupSelectionInterface;
 use WebTheory\Saveyour\Field\Abstracts\SingleValueSelectionTrait;
 use WebTheory\Saveyour\Field\Type\Abstracts\AbstractCompositeSelectionField;
 

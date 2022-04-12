@@ -6,12 +6,12 @@ use ArrayIterator;
 use IteratorAggregate;
 use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
-use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
-use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
-use WebTheory\Saveyour\Contracts\FormInterface;
-use WebTheory\Saveyour\Contracts\FormShieldInterface;
-use WebTheory\Saveyour\Contracts\FormSubmissionManagerInterface;
-use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
+use WebTheory\Saveyour\Contracts\Auth\FormShieldInterface;
+use WebTheory\Saveyour\Contracts\Controller\FormFieldControllerInterface;
+use WebTheory\Saveyour\Contracts\Controller\FormInterface;
+use WebTheory\Saveyour\Contracts\Controller\FormSubmissionManagerInterface;
+use WebTheory\Saveyour\Contracts\Processor\FormDataProcessorInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedFormReportInterface;
 use WebTheory\Saveyour\Controller\FormSubmissionManager;
 
 abstract class AbstractForm implements FormInterface, IteratorAggregate
@@ -56,7 +56,7 @@ abstract class AbstractForm implements FormInterface, IteratorAggregate
     }
 
     /**
-     * @return array<string,FormFieldControllerInterface>
+     * @return array<string, FormFieldControllerInterface>
      */
     protected function controllers(): array
     {

@@ -2,10 +2,10 @@
 
 namespace WebTheory\Saveyour\Report\Builder;
 
-use WebTheory\Saveyour\Contracts\ProcessedFieldReportBuilderInterface;
-use WebTheory\Saveyour\Contracts\ProcessedInputReportBuilderInterface;
-use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
-use WebTheory\Saveyour\Contracts\ValidationReportBuilderInterface;
+use WebTheory\Saveyour\Contracts\Report\Builder\ProcessedFieldReportBuilderInterface;
+use WebTheory\Saveyour\Contracts\Report\Builder\ProcessedInputReportBuilderInterface;
+use WebTheory\Saveyour\Contracts\Report\Builder\ValidationReportBuilderInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedInputReportInterface;
 use WebTheory\Saveyour\Report\ProcessedInputReport;
 
 class ProcessedInputReportBuilder extends ProcessedFieldReportBuilder implements ProcessedInputReportBuilderInterface

@@ -3,7 +3,7 @@
 namespace WebTheory\Saveyour\Field\Type\Abstracts;
 
 use WebTheory\Html\AbstractHtmlElement;
-use WebTheory\Saveyour\Contracts\CheckableFieldInterface;
+use WebTheory\Saveyour\Contracts\Field\CheckableFieldInterface;
 
 abstract class AbstractCheckableInput extends AbstractInput implements CheckableFieldInterface
 {

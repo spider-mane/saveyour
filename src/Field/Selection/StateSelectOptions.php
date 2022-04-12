@@ -3,7 +3,7 @@
 namespace WebTheory\Saveyour\Field\Selection;
 
 use InvalidArgumentException;
-use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
+use WebTheory\Saveyour\Contracts\Field\Selection\OptionsProviderInterface;
 
 class StateSelectOptions implements OptionsProviderInterface
 {

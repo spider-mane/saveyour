@@ -3,7 +3,7 @@
 namespace WebTheory\Saveyour\Processor\Abstracts;
 
 use InvalidArgumentException;
-use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
+use WebTheory\Saveyour\Contracts\Processor\FormDataProcessorInterface;
 
 abstract class AbstractRestrictedFormDataProcessor extends AbstractFormDataProcessor implements FormDataProcessorInterface
 {

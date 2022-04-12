@@ -6,12 +6,12 @@ use Faker\UniqueGenerator;
 use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Contracts\DataFormatterInterface;
-use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
-use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
-use WebTheory\Saveyour\Contracts\FormFieldInterface;
-use WebTheory\Saveyour\Contracts\ValidationReportInterface;
-use WebTheory\Saveyour\Contracts\ValidatorInterface;
+use WebTheory\Saveyour\Contracts\Controller\FormFieldControllerInterface;
+use WebTheory\Saveyour\Contracts\Data\FieldDataManagerInterface;
+use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\Formatting\DataFormatterInterface;
+use WebTheory\Saveyour\Contracts\Report\ValidationReportInterface;
+use WebTheory\Saveyour\Contracts\Validation\ValidatorInterface;
 use WebTheory\Saveyour\Controller\FormFieldController;
 
 class FormFieldControllerTest extends TestCase

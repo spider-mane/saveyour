@@ -3,7 +3,7 @@
 namespace WebTheory\Saveyour\Data;
 
 use Psr\Http\Message\ServerRequestInterface;
-use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
+use WebTheory\Saveyour\Contracts\Data\FieldDataManagerInterface;
 
 class FieldDataManagerCallback implements FieldDataManagerInterface
 {

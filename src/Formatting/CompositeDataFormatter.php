@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Formatting;
 
-use WebTheory\Saveyour\Contracts\DataFormatterInterface;
+use WebTheory\Saveyour\Contracts\Formatting\DataFormatterInterface;
 
 class CompositeDataFormatter implements DataFormatterInterface
 {

@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Field\Selection;
 
-use WebTheory\Saveyour\Contracts\CompositeFieldSelectionProviderInterface;
+use WebTheory\Saveyour\Contracts\Field\Selection\CompositeFieldSelectionProviderInterface;
 use WebTheory\Saveyour\Field\Selection\Abstracts\AbstractSelectionFromMap;
 
 class CompositeSelectionFromMap extends AbstractSelectionFromMap implements CompositeFieldSelectionProviderInterface

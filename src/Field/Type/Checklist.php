@@ -2,8 +2,8 @@
 
 namespace WebTheory\Saveyour\Field\Type;
 
-use WebTheory\Saveyour\Contracts\ChecklistItemsProviderInterface;
-use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\Field\Selection\ChecklistItemsProviderInterface;
 use WebTheory\Saveyour\Field\Abstracts\MultiValueSelectionTrait;
 use WebTheory\Saveyour\Field\Type\Abstracts\AbstractCompositeSelectionField;
 

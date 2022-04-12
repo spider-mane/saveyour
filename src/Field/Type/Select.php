@@ -3,7 +3,7 @@
 namespace WebTheory\Saveyour\Field\Type;
 
 use WebTheory\Html\AbstractHtmlElement;
-use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
 use WebTheory\Saveyour\Field\Abstracts\MultiValueSelectionTrait;
 use WebTheory\Saveyour\Field\Abstracts\RendersOptionsTrait;
 use WebTheory\Saveyour\Field\Element\OptGroup;

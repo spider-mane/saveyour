@@ -2,8 +2,8 @@
 
 namespace WebTheory\Saveyour\Factory;
 
-use WebTheory\Saveyour\Contracts\FieldDataManagerResolverFactoryInterface;
-use WebTheory\Saveyour\Contracts\FormFieldResolverFactoryInterface;
+use WebTheory\Saveyour\Contracts\Factory\FieldDataManagerResolverFactoryInterface;
+use WebTheory\Saveyour\Contracts\Factory\FormFieldResolverFactoryInterface;
 
 class SimpleFieldFactory extends FieldFactory
 {

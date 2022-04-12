@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Field\Abstracts;
 
-use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
+use WebTheory\Saveyour\Contracts\Field\Selection\OptionsProviderInterface;
 use WebTheory\Saveyour\Field\Element\Option;
 
 trait RendersOptionsTrait

@@ -2,11 +2,11 @@
 
 namespace WebTheory\Saveyour\Report\Builder;
 
-use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
-use WebTheory\Saveyour\Contracts\FormShieldReportInterface;
-use WebTheory\Saveyour\Contracts\ProcessedFormReportBuilderInterface;
-use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
-use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
+use WebTheory\Saveyour\Contracts\Report\Builder\ProcessedFormReportBuilderInterface;
+use WebTheory\Saveyour\Contracts\Report\FormProcessReportInterface;
+use WebTheory\Saveyour\Contracts\Report\FormShieldReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedFormReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedInputReportInterface;
 use WebTheory\Saveyour\Report\ProcessedFormReport;
 
 class ProcessedFormReportBuilder implements ProcessedFormReportBuilderInterface

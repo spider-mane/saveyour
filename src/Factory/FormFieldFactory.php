@@ -6,8 +6,8 @@ use Exception;
 use WebTheory\Factory\Traits\ClassResolverTrait;
 use WebTheory\Factory\Traits\SmartFactoryTrait;
 use WebTheory\Html\TagSage;
-use WebTheory\Saveyour\Contracts\FormFieldInterface;
-use WebTheory\Saveyour\Contracts\FormFieldResolverFactoryInterface;
+use WebTheory\Saveyour\Contracts\Factory\FormFieldResolverFactoryInterface;
+use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
 use WebTheory\Saveyour\Field\Type\Input;
 
 class FormFieldFactory implements FormFieldResolverFactoryInterface

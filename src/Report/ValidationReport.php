@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Report;
 
-use WebTheory\Saveyour\Contracts\ValidationReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ValidationReportInterface;
 
 class ValidationReport implements ValidationReportInterface
 {

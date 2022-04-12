@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Field\Type\Abstracts;
 
-use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
 use WebTheory\Saveyour\Field\Abstracts\CompositeSelectionFieldTrait;
 use WebTheory\Saveyour\Field\Abstracts\LabelMakerTrait;
 use WebTheory\Saveyour\Field\Element\Label;

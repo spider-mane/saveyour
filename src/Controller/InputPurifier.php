@@ -2,9 +2,9 @@
 
 namespace WebTheory\Saveyour\Controller;
 
-use WebTheory\Saveyour\Contracts\InputFormatterInterface;
-use WebTheory\Saveyour\Contracts\InputPurifierInterface;
-use WebTheory\Saveyour\Contracts\ValidatorInterface;
+use WebTheory\Saveyour\Contracts\Controller\InputPurifierInterface;
+use WebTheory\Saveyour\Contracts\Formatting\InputFormatterInterface;
+use WebTheory\Saveyour\Contracts\Validation\ValidatorInterface;
 
 class InputPurifier implements InputPurifierInterface
 {

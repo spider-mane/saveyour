@@ -9,9 +9,9 @@ use Geocoder\Provider\Provider;
 use Geocoder\Query\GeocodeQuery;
 use Psr\Http\Message\ServerRequestInterface;
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
-use WebTheory\Saveyour\Contracts\InputFormatterInterface;
-use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
+use WebTheory\Saveyour\Contracts\Data\FieldDataManagerInterface;
+use WebTheory\Saveyour\Contracts\Formatting\InputFormatterInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedInputReportInterface;
 use WebTheory\Saveyour\Processor\FormAddressGeocoder;
 
 class FormAddressGeocoderTest extends TestCase

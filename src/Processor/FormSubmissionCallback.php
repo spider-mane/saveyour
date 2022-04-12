@@ -3,8 +3,8 @@
 namespace WebTheory\Saveyour\Processor;
 
 use Psr\Http\Message\ServerRequestInterface;
-use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
-use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
+use WebTheory\Saveyour\Contracts\Processor\FormDataProcessorInterface;
+use WebTheory\Saveyour\Contracts\Report\FormProcessReportInterface;
 use WebTheory\Saveyour\Processor\Abstracts\AbstractFormDataProcessor;
 
 class FormSubmissionCallback extends AbstractFormDataProcessor implements FormDataProcessorInterface

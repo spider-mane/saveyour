@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Report;
 
-use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
+use WebTheory\Saveyour\Contracts\Report\FormProcessReportInterface;
 
 class FormProcessReport implements FormProcessReportInterface
 {

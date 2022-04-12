@@ -2,8 +2,8 @@
 
 namespace WebTheory\Saveyour\Report;
 
-use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
-use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedFieldReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedInputReportInterface;
 
 class ProcessedInputReport extends ProcessedFieldReport implements ProcessedInputReportInterface
 {

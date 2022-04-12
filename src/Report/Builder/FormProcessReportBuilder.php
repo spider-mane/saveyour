@@ -2,8 +2,8 @@
 
 namespace WebTheory\Saveyour\Report\Builder;
 
-use WebTheory\Saveyour\Contracts\FormProcessReportBuilderInterface;
-use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
+use WebTheory\Saveyour\Contracts\Report\Builder\FormProcessReportBuilderInterface;
+use WebTheory\Saveyour\Contracts\Report\FormProcessReportInterface;
 use WebTheory\Saveyour\Report\FormProcessReport;
 
 class FormProcessReportBuilder implements FormProcessReportBuilderInterface

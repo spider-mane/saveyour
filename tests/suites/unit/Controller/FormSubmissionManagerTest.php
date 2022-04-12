@@ -4,16 +4,16 @@ namespace Tests\Suites\Unit\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
-use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
-use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
-use WebTheory\Saveyour\Contracts\FormShieldInterface;
-use WebTheory\Saveyour\Contracts\FormShieldReportInterface;
-use WebTheory\Saveyour\Contracts\FormSubmissionManagerInterface;
-use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
-use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
-use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
-use WebTheory\Saveyour\Contracts\ValidationReportInterface;
+use WebTheory\Saveyour\Contracts\Auth\FormShieldInterface;
+use WebTheory\Saveyour\Contracts\Controller\FormFieldControllerInterface;
+use WebTheory\Saveyour\Contracts\Controller\FormSubmissionManagerInterface;
+use WebTheory\Saveyour\Contracts\Processor\FormDataProcessorInterface;
+use WebTheory\Saveyour\Contracts\Report\FormProcessReportInterface;
+use WebTheory\Saveyour\Contracts\Report\FormShieldReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedFieldReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedFormReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedInputReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ValidationReportInterface;
 use WebTheory\Saveyour\Controller\FormSubmissionManager;
 
 class FormSubmissionManagerTest extends TestCase

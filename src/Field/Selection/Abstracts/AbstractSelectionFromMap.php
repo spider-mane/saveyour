@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Field\Selection\Abstracts;
 
-use WebTheory\Saveyour\Contracts\SelectionProviderInterface;
+use WebTheory\Saveyour\Contracts\Field\Selection\SelectionProviderInterface;
 
 abstract class AbstractSelectionFromMap implements SelectionProviderInterface
 {

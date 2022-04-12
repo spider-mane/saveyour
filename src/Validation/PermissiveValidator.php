@@ -2,8 +2,8 @@
 
 namespace WebTheory\Saveyour\Validation;
 
-use WebTheory\Saveyour\Contracts\ValidationReportInterface;
-use WebTheory\Saveyour\Contracts\ValidatorInterface;
+use WebTheory\Saveyour\Contracts\Report\ValidationReportInterface;
+use WebTheory\Saveyour\Contracts\Validation\ValidatorInterface;
 use WebTheory\Saveyour\Report\ValidationReport;
 
 class PermissiveValidator implements ValidatorInterface

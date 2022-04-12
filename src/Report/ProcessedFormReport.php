@@ -2,8 +2,8 @@
 
 namespace WebTheory\Saveyour\Report;
 
-use WebTheory\Saveyour\Contracts\FormShieldReportInterface;
-use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
+use WebTheory\Saveyour\Contracts\Report\FormShieldReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedFormReportInterface;
 
 class ProcessedFormReport implements ProcessedFormReportInterface
 {

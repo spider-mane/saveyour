@@ -2,8 +2,8 @@
 
 namespace WebTheory\Saveyour\Report\Builder;
 
-use WebTheory\Saveyour\Contracts\ProcessedFieldReportBuilderInterface;
-use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
+use WebTheory\Saveyour\Contracts\Report\Builder\ProcessedFieldReportBuilderInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Report\ProcessedFieldReport;
 
 class ProcessedFieldReportBuilder implements ProcessedFieldReportBuilderInterface

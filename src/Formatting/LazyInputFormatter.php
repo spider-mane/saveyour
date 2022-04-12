@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Formatting;
 
-use WebTheory\Saveyour\Contracts\InputFormatterInterface;
+use WebTheory\Saveyour\Contracts\Formatting\InputFormatterInterface;
 
 class LazyInputFormatter implements InputFormatterInterface
 {

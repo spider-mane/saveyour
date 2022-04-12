@@ -5,8 +5,8 @@ namespace WebTheory\Saveyour\Factory;
 use Exception;
 use WebTheory\Factory\Traits\ClassResolverTrait;
 use WebTheory\Factory\Traits\SmartFactoryTrait;
-use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
-use WebTheory\Saveyour\Contracts\FieldDataManagerResolverFactoryInterface;
+use WebTheory\Saveyour\Contracts\Data\FieldDataManagerInterface;
+use WebTheory\Saveyour\Contracts\Factory\FieldDataManagerResolverFactoryInterface;
 use WebTheory\Saveyour\Data\FieldDataManagerCallback;
 
 class DataManagerFactory implements FieldDataManagerResolverFactoryInterface

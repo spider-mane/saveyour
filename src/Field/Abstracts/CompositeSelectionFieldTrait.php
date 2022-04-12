@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Field\Abstracts;
 
-use WebTheory\Saveyour\Contracts\CompositeFieldSelectionProviderInterface;
+use WebTheory\Saveyour\Contracts\Field\Selection\CompositeFieldSelectionProviderInterface;
 
 trait CompositeSelectionFieldTrait
 {

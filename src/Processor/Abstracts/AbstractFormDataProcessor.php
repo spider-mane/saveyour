@@ -2,9 +2,9 @@
 
 namespace WebTheory\Saveyour\Processor\Abstracts;
 
-use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
-use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
-use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
+use WebTheory\Saveyour\Contracts\Processor\FormDataProcessorInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedFieldReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedInputReportInterface;
 
 abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
 {

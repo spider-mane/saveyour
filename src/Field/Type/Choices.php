@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Field\Type;
 
-use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
 
 class Choices extends Select implements FormFieldInterface
 {

@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Report;
 
-use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedFieldReportInterface;
 
 class ProcessedFieldReport implements ProcessedFieldReportInterface
 {
