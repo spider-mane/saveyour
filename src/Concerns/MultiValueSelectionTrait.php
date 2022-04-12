@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Concerns;
 
-use WebTheory\Saveyour\Fields\Hidden;
+use WebTheory\Saveyour\Field\Type\Hidden;
 
 trait MultiValueSelectionTrait
 {

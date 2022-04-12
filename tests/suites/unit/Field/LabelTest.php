@@ -3,7 +3,7 @@
 namespace Tests\Suites\Unit\Field;
 
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Elements\Label;
+use WebTheory\Saveyour\Element\Label;
 
 class LabelTest extends TestCase
 {

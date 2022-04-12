@@ -5,6 +5,7 @@ namespace WebTheory\Saveyour\Validation;
 use Respect\Validation\Validatable;
 use WebTheory\Saveyour\Contracts\ValidationReportInterface;
 use WebTheory\Saveyour\Contracts\ValidatorInterface;
+use WebTheory\Saveyour\Report\Builder\ValidationReportBuilder;
 
 class RespectValidator implements ValidatorInterface
 {

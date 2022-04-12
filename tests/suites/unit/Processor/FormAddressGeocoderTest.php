@@ -11,8 +11,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Contracts\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\InputFormatterInterface;
-use WebTheory\Saveyour\Controllers\ProcessedInputReport;
-use WebTheory\Saveyour\Processors\FormAddressGeocoder;
+use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
+use WebTheory\Saveyour\Processor\FormAddressGeocoder;
 
 class FormAddressGeocoderTest extends TestCase
 {
@@ -97,7 +97,7 @@ class FormAddressGeocoderTest extends TestCase
         ];
 
         foreach ($results as $param => $value) {
-            $report = $this->createMock(ProcessedInputReport::class);
+            $report = $this->createMock(ProcessedInputReportInterface::class);
             $report->method('rawInputValue')->willReturn($value);
             $report->method('updateSuccessful')->willReturn(true);
 

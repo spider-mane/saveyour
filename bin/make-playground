@@ -1,9 +1,16 @@
 #!/usr/bin/env php
 <?php
 
-$root = dirname(__DIR__);
-$public = "wordpress";
+################################################################################
+# Config
+################################################################################
+
+$publicDir = "tests/runtime";
 $contexts = [];
+
+################################################################################
+# Content
+################################################################################
 
 $content = <<<PHP
 <?php
@@ -34,6 +41,8 @@ PHP;
 # Process
 ################################################################################
 
+$root = dirname(__DIR__);
+
 if (!file_exists($path = "$root/.playground")) {
   mkdir($path);
 }
@@ -45,8 +54,8 @@ foreach (['web', 'console', ...$contexts] as $context) {
     file_put_contents($file, $content);
   }
 
-  if ('web' === $context && file_exists($public = "$root/$public")) {
-    if (file_exists($link = "$public/.playground.php")) {
+  if ('web' === $context && file_exists($publicDir = "$root/$publicDir")) {
+    if (file_exists($link = "$publicDir/.playground.php")) {
       unlink($link);
     }
 

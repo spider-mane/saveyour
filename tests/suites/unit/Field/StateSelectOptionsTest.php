@@ -4,7 +4,7 @@ namespace Tests\Suites\Unit\Field;
 
 use InvalidArgumentException;
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Selections\StateSelectOptions;
+use WebTheory\Saveyour\Field\Selection\StateSelectOptions;
 
 class StateSelectOptionsTest extends TestCase
 {

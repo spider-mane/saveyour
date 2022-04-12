@@ -3,7 +3,7 @@
 namespace WebTheory\Saveyour\Concerns;
 
 use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
-use WebTheory\Saveyour\Elements\Option;
+use WebTheory\Saveyour\Element\Option;
 
 trait RendersOptionsTrait
 {

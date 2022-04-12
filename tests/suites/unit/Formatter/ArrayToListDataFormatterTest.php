@@ -4,7 +4,7 @@ namespace Tests\Suites\Unit\Formatter;
 
 use Faker\UniqueGenerator;
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Formatters\ArrayToListDataFormatter;
+use WebTheory\Saveyour\Formatting\ArrayToListDataFormatter;
 
 class ArrayToListDataFormatterTest extends TestCase
 {

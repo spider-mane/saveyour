@@ -4,13 +4,14 @@ namespace Tests\Suites\Unit\Field;
 
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Concerns\LabelMaker;
-use WebTheory\Saveyour\Elements\Label;
+use WebTheory\Saveyour\Element\Label;
 
 class LabelMakerTest extends TestCase
 {
     public function generateDummyClass()
     {
-        return new class () {
+        return new class()
+        {
             use LabelMaker;
 
             public function create($content, $options)

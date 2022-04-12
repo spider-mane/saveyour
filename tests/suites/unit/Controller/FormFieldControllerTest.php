@@ -12,7 +12,7 @@ use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 use WebTheory\Saveyour\Contracts\ValidationReportInterface;
 use WebTheory\Saveyour\Contracts\ValidatorInterface;
-use WebTheory\Saveyour\Controllers\FormFieldController;
+use WebTheory\Saveyour\Controller\FormFieldController;
 
 class FormFieldControllerTest extends TestCase
 {

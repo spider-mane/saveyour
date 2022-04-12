@@ -14,7 +14,7 @@ use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
 use WebTheory\Saveyour\Contracts\ProcessedInputReportInterface;
 use WebTheory\Saveyour\Contracts\ValidationReportInterface;
-use WebTheory\Saveyour\Controllers\FormSubmissionManager;
+use WebTheory\Saveyour\Controller\FormSubmissionManager;
 
 class FormSubmissionManagerTest extends TestCase
 {

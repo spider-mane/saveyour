@@ -9,24 +9,24 @@ use Rector\Php74\Rector\Property\TypedPropertyRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $parameters = $containerConfigurator->parameters();
-    $services = $containerConfigurator->services();
+return static function (ContainerConfigurator $loader): void {
+    $rules = $loader->services();
+    $options = $loader->parameters();
 
     # Options
-    $parameters->set(Option::PATHS, [
+    $options->set(Option::PATHS, [
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ]);
-    $parameters->set(Option::AUTO_IMPORT_NAMES, true);
+    $options->set(Option::AUTO_IMPORT_NAMES, true);
 
     # PHP Rules
-    $containerConfigurator->import(LevelSetList::UP_TO_PHP_74);
+    $loader->import(LevelSetList::UP_TO_PHP_74);
 
-    $services->remove(AddLiteralSeparatorToNumberRector::class);
-    $services->remove(ThisCallOnStaticMethodToStaticCallRector::class);
+    $rules->remove(AddLiteralSeparatorToNumberRector::class);
+    $rules->remove(ThisCallOnStaticMethodToStaticCallRector::class);
 
-    $services->set(TypedPropertyRector::class)->configure([
+    $rules->set(TypedPropertyRector::class)->configure([
         TypedPropertyRector::INLINE_PUBLIC => true
     ]);
 };

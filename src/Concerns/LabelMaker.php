@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Concerns;
 
-use WebTheory\Saveyour\Elements\Label;
+use WebTheory\Saveyour\Element\Label;
 
 trait LabelMaker
 {

@@ -88,17 +88,11 @@
     "asset": "npm --prefix assets",
     "bench": "vendor/bin/phpbench",
     "check": "vendor/bin/phpcs",
-    "fix": "vendor/bin/phpcbf",
+    "correct": "vendor/bin/phpcbf",
     "collect": "vendor/bin/var-dump-server",
     "hooks": "vendor/bin/captainhook",
     "inspect": "vendor/bin/psalm",
-    "setup": "composer install && @env",
     "shell": "vendor/bin/psysh",
-    "style": [
-      "vendor/bin/rector process",
-      "vendor/bin/php-cs-fixer fix --verbose",
-      "@fix"
-    ],
     "test": "vendor/bin/phpunit",
     "test:acceptance": "@test --testsuite acceptance",
     "test:functional": "@test --testsuite functional",
@@ -106,18 +100,21 @@
     "test:unit": "@test --testsuite unit",
     "watch": "vendor/bin/phpunit-watcher",
     "build": [
-      "@fix",
+      "@style",
       "@check",
       "@inspect",
       "@test"
     ],
-    "env": [
+    "setup": [
+      "composer install",
       "cp -n .env.example .env",
       "bin/build-paths",
       "bin/make-playground"
     ],
-    "post-install-cmd": [
-      "@env"
+    "style": [
+      "vendor/bin/rector process",
+      "vendor/bin/php-cs-fixer fix --verbose",
+      "@correct"
     ]
   },
   "config": {
