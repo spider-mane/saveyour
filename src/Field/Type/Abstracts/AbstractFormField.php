@@ -1,10 +1,10 @@
 <?php
 
-namespace WebTheory\Saveyour\Field\Type;
+namespace WebTheory\Saveyour\Field\Type\Abstracts;
 
 use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
-use WebTheory\Saveyour\Element\Label;
+use WebTheory\Saveyour\Field\Element\Label;
 
 abstract class AbstractFormField extends AbstractHtmlElement implements FormFieldInterface
 {
@@ -17,7 +17,7 @@ abstract class AbstractFormField extends AbstractHtmlElement implements FormFiel
 
     protected string $label = '';
 
-    protected string $form;
+    protected ?string $form = null;
 
     protected string $placeholder = '';
 

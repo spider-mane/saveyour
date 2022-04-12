@@ -1,10 +1,10 @@
 <?php
 
-namespace WebTheory\Saveyour\Concerns;
+namespace WebTheory\Saveyour\Field\Abstracts;
 
 use WebTheory\Saveyour\Contracts\SelectionProviderInterface;
 
-trait IsSelectionFieldTrait
+trait SelectionFieldTrait
 {
     protected function getSelectionData(): array
     {

@@ -3,11 +3,12 @@
 namespace WebTheory\Saveyour\Field\Type;
 
 use WebTheory\Html\AbstractHtmlElement;
-use WebTheory\Saveyour\Concerns\MultiValueSelectionTrait;
-use WebTheory\Saveyour\Concerns\RendersOptionsTrait;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
-use WebTheory\Saveyour\Element\OptGroup;
-use WebTheory\Saveyour\Element\Option;
+use WebTheory\Saveyour\Field\Abstracts\MultiValueSelectionTrait;
+use WebTheory\Saveyour\Field\Abstracts\RendersOptionsTrait;
+use WebTheory\Saveyour\Field\Element\OptGroup;
+use WebTheory\Saveyour\Field\Element\Option;
+use WebTheory\Saveyour\Field\Type\Abstracts\AbstractStandardFormControl;
 
 class Select extends AbstractStandardFormControl implements FormFieldInterface
 {

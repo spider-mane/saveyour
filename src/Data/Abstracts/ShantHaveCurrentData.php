@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\Saveyour\Concerns;
+namespace WebTheory\Saveyour\Data\Abstracts;
 
 use Psr\Http\Message\ServerRequestInterface;
 

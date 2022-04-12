@@ -4,6 +4,7 @@ namespace WebTheory\Saveyour\Field\Type;
 
 use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Field\Type\Abstracts\AbstractFormField;
 
 class TrixEditor extends AbstractFormField implements FormFieldInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\Saveyour\Element;
+namespace WebTheory\Saveyour\Field\Element;
 
 use WebTheory\Html\AbstractHtmlElement;
 

@@ -4,14 +4,14 @@ use WebTheory\Html\Html;
 use WebTheory\Saveyour\Contracts\ChecklistItemsProviderInterface;
 use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
 use WebTheory\Saveyour\Contracts\RadioGroupSelectionInterface;
-use WebTheory\Saveyour\Element\OptGroup;
+use WebTheory\Saveyour\Field\Element\OptGroup;
+use WebTheory\Saveyour\Field\Selection\StateSelectOptions;
 use WebTheory\Saveyour\Field\Type\Checklist;
 use WebTheory\Saveyour\Field\Type\RadioGroup;
 use WebTheory\Saveyour\Field\Type\Select;
 use WebTheory\Saveyour\Field\Type\Select2;
 use WebTheory\Saveyour\Field\Type\Submit;
 use WebTheory\Saveyour\Field\Type\TrixEditor;
-use WebTheory\Saveyour\Field\Selection\StateSelectOptions;
 
 ################################################################################
 # bootstrap
@@ -53,8 +53,7 @@ echo '<hr>';
 ################################################################################
 echo '<h2>RadioGroup Test</h2>';
 
-$provider = new class() implements RadioGroupSelectionInterface
-{
+$provider = new class () implements RadioGroupSelectionInterface {
     public function provideSelectionsData(): array
     {
         return [
@@ -112,8 +111,7 @@ echo '<hr>';
 ################################################################################
 echo '<h2>Checklist Test</h2>';
 
-$provider = new class() implements ChecklistItemsProviderInterface
-{
+$provider = new class () implements ChecklistItemsProviderInterface {
     public function provideSelectionsData(): array
     {
         return [
@@ -162,8 +160,7 @@ echo '<h2>Select Test</h2>';
 
 $select = new Select();
 
-$provider1 = new class() implements OptionsProviderInterface
-{
+$provider1 = new class () implements OptionsProviderInterface {
     public function provideSelectionsData(): array
     {
         return [
@@ -202,8 +199,7 @@ echo str_repeat('<br>', 2);
 
 echo '<h3>Multi-Value with optgroups</h3>';
 
-$provider2 = new class() implements OptionsProviderInterface
-{
+$provider2 = new class () implements OptionsProviderInterface {
     public function provideSelectionsData(): array
     {
         return [
@@ -229,8 +225,7 @@ $provider2 = new class() implements OptionsProviderInterface
     }
 };
 
-$provider3 = new class() implements OptionsProviderInterface
-{
+$provider3 = new class () implements OptionsProviderInterface {
     public function provideSelectionsData(): array
     {
         return [

@@ -2,9 +2,10 @@
 
 namespace WebTheory\Saveyour\Field\Type;
 
-use WebTheory\Saveyour\Concerns\SingleValueSelectionTrait;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 use WebTheory\Saveyour\Contracts\RadioGroupSelectionInterface;
+use WebTheory\Saveyour\Field\Abstracts\SingleValueSelectionTrait;
+use WebTheory\Saveyour\Field\Type\Abstracts\AbstractCompositeSelectionField;
 
 class RadioGroup extends AbstractCompositeSelectionField implements FormFieldInterface
 {

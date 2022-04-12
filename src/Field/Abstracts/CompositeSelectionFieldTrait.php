@@ -1,12 +1,12 @@
 <?php
 
-namespace WebTheory\Saveyour\Concerns;
+namespace WebTheory\Saveyour\Field\Abstracts;
 
 use WebTheory\Saveyour\Contracts\CompositeFieldSelectionProviderInterface;
 
-trait IsCompositeSelectionFieldTrait
+trait CompositeSelectionFieldTrait
 {
-    use IsSelectionFieldTrait;
+    use SelectionFieldTrait;
 
     /**
      * @var CompositeFieldSelectionProviderInterface

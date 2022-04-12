@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\Saveyour\Concerns;
+namespace WebTheory\Saveyour\Formatting\Abstracts;
 
 trait SelectionFormatterTrait
 {

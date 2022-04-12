@@ -15,6 +15,7 @@ use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;
 use WebTheory\Saveyour\Contracts\FormProcessReportInterface;
 use WebTheory\Saveyour\Contracts\InputFormatterInterface;
 use WebTheory\Saveyour\Formatting\LazyDataFormatter;
+use WebTheory\Saveyour\Processor\Abstracts\AbstractRestrictedFormDataProcessor;
 use WebTheory\Saveyour\Report\Builder\FormProcessReportBuilder;
 
 class FormAddressGeocoder extends AbstractRestrictedFormDataProcessor implements FormDataProcessorInterface

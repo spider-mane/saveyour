@@ -1,9 +1,9 @@
 <?php
 
-namespace WebTheory\Saveyour\Element;
+namespace WebTheory\Saveyour\Field\Element;
 
 use WebTheory\Html\AbstractHtmlElement;
-use WebTheory\Saveyour\Concerns\RendersOptionsTrait;
+use WebTheory\Saveyour\Field\Abstracts\RendersOptionsTrait;
 
 class Datalist extends AbstractHtmlElement
 {

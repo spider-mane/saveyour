@@ -58,15 +58,12 @@ class ProcessedInputReport extends ProcessedFieldReport implements ProcessedInpu
 
     public function toArray(): array
     {
-        return array_merge(
-            parent::toArray(),
-            [
-                'request_var_present' => $this->requestVarPresent,
-                'raw_input_value' => $this->rawInputValue,
-                'validation_status' => $this->validationStatus,
-                'rule_violations' => $this->ruleViolations,
-            ]
-        );
+        return [
+            'request_var_present' => $this->requestVarPresent,
+            'raw_input_value' => $this->rawInputValue,
+            'validation_status' => $this->validationStatus,
+            'rule_violations' => $this->ruleViolations,
+        ] + parent::toArray();
     }
 
     public static function voided(): ProcessedInputReportInterface

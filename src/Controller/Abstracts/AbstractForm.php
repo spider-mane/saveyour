@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\Saveyour\Controller;
+namespace WebTheory\Saveyour\Controller\Abstracts;
 
 use ArrayIterator;
 use IteratorAggregate;
@@ -12,6 +12,7 @@ use WebTheory\Saveyour\Contracts\FormInterface;
 use WebTheory\Saveyour\Contracts\FormShieldInterface;
 use WebTheory\Saveyour\Contracts\FormSubmissionManagerInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFormReportInterface;
+use WebTheory\Saveyour\Controller\FormSubmissionManager;
 
 abstract class AbstractForm implements FormInterface, IteratorAggregate
 {

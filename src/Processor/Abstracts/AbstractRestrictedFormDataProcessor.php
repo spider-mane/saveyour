@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\Saveyour\Processor;
+namespace WebTheory\Saveyour\Processor\Abstracts;
 
 use InvalidArgumentException;
 use WebTheory\Saveyour\Contracts\FormDataProcessorInterface;

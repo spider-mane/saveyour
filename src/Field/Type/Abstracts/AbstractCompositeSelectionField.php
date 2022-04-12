@@ -1,16 +1,16 @@
 <?php
 
-namespace WebTheory\Saveyour\Field\Type;
+namespace WebTheory\Saveyour\Field\Type\Abstracts;
 
-use WebTheory\Saveyour\Concerns\IsCompositeSelectionFieldTrait;
-use WebTheory\Saveyour\Concerns\LabelMaker;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
-use WebTheory\Saveyour\Element\Label;
+use WebTheory\Saveyour\Field\Abstracts\CompositeSelectionFieldTrait;
+use WebTheory\Saveyour\Field\Abstracts\LabelMakerTrait;
+use WebTheory\Saveyour\Field\Element\Label;
 
 abstract class AbstractCompositeSelectionField extends AbstractFormField implements FormFieldInterface
 {
-    use LabelMaker;
-    use IsCompositeSelectionFieldTrait;
+    use LabelMakerTrait;
+    use CompositeSelectionFieldTrait;
 
     protected array $labelOptions = [];
 

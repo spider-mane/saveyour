@@ -4,7 +4,7 @@ namespace Tests\Suites\Unit\Controller;
 
 use Faker\UniqueGenerator;
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Controller\AbstractField;
+use WebTheory\Saveyour\Controller\Abstracts\AbstractField;
 
 class AbstractFieldTest extends TestCase
 {

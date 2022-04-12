@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\Saveyour\Field\Selection;
+namespace WebTheory\Saveyour\Field\Selection\Abstracts;
 
 use WebTheory\Saveyour\Contracts\SelectionProviderInterface;
 

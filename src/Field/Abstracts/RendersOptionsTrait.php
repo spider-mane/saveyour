@@ -1,13 +1,13 @@
 <?php
 
-namespace WebTheory\Saveyour\Concerns;
+namespace WebTheory\Saveyour\Field\Abstracts;
 
 use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
-use WebTheory\Saveyour\Element\Option;
+use WebTheory\Saveyour\Field\Element\Option;
 
 trait RendersOptionsTrait
 {
-    use IsSelectionFieldTrait;
+    use SelectionFieldTrait;
 
     protected OptionsProviderInterface $selectionProvider;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace WebTheory\Saveyour\Controller;
+namespace WebTheory\Saveyour\Controller\Abstracts;
 
 use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Saveyour\Contracts\DataFormatterInterface;
@@ -9,6 +9,7 @@ use WebTheory\Saveyour\Contracts\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
 use WebTheory\Saveyour\Contracts\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\ValidationReportInterface;
+use WebTheory\Saveyour\Controller\FormFieldController;
 use WebTheory\Saveyour\Validation\Validator;
 
 abstract class AbstractField implements FormFieldControllerInterface

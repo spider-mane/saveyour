@@ -1,10 +1,10 @@
 <?php
 
-namespace WebTheory\Saveyour\Concerns;
+namespace WebTheory\Saveyour\Field\Abstracts;
 
-use WebTheory\Saveyour\Element\Label;
+use WebTheory\Saveyour\Field\Element\Label;
 
-trait LabelMaker
+trait LabelMakerTrait
 {
     protected function createLabel(string $content, array $options): Label
     {

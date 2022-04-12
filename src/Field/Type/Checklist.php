@@ -2,9 +2,10 @@
 
 namespace WebTheory\Saveyour\Field\Type;
 
-use WebTheory\Saveyour\Concerns\MultiValueSelectionTrait;
 use WebTheory\Saveyour\Contracts\ChecklistItemsProviderInterface;
 use WebTheory\Saveyour\Contracts\FormFieldInterface;
+use WebTheory\Saveyour\Field\Abstracts\MultiValueSelectionTrait;
+use WebTheory\Saveyour\Field\Type\Abstracts\AbstractCompositeSelectionField;
 
 class Checklist extends AbstractCompositeSelectionField implements FormFieldInterface
 {

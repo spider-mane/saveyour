@@ -3,8 +3,8 @@
 namespace Tests\Suites\Unit\Manager\Factory;
 
 use Tests\Support\TestCase;
-use WebTheory\Saveyour\Factory\DataManagerFactory;
 use WebTheory\Saveyour\Data\FieldDataManagerCallback;
+use WebTheory\Saveyour\Factory\DataManagerFactory;
 
 class DataManagerFactoryTest extends TestCase
 {
