@@ -12,31 +12,14 @@ use WebTheory\Saveyour\Fields\Select2;
 use WebTheory\Saveyour\Fields\Submit;
 use WebTheory\Saveyour\Fields\TrixEditor;
 use WebTheory\Saveyour\Selections\StateSelectOptions;
-use Whoops\Handler\PrettyPageHandler;
-use Whoops\Run;
 
 ################################################################################
 # bootstrap
 ################################################################################
 
 $root = dirname(__DIR__, 3);
-$testDir = $root . '/tests';
 
-// composer autoload
-require $root . "vendor/autoload.php";
-
-// filp/whoops error handling
-call_user_func(function () {
-    $handler = new PrettyPageHandler();
-    $run = new Run();
-
-    $run->prependHandler($handler)->register();
-});
-
-// load environment variables
-call_user_func(function () use ($testDir) {
-    require $testDir . '.env.php';
-});
+require $root . "tests/bootstrap.php";
 
 // symlink assets
 // call_user_func(function () use ($root) {
@@ -70,7 +53,8 @@ echo '<hr>';
 ################################################################################
 echo '<h2>RadioGroup Test</h2>';
 
-$provider = new class () implements RadioGroupSelectionInterface {
+$provider = new class () implements RadioGroupSelectionInterface
+{
     public function provideSelectionsData(): array
     {
         return [
@@ -128,7 +112,8 @@ echo '<hr>';
 ################################################################################
 echo '<h2>Checklist Test</h2>';
 
-$provider = new class () implements ChecklistItemsProviderInterface {
+$provider = new class () implements ChecklistItemsProviderInterface
+{
     public function provideSelectionsData(): array
     {
         return [
@@ -177,7 +162,8 @@ echo '<h2>Select Test</h2>';
 
 $select = new Select();
 
-$provider1 = new class () implements OptionsProviderInterface {
+$provider1 = new class () implements OptionsProviderInterface
+{
     public function provideSelectionsData(): array
     {
         return [
@@ -216,7 +202,8 @@ echo str_repeat('<br>', 2);
 
 echo '<h3>Multi-Value with optgroups</h3>';
 
-$provider2 = new class () implements OptionsProviderInterface {
+$provider2 = new class () implements OptionsProviderInterface
+{
     public function provideSelectionsData(): array
     {
         return [
@@ -242,7 +229,8 @@ $provider2 = new class () implements OptionsProviderInterface {
     }
 };
 
-$provider3 = new class () implements OptionsProviderInterface {
+$provider3 = new class () implements OptionsProviderInterface
+{
     public function provideSelectionsData(): array
     {
         return [

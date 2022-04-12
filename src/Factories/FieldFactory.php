@@ -14,15 +14,9 @@ class FieldFactory
 {
     use SmartFactoryTrait;
 
-    /**
-     * @var iFormFieldFactory
-     */
-    protected $formFieldFactory;
+    protected iFormFieldFactory $formFieldFactory;
 
-    /**
-     * @var iDataManagerFactory
-     */
-    protected $dataManagerFactory;
+    protected iDataManagerFactory $dataManagerFactory;
 
     protected $controller = FormFieldController::class;
 

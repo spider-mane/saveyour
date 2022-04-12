@@ -6,7 +6,7 @@ use WebTheory\Saveyour\Contracts\DataFormatterInterface;
 
 class ArrayToListDataFormatter implements DataFormatterInterface
 {
-    protected $delimiter = ', ';
+    protected string $delimiter = ', ';
 
     public function __construct(?string $delimiter = null)
     {

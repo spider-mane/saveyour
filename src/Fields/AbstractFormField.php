@@ -8,45 +8,24 @@ use WebTheory\Saveyour\Elements\Label;
 
 abstract class AbstractFormField extends AbstractHtmlElement implements FormFieldInterface
 {
-    /**
-     * @var string
-     */
-    protected $name = '';
+    protected string $name = '';
 
     /**
      * @var mixed
      */
     protected $value;
 
-    /**
-     * @var string
-     */
-    protected $label = '';
+    protected string $label = '';
 
-    /**
-     * @var string
-     */
-    protected $form;
+    protected string $form;
 
-    /**
-     * @var string
-     */
-    protected $placeholder = '';
+    protected string $placeholder = '';
 
-    /**
-     * @var bool
-     */
-    protected $required = false;
+    protected bool $required = false;
 
-    /**
-     * @var bool
-     */
-    protected $disabled = false;
+    protected bool $disabled = false;
 
-    /**
-     * @var bool
-     */
-    protected $readonly = false;
+    protected bool $readonly = false;
 
     /**
      * Get the value of name

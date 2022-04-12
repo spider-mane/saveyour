@@ -8,10 +8,7 @@ use WebTheory\Saveyour\Enum\PhoneNumberFormat;
 
 class PhoneNumberDataFormatter extends LazyDataFormatter implements DataFormatterInterface
 {
-    /**
-     * @var PhoneNumberFormat
-     */
-    protected $format;
+    protected PhoneNumberFormat $format;
 
     public function __construct(PhoneNumberFormat $format)
     {

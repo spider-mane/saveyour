@@ -7,10 +7,7 @@ use WebTheory\Saveyour\Contracts\CheckableFieldInterface;
 
 abstract class AbstractCheckableInput extends AbstractInput implements CheckableFieldInterface
 {
-    /**
-     * @var bool
-     */
-    protected $checked;
+    protected ?bool $checked = null;
 
     /**
      * Get the value of checked

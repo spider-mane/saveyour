@@ -3,18 +3,13 @@
 namespace WebTheory\Saveyour\Contracts;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Traversable;
 
-interface FormInterface
+interface FormInterface extends Traversable
 {
-    public function getForm();
+    public function data(ServerRequestInterface $request): array;
 
-    public function getFormData(): array;
-
-    public function getSecurityFields();
-
-    public function getInputFields();
-
-    public function getInputFieldsData(): array;
+    public function html(ServerRequestInterface $request): ?string;
 
     public function process(ServerRequestInterface $request): ProcessedFormReportInterface;
 }

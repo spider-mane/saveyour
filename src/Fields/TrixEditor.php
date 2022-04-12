@@ -7,10 +7,7 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class TrixEditor extends AbstractFormField implements FormFieldInterface
 {
-    /**
-     * @var string
-     */
-    protected $controlId;
+    protected string $controlId;
 
     public function __construct(string $controlId)
     {

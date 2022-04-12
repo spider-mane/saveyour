@@ -7,15 +7,9 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 abstract class AbstractInput extends AbstractStandardFormControl implements FormFieldInterface
 {
-    /**
-     * @var string
-     */
-    protected $type = 'text';
+    protected string $type = 'text';
 
-    /**
-     * @var string
-     */
-    protected $dataList;
+    protected ?string $dataList = null;
 
     /**
      * Get the value of type

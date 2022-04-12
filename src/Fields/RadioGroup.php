@@ -10,10 +10,7 @@ class RadioGroup extends AbstractCompositeSelectionField implements FormFieldInt
 {
     use SingleValueSelectionTrait;
 
-    /**
-     * @var bool
-     */
-    protected $isInline = true;
+    protected bool $isInline = true;
 
     /**
      * @var RadioGroupSelectionInterface

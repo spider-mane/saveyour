@@ -6,5 +6,5 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Range extends AbstractInput implements FormFieldInterface
 {
-    protected $type = 'range';
+    protected string $type = 'range';
 }

@@ -9,10 +9,7 @@ trait RendersOptionsTrait
 {
     use IsSelectionFieldTrait;
 
-    /**
-     * @var OptionsProviderInterface
-     */
-    protected $selectionProvider;
+    protected OptionsProviderInterface $selectionProvider;
 
     /**
      * Get the value of selectionProvider

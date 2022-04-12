@@ -9,20 +9,11 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 abstract class AbstractBuilderField
 {
-    /**
-     * @var string
-     */
-    protected $requestVar;
+    protected string $requestVar;
 
-    /**
-     * @var bool
-     */
-    protected $processingDisabled = false;
+    protected bool $processingDisabled = false;
 
-    /**
-     * @var array
-     */
-    protected $mustAwait = [];
+    protected array $mustAwait = [];
 
     public function __construct(string $requestVar)
     {

@@ -7,14 +7,11 @@ use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
 
 class StateSelectOptions implements OptionsProviderInterface
 {
-    protected $groups = [];
+    protected array $groups = [];
 
-    protected $text = 'name';
+    protected string $text = 'name';
 
-    /**
-     * @var bool
-     */
-    protected $reSort = false;
+    protected bool $reSort = false;
 
     public const STATES = [
         'AL' => 'Alabama',

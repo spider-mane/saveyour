@@ -7,17 +7,11 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Select2 extends Select implements FormFieldInterface
 {
-    /**
-     * @var string
-     */
-    protected $width;
+    protected ?string $width = null;
 
-    /**
-     * @var string
-     */
-    protected $theme = 'default';
+    protected string $theme = 'default';
 
-    protected $config = [];
+    protected array $config = [];
 
     public const EXPECTED_CLASS = 'saveyour--select2';
 
@@ -98,7 +92,7 @@ class Select2 extends Select implements FormFieldInterface
 
     protected function getConfiguration(): string
     {
-        return json_encode($this->resolveConfiguration() + $this->config);
+        return json_encode($this->resolveConfiguration() + $this->config, JSON_THROW_ON_ERROR);
     }
 
     protected function resolveConfiguration(): array

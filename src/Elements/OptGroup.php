@@ -5,29 +5,17 @@ namespace WebTheory\Saveyour\Elements;
 use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Concerns\MultiValueSelectionTrait;
 use WebTheory\Saveyour\Concerns\RendersOptionsTrait;
-use WebTheory\Saveyour\Contracts\OptionsProviderInterface;
 
 class OptGroup extends AbstractHtmlElement
 {
     use MultiValueSelectionTrait;
     use RendersOptionsTrait;
 
-    protected $value = [];
+    protected array $value = [];
 
-    /**
-     * @var string
-     */
-    protected $label;
+    protected string $label;
 
-    /**
-     * @var bool
-     */
-    protected $disabled = false;
-
-    /**
-     * @var OptionsProviderInterface
-     */
-    protected $selectionProvider;
+    protected bool $disabled = false;
 
     public function __construct(string $label)
     {

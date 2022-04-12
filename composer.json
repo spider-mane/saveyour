@@ -59,6 +59,7 @@
     "respect/validation": "^2.2",
     "spatie/phpunit-watcher": "^1.12",
     "squizlabs/php_codesniffer": "^3.0",
+    "symfony/dependency-injection": "^5.4",
     "symfony/mailer": "^5.4",
     "symfony/thanks": "^1.1",
     "symfony/validator": "^5.4",
@@ -77,6 +78,7 @@
     }
   },
   "suggest": {
+    "respect/validation": "Validation library for PHP",
     "frontpack/composer-assets-plugin": "Copy assets from vendor directory to pubic web folder",
     "symfony/mailer": "Send email based on form submission values",
     "commerceguys/addressing": "Required to use FormAddressGeocoder form processor",
@@ -92,7 +94,11 @@
     "inspect": "vendor/bin/psalm",
     "setup": "composer install && @env",
     "shell": "vendor/bin/psysh",
-    "style": "vendor/bin/php-cs-fixer fix --verbose",
+    "style": [
+      "vendor/bin/rector process",
+      "vendor/bin/php-cs-fixer fix --verbose",
+      "@fix"
+    ],
     "test": "vendor/bin/phpunit",
     "test:acceptance": "@test --testsuite acceptance",
     "test:functional": "@test --testsuite functional",

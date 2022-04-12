@@ -10,7 +10,7 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
 {
     protected string $name;
 
-    protected ?array $fields;
+    protected ?array $fields = null;
 
     public function __construct(string $name, ?array $fields)
     {

@@ -164,13 +164,19 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
 
     protected function sortFieldQueue()
     {
-        usort($this->fields, function (FormFieldControllerInterface $a, FormFieldControllerInterface $b) {
-            // because usort will not compare values that it infers from
-            // previous comparisons to be equal, 0 should never be returned. all
-            // that matters is that dependent fields are positioned after their
-            // dependencies.
-            return in_array($a->getRequestVar(), $b->mustAwait()) ? -1 : 1;
-        });
+        usort(
+            $this->fields,
+            /**
+             * Because usort will not compare values that it infers from
+             * previous comparisons to be equal, 0 should never be returned. all
+             * that matters is that dependent entries are positioned after their
+             * dependencies.
+             */
+            fn (
+                FormFieldControllerInterface $a,
+                FormFieldControllerInterface $b
+            ) => in_array($a->getRequestVar(), $b->mustAwait()) ? -1 : 1
+        );
     }
 
     protected function runProcessors(ServerRequestInterface $request, array $fields)

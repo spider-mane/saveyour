@@ -83,7 +83,7 @@ class ReCaptcha3Policy implements ServerRequestPolicyInterface
     {
         $url = static::URL . "?secret={$this->secret}&response={$response}";
 
-        return json_decode(file_get_contents($url), true);
+        return json_decode(file_get_contents($url), true, 512, JSON_THROW_ON_ERROR);
     }
 
     protected function reCaptchaIsValid(array $status): bool

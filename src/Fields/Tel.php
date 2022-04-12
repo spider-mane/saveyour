@@ -6,5 +6,5 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Tel extends AbstractInput implements FormFieldInterface
 {
-    protected $type = 'tel';
+    protected string $type = 'tel';
 }

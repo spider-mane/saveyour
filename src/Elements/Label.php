@@ -6,15 +6,9 @@ use WebTheory\Html\AbstractHtmlElement;
 
 class Label extends AbstractHtmlElement
 {
-    /**
-     * @var string
-     */
-    protected $content;
+    protected string $content;
 
-    /**
-     * @var string
-     */
-    protected $for;
+    protected ?string $for = null;
 
     public function __construct(string $content)
     {

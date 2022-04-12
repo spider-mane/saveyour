@@ -7,12 +7,9 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Text extends AbstractInput implements FormFieldInterface
 {
-    protected $type = 'text';
+    protected string $type = 'text';
 
-    /**
-     * @var string
-     */
-    protected $pattern;
+    protected ?string $pattern = null;
 
     protected function resolveAttributes(): AbstractHtmlElement
     {

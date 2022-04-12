@@ -12,7 +12,7 @@ class FormShield implements FormShieldInterface
     /**
      * @var array<int,ServerRequestPolicyInterface>
      */
-    protected $policies = [];
+    protected array $policies = [];
 
     /**
      * @param array<string,ServerRequestPolicyInterface> $policies

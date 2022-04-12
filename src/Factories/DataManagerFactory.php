@@ -14,9 +14,9 @@ class DataManagerFactory implements FieldDataManagerResolverFactoryInterface
     use SmartFactoryTrait;
     use ClassResolverTrait;
 
-    private $managers = [];
+    private array $managers = [];
 
-    protected $namespaces = [];
+    protected array $namespaces = [];
 
     public const NAMESPACES = [
         'webtheory.saveyour' => "WebTheory\\Saveyour\\Managers",

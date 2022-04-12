@@ -17,13 +17,8 @@ class DataManagerFactoryTest extends TestCase
 
         $manager = 'callback';
         $args = [
-            'get_data_callback' => function () {
-                return null;
-            },
-
-            'handle_data_callback' => function () {
-                return null;
-            },
+            'get_data_callback' => fn () => null,
+            'handle_data_callback' => fn () => null,
         ];
 
         $expected = new FieldDataManagerCallback(

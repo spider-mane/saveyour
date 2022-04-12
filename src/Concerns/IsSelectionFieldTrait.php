@@ -6,18 +6,15 @@ use WebTheory\Saveyour\Contracts\SelectionProviderInterface;
 
 trait IsSelectionFieldTrait
 {
-    /**
-     * @var SelectionProviderInterface
-     */
-    protected $selectionProvider;
-
     protected function getSelectionData(): array
     {
-        return $this->selectionProvider->provideSelectionsData();
+        return $this->getSelectionProvider()->provideSelectionsData();
     }
 
     protected function defineSelectionValue($selection): string
     {
-        return $this->selectionProvider->defineSelectionValue($selection);
+        return $this->getSelectionProvider()->defineSelectionValue($selection);
     }
+
+    abstract protected function getSelectionProvider(): SelectionProviderInterface;
 }

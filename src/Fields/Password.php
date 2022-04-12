@@ -6,5 +6,5 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Password extends AbstractInput implements FormFieldInterface
 {
-    protected $type = 'password';
+    protected string $type = 'password';
 }

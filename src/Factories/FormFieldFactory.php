@@ -15,11 +15,11 @@ class FormFieldFactory implements FormFieldResolverFactoryInterface
     use SmartFactoryTrait;
     use ClassResolverTrait;
 
-    private $fields = [];
+    private array $fields = [];
 
-    protected $namespaces = [];
+    protected array $namespaces = [];
 
-    protected $rules = [];
+    protected array $rules = [];
 
     public const NAMESPACES = [
         'webtheory.saveyour' => "WebTheory\\Saveyour\\Fields",

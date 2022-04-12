@@ -28,10 +28,7 @@ abstract class AbstractField implements FormFieldControllerInterface
      */
     protected array $__mustAwait = [];
 
-    /**
-     * @var FormFieldControllerInterface
-     */
-    protected $__coreController;
+    protected FormFieldControllerInterface $__coreController;
 
     public function __construct(string $requestVar, array $mustAwait = [], $processingEnabled = true)
     {

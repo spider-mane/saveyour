@@ -6,5 +6,5 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Image extends AbstractInput implements FormFieldInterface
 {
-    protected $type = 'image';
+    protected string $type = 'image';
 }

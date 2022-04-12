@@ -12,10 +12,7 @@ abstract class AbstractCompositeSelectionField extends AbstractFormField impleme
     use LabelMaker;
     use IsCompositeSelectionFieldTrait;
 
-    /**
-     * @var array
-     */
-    protected $labelOptions = [];
+    protected array $labelOptions = [];
 
     /**
      * Get the value of labelOptions

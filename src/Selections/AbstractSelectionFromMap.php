@@ -6,10 +6,7 @@ use WebTheory\Saveyour\Contracts\SelectionProviderInterface;
 
 abstract class AbstractSelectionFromMap implements SelectionProviderInterface
 {
-    /**
-     * @var array
-     */
-    protected $selection = [];
+    protected array $selection = [];
 
     public function __construct(array $selection)
     {

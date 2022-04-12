@@ -10,29 +10,19 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class FormFieldControllerBuilder
 {
-    /**
-     * @var string
-     */
-    protected $requestVar;
+    protected ?string $requestVar;
 
     /**
      * formField
-     *
-     * @var FormFieldInterface
      */
-    protected $formField;
+    protected ?FormFieldInterface $formField = null;
 
     /**
      * dataManager
-     *
-     * @var FieldDataManagerInterface
      */
-    protected $dataManager;
+    protected ?FieldDataManagerInterface $dataManager = null;
 
-    /**
-     * @var DataFormatterInterface
-     */
-    protected $formatter;
+    protected ?DataFormatterInterface $formatter = null;
 
     /**
      * Callback to escape value on display
@@ -41,24 +31,17 @@ class FormFieldControllerBuilder
      */
     protected $escaper;
 
-    /**
-     * @var bool
-     */
-    protected $processingDisabled = false;
+    protected bool $processingDisabled = false;
 
     /**
      * Validation rules
-     *
-     * @var Validatable
      */
-    protected $validator;
+    protected ?Validatable $validator = null;
 
     /**
      * Callback function(s) to sanitize incoming data
-     *
-     * @var array
      */
-    protected $filters = [];
+    protected array $filters = [];
 
     // /**
     //  * Alerts to display upon validation failure
@@ -70,7 +53,7 @@ class FormFieldControllerBuilder
     /**
      * @var string[]
      */
-    protected $mustAwait = [];
+    protected array $mustAwait = [];
 
     public function __construct(?string $requestVar)
     {

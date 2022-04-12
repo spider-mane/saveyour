@@ -6,25 +6,13 @@ use WebTheory\Html\AbstractHtmlElement;
 
 class Option extends AbstractHtmlElement
 {
-    /**
-     * @var string
-     */
-    protected $text;
+    protected string $text;
 
-    /**
-     * @var string
-     */
-    protected $value;
+    protected string $value;
 
-    /**
-     * @var bool
-     */
-    protected $selected = false;
+    protected bool $selected = false;
 
-    /**
-     * @var bool
-     */
-    protected $disabled = false;
+    protected bool $disabled = false;
 
     public function __construct(string $text, string $value)
     {

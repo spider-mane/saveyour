@@ -9,7 +9,7 @@ class CompositeDataFormatter implements DataFormatterInterface
     /**
      * @var DataFormatterInterface[]
      */
-    protected $formatters = [];
+    protected array $formatters = [];
 
     public function __construct(DataFormatterInterface ...$formatters)
     {

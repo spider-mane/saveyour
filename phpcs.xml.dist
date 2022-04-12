@@ -1,7 +1,15 @@
 <?xml version="1.0"?>
-<ruleset name="saveyour">
-
+<ruleset
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd"
+  name="saveyour"
+>
   <description>Saveyour coding standard</description>
+
+  <!-- Paths -->
+  <file>./src</file>
+  <file>./tests</file>
+  <exclude-pattern>./tests/runtime/assets</exclude-pattern>
 
   <!-- Args -->
   <arg value="p"/>
@@ -26,4 +34,8 @@
     <exclude name="Squiz"/>
   </rule>
 
+  <!-- Disable camel case method name rule for tests -->
+  <rule ref="PSR1.Methods.CamelCapsMethodName">
+    <exclude-pattern>./tests/Suites</exclude-pattern>
+  </rule>
 </ruleset>

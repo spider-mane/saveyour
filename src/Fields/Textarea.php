@@ -7,10 +7,7 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class Textarea extends AbstractStandardFormControl implements FormFieldInterface
 {
-    /**
-     * @var int
-     */
-    public $rows;
+    public ?int $rows = null;
 
     /**
      * Get the value of rows

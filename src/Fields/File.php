@@ -6,5 +6,5 @@ use WebTheory\Saveyour\Contracts\FormFieldInterface;
 
 class File extends AbstractInput implements FormFieldInterface
 {
-    protected $type = 'file';
+    protected string $type = 'file';
 }

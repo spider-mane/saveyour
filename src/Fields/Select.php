@@ -21,17 +21,11 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
     /**
      * @var OptGroup[]
      */
-    protected $groups = [];
+    protected array $groups = [];
 
-    /**
-     * @var bool
-     */
-    protected $multiple = false;
+    protected bool $multiple = false;
 
-    /**
-     * @var int
-     */
-    protected $size;
+    protected ?int $size = null;
 
     public function getGroups()
     {

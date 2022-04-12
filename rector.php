@@ -3,24 +3,30 @@
 declare(strict_types=1);
 
 use Rector\Core\Configuration\Option;
+use Rector\Php70\Rector\MethodCall\ThisCallOnStaticMethodToStaticCallRector;
+use Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector;
 use Rector\Php74\Rector\Property\TypedPropertyRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    // get parameters
     $parameters = $containerConfigurator->parameters();
+    $services = $containerConfigurator->services();
+
+    # Options
     $parameters->set(Option::PATHS, [
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ]);
+    $parameters->set(Option::AUTO_IMPORT_NAMES, true);
 
-    // Define what rule sets will be applied
+    # PHP Rules
     $containerConfigurator->import(LevelSetList::UP_TO_PHP_74);
 
-    // get services (needed for register a single rule)
-    $services = $containerConfigurator->services();
+    $services->remove(AddLiteralSeparatorToNumberRector::class);
+    $services->remove(ThisCallOnStaticMethodToStaticCallRector::class);
 
-    // register a single rule
-    $services->set(TypedPropertyRector::class);
+    $services->set(TypedPropertyRector::class)->configure([
+        TypedPropertyRector::INLINE_PUBLIC => true
+    ]);
 };
