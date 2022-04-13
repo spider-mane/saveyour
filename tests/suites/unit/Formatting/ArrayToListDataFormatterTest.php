@@ -2,7 +2,6 @@
 
 namespace Tests\Suites\Unit\Formatting;
 
-use Faker\UniqueGenerator;
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Formatting\ArrayToListDataFormatter;
 
@@ -13,17 +12,17 @@ class ArrayToListDataFormatterTest extends TestCase
      */
     public function it_converts_data_as_an_array_to_a_delimiter_separated_list()
     {
-        // Arrange
+        # Arrange
         $delimiter = ',';
-        $array = $this->dummyList(fn (UniqueGenerator $unique) => $unique->word);
+        $array = $this->dummyList(fn () => $this->unique->word);
 
         $sut = new ArrayToListDataFormatter($delimiter);
         $expected = implode($delimiter, $array);
 
-        // Act
+        # Act
         $result = $sut->formatData($array);
 
-        // Assert
+        # Assert
         $this->assertEquals($expected, $result);
     }
 
@@ -32,17 +31,17 @@ class ArrayToListDataFormatterTest extends TestCase
      */
     public function it_converts_input_as_a_delimiter_separated_list_to_an_array()
     {
-        // Arrange
+        # Arrange
         $delimiter = ',';
-        $expected = $this->dummyList(fn (UniqueGenerator $unique) => $unique->word);
+        $expected = $this->dummyList(fn () => $this->unique->word);
         $list = implode($delimiter, $expected);
 
         $sut = new ArrayToListDataFormatter($delimiter);
 
-        // Act
+        # Act
         $result = $sut->formatInput($list);
 
-        // Assert
+        # Assert
         $this->assertEquals($expected, $result);
     }
 }

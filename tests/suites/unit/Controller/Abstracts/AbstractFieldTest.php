@@ -2,7 +2,6 @@
 
 namespace Tests\Suites\Unit\Controller\Abstracts;
 
-use Faker\UniqueGenerator;
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Controller\Abstracts\AbstractField;
 
@@ -61,7 +60,7 @@ class AbstractFieldTest extends TestCase
     public function it_returns_provided_fields_to_await()
     {
         # Arrange
-        $await = $this->dummyList(fn (UniqueGenerator $unique) => $unique->slug);
+        $await = $this->dummyList(fn () => $this->unique->slug);
 
         # Act
         $sut = $this->getMockForAbstractClass(AbstractField::class, [

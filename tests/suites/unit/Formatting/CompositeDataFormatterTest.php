@@ -2,7 +2,6 @@
 
 namespace Tests\Suites\Unit\Formatting;
 
-use Faker\UniqueGenerator;
 use Tests\Support\TestCase;
 use WebTheory\Saveyour\Contracts\Formatting\DataFormatterInterface;
 use WebTheory\Saveyour\Formatting\CompositeDataFormatter;
@@ -20,7 +19,7 @@ class CompositeDataFormatterTest extends TestCase
         parent::setUp();
 
         $this->dummyValues = $this->dummyList(
-            fn (UniqueGenerator $unique) => $unique->sentence,
+            fn () => $this->unique->sentence,
             random_int(5, 10)
         );
 

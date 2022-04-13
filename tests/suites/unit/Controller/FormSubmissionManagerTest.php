@@ -318,7 +318,7 @@ class FormSubmissionManagerTest extends TestCase
      */
     public function it_processes_fields_specified_in_mustAwait_first()
     {
-        // Arrange
+        # Arrange
         $names = [
             $this->fake->word,
             $this->fake->word,
@@ -344,12 +344,12 @@ class FormSubmissionManagerTest extends TestCase
         }
         reset($names);
 
-        // Act
+        # Act
         $processed = array_keys(
             $sut->process($this->mockRequest)->inputReports()
         );
 
-        // Assert
+        # Assert
         $this->assertEquals($await, $processed[0]);
     }
 
@@ -437,7 +437,7 @@ class FormSubmissionManagerTest extends TestCase
      */
     public function it_passes_appropriate_field_reports_to_processor(string $requestVar, ?array $fields)
     {
-        // Arrange
+        # Arrange
         $requestVarPresent = true;
         $rawInputValue = $this->fake->word;
 
@@ -482,12 +482,12 @@ class FormSubmissionManagerTest extends TestCase
             });
         }
 
-        // Expect
+        # Expect
         $processor->expects($this->once())
             ->method('process')
             ->with($this->anything(), $expected);
 
-        // Act
+        # Act
         $sut->process($request);
     }
 

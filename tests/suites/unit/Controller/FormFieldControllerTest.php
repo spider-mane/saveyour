@@ -2,7 +2,6 @@
 
 namespace Tests\Suites\Unit\Controller;
 
-use Faker\UniqueGenerator;
 use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 use Tests\Support\TestCase;
@@ -113,7 +112,7 @@ class FormFieldControllerTest extends TestCase
     public function it_returns_specified_fields_to_await()
     {
         # Arrange
-        $await = $this->dummyList(fn (UniqueGenerator $unique) => $unique->slug);
+        $await = $this->dummyList(fn () => $this->unique->slug);
         $sut = new FormFieldController($this->fake->slug, null, null, null, null, null, $await);
 
         # Act

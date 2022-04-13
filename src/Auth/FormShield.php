@@ -20,7 +20,9 @@ class FormShield implements FormShieldInterface
      */
     public function __construct(array $policies)
     {
-        array_map([$this, 'addPolicy'], $policies);
+        foreach ($policies as $name => $policy) {
+            $this->addPolicy($name, $policy);
+        }
     }
 
     protected function addPolicy(string $name, ServerRequestPolicyInterface $policy)
