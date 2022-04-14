@@ -1,10 +1,10 @@
 # Saveyour
 
-[![Stand With Ukraine][banner-support-ukraine]][link-support-ukraine]
-
 ## A message to Russian 🇷🇺 people
 
 If you currently live in Russia, please read [this message][link-to-russia].
+
+[![Stand With Ukraine][banner-support-ukraine]][link-support-ukraine]
 
 [![Stand With Ukraine][badge-support-ukraine]][link-support-ukraine]
 [![Latest Version on Packagist][badge-packagist-version]][link-packagist]
