@@ -1,15 +1,24 @@
 # Saveyour
 
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Software License][ico-license]](LICENSE.md)
-[![Build Status][ico-travis]][link-travis]
-[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Quality Score][ico-code-quality]][link-code-quality]
-[![Total Downloads][ico-downloads]][link-downloads]
+[![Stand With Ukraine][banner-support-ukraine]][link-support-ukraine]
+
+## A message to Russian 🇷🇺 people
+
+If you currently live in Russia, please read [this message][link-to-russia].
+
+[![Stand With Ukraine][badge-support-ukraine]][link-support-ukraine]
+[![Latest Version on Packagist][badge-packagist-version]][link-packagist]
+[![Software License][badge-license]](LICENSE.md)
+[![Build Status][badge-scrutinizer-build]][link-scrutinizer]
+[![Code Coverage][badge-scrutinizer-coverage]][link-scrutinizer]
+[![Quality Score][badge-scrutinizer-quality]][link-scrutinizer]
+[![Total Downloads][badge-packagist-downloads]][link-packagist]
+
+## Purpose
 
 Saveyour is a modular form building and processing library that allows you to easily define custom and reusable fields, form verification and highly flexible post-validation processes (saving to database, mailing, etc.) Field validation is done via the Respect\Validation library.
 
-This project is still in very early development, the api is currently unstable.
+This project is still in early development! While releases should be stable, the api is subject to sudden changes.
 
 ## Install
 
@@ -21,7 +30,9 @@ composer require webtheory/saveyour
 
 ## Usage
 
-Comprehensive documentation coming soon
+```php
+
+```
 
 ## Change log
 
@@ -50,16 +61,22 @@ If you discover any security related issues, please email spider.mane.web@gmail.
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/webtheory/saveyour.svg?style=flat-square
-[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/spider-mane/saveyour/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/spider-mane/saveyour.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/spider-mane/saveyour.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/webtheory/saveyour.svg?style=flat-square
-[link-packagist]: https://packagist.org/packages/webtheory/saveyour
-[link-travis]: https://travis-ci.org/spider-mane/saveyour
-[link-scrutinizer]: https://scrutinizer-ci.com/g/spider-mane/saveyour/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/spider-mane/saveyour
-[link-downloads]: https://packagist.org/packages/webtheory/saveyour
+<!-- Badges -->
+[badge-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
+[badge-packagist-downloads]: https://img.shields.io/packagist/dt/webtheory/saveyour.svg
+[badge-packagist-version]: https://img.shields.io/packagist/v/webtheory/saveyour.svg
+[badge-scrutinizer-build]: https://img.shields.io/scrutinizer/build/g/spider-mane/saveyour.svg
+[badge-scrutinizer-coverage]: https://img.shields.io/scrutinizer/coverage/g/spider-mane/saveyour.svg
+[badge-scrutinizer-quality]: https://img.shields.io/scrutinizer/g/spider-mane/saveyour.svg
+
+<!-- Links -->
 [link-author]: https://github.com/spider-mane
 [link-contributors]: ../../contributors
+[link-packagist]: https://packagist.org/packages/webtheory/saveyour
+[link-scrutinizer]: https://scrutinizer-ci.com/g/spider-mane/saveyour
+
+<!-- Support Ukraine -->
+[banner-support-ukraine]: https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg
+[badge-support-ukraine]: https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg
+[link-support-ukraine]: https://stand-with-ukraine.pp.ua
+[link-to-russia]: https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/ToRussianPeople.md
