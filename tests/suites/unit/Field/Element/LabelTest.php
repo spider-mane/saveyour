@@ -2,10 +2,10 @@
 
 namespace Tests\Suites\Unit\Field\Element;
 
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Field\Element\Label;
 
-class LabelTest extends TestCase
+class LabelTest extends UnitTestCase
 {
     /**
      * @test

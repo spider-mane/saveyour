@@ -2,11 +2,11 @@
 
 namespace Tests\Suites\Unit\Factory;
 
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Data\FieldDataManagerCallback;
 use WebTheory\Saveyour\Factory\DataManagerFactory;
 
-class DataManagerFactoryTest extends TestCase
+class DataManagerFactoryTest extends UnitTestCase
 {
     /**
      * @test

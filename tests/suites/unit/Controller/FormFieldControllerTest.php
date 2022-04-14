@@ -3,8 +3,9 @@
 namespace Tests\Suites\Unit\Controller;
 
 use LogicException;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Contracts\Controller\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\Data\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
@@ -13,20 +14,38 @@ use WebTheory\Saveyour\Contracts\Report\ValidationReportInterface;
 use WebTheory\Saveyour\Contracts\Validation\ValidatorInterface;
 use WebTheory\Saveyour\Controller\FormFieldController;
 
-class FormFieldControllerTest extends TestCase
+class FormFieldControllerTest extends UnitTestCase
 {
     protected FormFieldController $sut;
 
+    /**
+     * @var MockObject&FormFieldInterface
+     */
     protected FormFieldInterface $mockField;
 
+    /**
+     * @var MockObject&FieldDataManagerInterface
+     */
     protected FieldDataManagerInterface $mockDataManager;
 
+    /**
+     * @var MockObject&ValidatorInterface
+     */
     protected ValidatorInterface $mockValidator;
 
+    /**
+     * @var MockObject&DataFormatterInterface
+     */
     protected DataFormatterInterface $mockFormatter;
 
+    /**
+     * @var MockObject&ServerRequestInterface
+     */
     protected ServerRequestInterface $mockRequest;
 
+    /**
+     * @var MockObject&ValidationReportInterface
+     */
     protected ValidationReportInterface $mockValidationReport;
 
     protected string $dummyRequestVar;
@@ -266,14 +285,22 @@ class FormFieldControllerTest extends TestCase
 
     public function requestCheckDataProvider(): array
     {
-        $fake = $this->createFaker();
-        $unique = $fake->unique();
+        $this->initFaker();
 
-        $present = $fake->slug;
+        $present = $this->fake->slug;
 
         return [
-            'present' => [true, $present, [$present => $fake->sentence]],
-            'not present' => [false, $unique->slug, [$unique->slug => $fake->sentence]],
+            'present' => [
+                'status' => true,
+                'request_var' => $present,
+                'request_body' => [$present => $this->fake->sentence],
+            ],
+            'not present' => [
+                'status' => false,
+                'request_var' => $this->unique->slug,
+                'request_body' => [$this->unique->slug => $this->fake->sentence],
+            ],
+
         ];
     }
 

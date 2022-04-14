@@ -3,7 +3,7 @@
 namespace Tests\Suites\Unit\Controller\Builder;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Contracts\Data\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
 use WebTheory\Saveyour\Contracts\Formatting\DataFormatterInterface;
@@ -11,7 +11,7 @@ use WebTheory\Saveyour\Contracts\Validation\ValidatorInterface;
 use WebTheory\Saveyour\Controller\Builder\FormFieldControllerBuilder;
 use WebTheory\Saveyour\Controller\FormFieldController;
 
-class FormFieldControllerBuilderTest extends TestCase
+class FormFieldControllerBuilderTest extends UnitTestCase
 {
     protected FormFieldControllerBuilder $sut;
 
@@ -103,7 +103,6 @@ class FormFieldControllerBuilderTest extends TestCase
     /**
      * @test
      * @dataProvider configurationDataProvider
-     * @depends it_builds_a_fully_configured_of_FormFieldController
      */
     public function it_builds_a_FormField_instance_with_limited_configuration(string $method, $arg)
     {
@@ -150,13 +149,12 @@ class FormFieldControllerBuilderTest extends TestCase
 
     public function methodChainingDataProvider(): array
     {
-        $fake = $this->createFaker();
-        $unique = $fake->unique();
+        $this->initFaker();
 
         return [
             'requestVar' => [
                 'method' => 'requestVar',
-                'arg' => $fake->slug,
+                'arg' => $this->fake->slug,
             ],
             'formField' => [
                 'method' => 'formField',
@@ -176,15 +174,15 @@ class FormFieldControllerBuilderTest extends TestCase
             ],
             'canProcess' => [
                 'method' => 'canProcess',
-                'arg' => $fake->boolean,
+                'arg' => $this->fake->boolean,
             ],
             'awaitAll' => [
                 'method' => 'awaitAll',
-                'arg' => $this->dummyList(fn () => $unique->slug, 3),
+                'arg' => $this->dummyList(fn () => $this->unique->slug, 3),
             ],
             'await' => [
                 'method' => 'await',
-                'arg' => $fake->slug,
+                'arg' => $this->fake->slug,
             ],
         ];
     }
@@ -211,16 +209,16 @@ class FormFieldControllerBuilderTest extends TestCase
 
     public function appendedAwaitDataProvider(): array
     {
-        $unique = $this->createFaker()->unique();
+        $this->initFaker();
 
         return [
             'await' => [
                 'method' => 'await',
-                'append' => $unique->slug,
+                'append' => $this->unique->slug,
             ],
             'awaitAll' => [
                 'method' => 'awaitAll',
-                'append' => $this->dummyList(fn () => $unique->slug, 2),
+                'append' => $this->dummyList(fn () => $this->unique->slug, 2),
             ],
         ];
     }

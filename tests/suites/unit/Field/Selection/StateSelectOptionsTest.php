@@ -3,10 +3,10 @@
 namespace Tests\Suites\Unit\Field\Selection;
 
 use InvalidArgumentException;
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Field\Selection\StateSelectOptions;
 
-class StateSelectOptionsTest extends TestCase
+class StateSelectOptionsTest extends UnitTestCase
 {
     protected function getSelection($provider)
     {

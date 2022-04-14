@@ -2,10 +2,10 @@
 
 namespace Tests\Suites\Unit\Formatting;
 
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Formatting\IntToStringDataFormatter;
 
-class IntToStringDataFormatterTest extends TestCase
+class IntToStringDataFormatterTest extends UnitTestCase
 {
     protected IntToStringDataFormatter $sut;
 

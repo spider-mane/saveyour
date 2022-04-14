@@ -2,10 +2,10 @@
 
 namespace Tests\Suites\Unit\Controller\Abstracts;
 
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Controller\Abstracts\AbstractField;
 
-class AbstractFieldTest extends TestCase
+class AbstractFieldTest extends UnitTestCase
 {
     protected AbstractField $sut;
 

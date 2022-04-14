@@ -2,8 +2,9 @@
 
 namespace Tests\Suites\Unit\Controller;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Contracts\Auth\FormShieldInterface;
 use WebTheory\Saveyour\Contracts\Controller\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\Controller\FormSubmissionManagerInterface;
@@ -16,24 +17,48 @@ use WebTheory\Saveyour\Contracts\Report\ProcessedInputReportInterface;
 use WebTheory\Saveyour\Contracts\Report\ValidationReportInterface;
 use WebTheory\Saveyour\Controller\FormSubmissionManager;
 
-class FormSubmissionManagerTest extends TestCase
+class FormSubmissionManagerTest extends UnitTestCase
 {
     protected FormSubmissionManager $sut;
 
+    /**
+     * @var MockObject&FormFieldControllerInterface
+     */
     protected FormShieldInterface $mockShield;
 
+    /**
+     * @var MockObject&FormFieldControllerInterface
+     */
     protected FormFieldControllerInterface $mockField;
 
+    /**
+     * @var MockObject&FormDataProcessorInterface
+     */
     protected FormDataProcessorInterface $mockProcessor;
 
+    /**
+     * @var MockObject&ServerRequestInterface
+     */
     protected ServerRequestInterface $mockRequest;
 
+    /**
+     * @var MockObject&ValidationReportInterface
+     */
     protected ValidationReportInterface $mockValidationReport;
 
+    /**
+     * @var MockObject&ProcessedFieldReportInterface
+     */
     protected ProcessedFieldReportInterface $mockFieldReport;
 
+    /**
+     * @var MockObject&FormShieldReportInterface
+     */
     protected FormShieldReportInterface $mockShieldReport;
 
+    /**
+     * @var MockObject&FormProcessReportInterface
+     */
     protected FormProcessReportInterface $mockProcessReport;
 
     protected string $dummyRequestVar;
@@ -289,11 +314,11 @@ class FormSubmissionManagerTest extends TestCase
 
     public function validationDataProvider(): array
     {
-        $fake = $this->createFaker();
+        $this->initFaker();
 
         return [
             'successful validation' => [true, []],
-            'unsuccessful validation' => [false, [$fake->slug]],
+            'unsuccessful validation' => [false, [$this->fake->slug]],
         ];
     }
 
@@ -493,13 +518,14 @@ class FormSubmissionManagerTest extends TestCase
 
     public function processDataProvider(): array
     {
-        $faker = $this->createFaker();
-        $var = $faker->slug;
+        $this->initFaker();
+
+        $var = $this->fake->slug;
 
         return [
             'null (default all)' => [$var, null],
             'specified - present' => [$var, [$var]],
-            'specified - not present' => [$var, [$faker->slug]],
+            'specified - not present' => [$var, [$this->fake->slug]],
         ];
     }
 

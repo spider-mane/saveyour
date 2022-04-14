@@ -2,13 +2,13 @@
 
 namespace Tests\Suites\Unit\Controller;
 
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Contracts\Formatting\InputFormatterInterface;
 use WebTheory\Saveyour\Contracts\Report\ValidationReportInterface;
 use WebTheory\Saveyour\Contracts\Validation\ValidatorInterface;
 use WebTheory\Saveyour\Controller\InputPurifier;
 
-class InputPurifierTest extends TestCase
+class InputPurifierTest extends UnitTestCase
 {
     protected InputPurifier $sut;
 

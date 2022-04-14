@@ -3,10 +3,10 @@
 namespace Tests\Suites\Unit\Validation;
 
 use Respect\Validation\Validatable;
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Validation\RespectValidator;
 
-class RespectValidatorTest extends TestCase
+class RespectValidatorTest extends UnitTestCase
 {
     protected RespectValidator $sut;
 

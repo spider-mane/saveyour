@@ -8,13 +8,13 @@ use Geocoder\Model\Coordinates;
 use Geocoder\Provider\Provider;
 use Geocoder\Query\GeocodeQuery;
 use Psr\Http\Message\ServerRequestInterface;
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Contracts\Data\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\Formatting\InputFormatterInterface;
 use WebTheory\Saveyour\Contracts\Report\ProcessedInputReportInterface;
 use WebTheory\Saveyour\Processor\FormAddressGeocoder;
 
-class FormAddressGeocoderTest extends TestCase
+class FormAddressGeocoderTest extends UnitTestCase
 {
     protected FormAddressGeocoder $sut;
 

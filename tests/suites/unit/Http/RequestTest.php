@@ -3,10 +3,10 @@
 namespace Tests\Suites\Unit\Http;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Http\Request;
 
-class RequestTest extends TestCase
+class RequestTest extends UnitTestCase
 {
     protected ServerRequestInterface $mockRequest;
 

@@ -2,11 +2,11 @@
 
 namespace Tests\Suites\Unit\Formatting;
 
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Contracts\Formatting\DataFormatterInterface;
 use WebTheory\Saveyour\Formatting\CompositeDataFormatter;
 
-class CompositeDataFormatterTest extends TestCase
+class CompositeDataFormatterTest extends UnitTestCase
 {
     protected CompositeDataFormatter $sut;
 

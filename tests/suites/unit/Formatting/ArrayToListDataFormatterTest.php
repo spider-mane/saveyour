@@ -2,10 +2,10 @@
 
 namespace Tests\Suites\Unit\Formatting;
 
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\Saveyour\Formatting\ArrayToListDataFormatter;
 
-class ArrayToListDataFormatterTest extends TestCase
+class ArrayToListDataFormatterTest extends UnitTestCase
 {
     /**
      * @test

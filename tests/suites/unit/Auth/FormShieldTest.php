@@ -3,11 +3,11 @@
 namespace Tests\Suites\Unit\Auth;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\HttpPolicy\ServerRequestPolicyInterface;
 use WebTheory\Saveyour\Auth\FormShield;
 
-class FormShieldTest extends TestCase
+class FormShieldTest extends UnitTestCase
 {
     protected FormShield $sut;
 

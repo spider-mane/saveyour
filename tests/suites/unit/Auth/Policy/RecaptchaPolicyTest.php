@@ -5,11 +5,11 @@ namespace Tests\Suites\Unit\Auth\Policy;
 use Psr\Http\Message\ServerRequestInterface;
 use ReCaptcha\ReCaptcha;
 use ReCaptcha\Response;
-use Tests\Support\TestCase;
+use Tests\Support\UnitTestCase;
 use WebTheory\HttpPolicy\ServerRequestPolicyInterface;
 use WebTheory\Saveyour\Auth\Policy\ReCaptchaPolicy;
 
-class RecaptchaPolicyTest extends TestCase
+class RecaptchaPolicyTest extends UnitTestCase
 {
     protected ReCaptchaPolicy $sut;
 
