@@ -19,6 +19,7 @@
   "prefer-stable": true,
   "require": {
     "php": "^7.4 || ^8.0",
+    "jawira/case-converter": "^3.4",
     "myclabs/php-enum": "^1.7",
     "psr/http-message": "^1.0",
     "symfony/polyfill-php80": "^1.23",
@@ -49,7 +50,7 @@
     "phpbench/phpbench": "@dev",
     "phpmailer/phpmailer": "^6.6",
     "phpspec/prophecy-phpunit": "^2.0",
-    "phpstan/phpstan": "^1.3",
+    "phpstan/phpstan": "^1.6",
     "phpunit/phpunit": "^9.5",
     "phpunit/phpunit-selenium": "^9.0",
     "psr/http-client": "^1.0",
@@ -70,13 +71,13 @@
     "willdurand/geocoder": "^4.5"
   },
   "suggest": {
-    "respect/validation": "Validation library for PHP",
-    "symfony/mailer": "Send email as part of form handling process",
-    "google/recaptcha": "Inspect incoming form request with Google reCAPTCHA",
-    "geocoder-php/google-maps-provider": "Get geo data from form-provided address with Google Maps",
     "commerceguys/addressing": "Supplementary requirement for geocoding addresses",
+    "frontpack/composer-assets-plugin": "Copy package assets to pubic web directory",
+    "geocoder-php/google-maps-provider": "Get geo data from form-provided address with Google Maps",
     "giggsey/libphonenumber-for-php": "Required to format phone numbers",
-    "frontpack/composer-assets-plugin": "Copy package assets to pubic web directory"
+    "google/recaptcha": "Inspect incoming form request with Google reCAPTCHA",
+    "respect/validation": "Validation library for PHP",
+    "symfony/mailer": "Send email as part of form handling process"
   },
   "autoload": {
     "psr-4": {
@@ -89,14 +90,16 @@
     }
   },
   "scripts": {
+    "analyze": "vendor/bin/phpstan analyze",
     "asset": "npm --prefix assets",
     "bench": "vendor/bin/phpbench",
     "check": "vendor/bin/phpcs",
     "collect": "vendor/bin/var-dump-server",
-    "correct": "vendor/bin/phpcbf",
     "hooks": "vendor/bin/captainhook",
     "inspect": "vendor/bin/psalm",
     "shell": "vendor/bin/psysh",
+    "namespace": "composer dumpautoload -o",
+    "rector": "vendor/bin/rector process",
     "test": "vendor/bin/phpunit",
     "test:acceptance": "@test --testsuite acceptance",
     "test:functional": "@test --testsuite functional",
@@ -116,13 +119,12 @@
       "bin/make-playground"
     ],
     "style": [
-      "vendor/bin/rector process",
       "vendor/bin/php-cs-fixer fix --verbose",
-      "@correct"
+      "vendor/bin/phpcbf"
     ]
   },
   "config": {
-    "optimize-autoloader": true,
+    "optimize-autoloader": false,
     "sort-packages": true,
     "process-timeout": 0,
     "allow-plugins": {

@@ -45,12 +45,25 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
     }
 
     /**
-     * @param ProcessedFieldReportInterface[] $results
+     * @param array<string,ProcessedFieldReportInterface> $results
+     */
+    protected function hasReasonToProcess(array $results): bool
+    {
+        return $this->hasNoFields() || $this->valueUpdated($results);
+    }
+
+    protected function hasNoFields(): bool
+    {
+        return is_array($fields = $this->getFields()) && empty($fields);
+    }
+
+    /**
+     * @param array<string,ProcessedFieldReportInterface> $results
      */
     protected function valueUpdated(array $results): bool
     {
         foreach ($results as $result) {
-            if (true === $result->updateSuccessful()) {
+            if ($result->updateSuccessful()) {
                 return true;
             }
         }

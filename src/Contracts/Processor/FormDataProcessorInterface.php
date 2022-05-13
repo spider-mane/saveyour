@@ -4,6 +4,7 @@ namespace WebTheory\Saveyour\Contracts\Processor;
 
 use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Saveyour\Contracts\Report\FormProcessReportInterface;
+use WebTheory\Saveyour\Contracts\Report\ProcessedFieldReportInterface;
 
 interface FormDataProcessorInterface
 {

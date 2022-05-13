@@ -14,6 +14,7 @@ use WebTheory\Saveyour\Contracts\Report\ProcessedFormReportInterface;
 use WebTheory\Saveyour\Contracts\Report\ProcessedInputReportInterface;
 use WebTheory\Saveyour\Http\Request;
 use WebTheory\Saveyour\Report\Builder\ProcessedFormReportBuilder;
+use WebTheory\Saveyour\Report\FormProcessReport;
 use WebTheory\Saveyour\Report\ProcessedInputReport;
 
 class FormSubmissionManager implements FormSubmissionManagerInterface
@@ -33,8 +34,8 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
     protected ProcessedFormReportBuilderInterface $reportBuilder;
 
     /**
-     * @param array<int,FormFieldControllerInterface> $fields
-     * @param array<string,FormDataProcessorInterface> $processors
+     * @param array<FormFieldControllerInterface> $fields
+     * @param array<FormDataProcessorInterface> $processors
      */
     public function __construct(array $fields, array $processors = [], FormShieldInterface $shield = null)
     {
@@ -194,7 +195,7 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
 
             $this->reportBuilder->withProcessReport(
                 $processor->getName(),
-                $processor->process($request, $results)
+                $processor->process($request, $results) ?? new FormProcessReport()
             );
         }
 
