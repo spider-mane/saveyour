@@ -2,7 +2,6 @@
 
 namespace WebTheory\Saveyour\Controller;
 
-use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 use WebTheory\Saveyour\Contracts\Controller\FormFieldControllerInterface;
 use WebTheory\Saveyour\Contracts\Data\FieldDataManagerInterface;
@@ -13,6 +12,7 @@ use WebTheory\Saveyour\Contracts\Report\ProcessedFieldReportInterface;
 use WebTheory\Saveyour\Contracts\Report\ValidationReportInterface;
 use WebTheory\Saveyour\Contracts\Validation\ValidatorInterface;
 use WebTheory\Saveyour\Data\LazyManager;
+use WebTheory\Saveyour\Field\DataOnly;
 use WebTheory\Saveyour\Formatting\LazyDataFormatter;
 use WebTheory\Saveyour\Http\Request;
 use WebTheory\Saveyour\Report\Builder\ProcessedFieldReportBuilder;
@@ -22,7 +22,7 @@ class FormFieldController implements FormFieldControllerInterface
 {
     protected string $requestVar;
 
-    protected ?FormFieldInterface $formField = null;
+    protected FormFieldInterface $formField;
 
     protected FieldDataManagerInterface $dataManager;
 
@@ -49,8 +49,8 @@ class FormFieldController implements FormFieldControllerInterface
         ?array $await = null
     ) {
         $this->requestVar = $requestVar;
-        $this->formField = $formField;
 
+        $this->formField = $formField ?? new DataOnly();
         $this->dataManager = $dataManager ?? new LazyManager();
         $this->validator = $validator ?? new PermissiveValidator();
         $this->dataFormatter = $formatter ?? new LazyDataFormatter();
@@ -195,36 +195,25 @@ class FormFieldController implements FormFieldControllerInterface
 
     public function compose(ServerRequestInterface $request): FormFieldInterface
     {
-        if (isset($this->formField)) {
-            return $this->prepareFormFieldForRendering($request)->getFormField();
-        }
-
-        throw $this->noFormFieldForOperationException(__METHOD__);
+        return $this->normalizeFormField($request)->getFormField();
     }
 
-    protected function prepareFormFieldForRendering(ServerRequestInterface $request)
+    protected function normalizeFormField(ServerRequestInterface $request): FormFieldController
     {
         return $this->setFormFieldName()->setFormFieldValue($request);
     }
 
-    protected function setFormFieldName()
+    protected function setFormFieldName(): FormFieldController
     {
         $this->formField->setName($this->getRequestVar());
 
         return $this;
     }
 
-    public function setFormFieldValue(ServerRequestInterface $request)
+    public function setFormFieldValue(ServerRequestInterface $request): FormFieldController
     {
         $this->formField->setValue($this->getPresetValue($request));
 
         return $this;
-    }
-
-    protected function noFormFieldForOperationException(string $method): LogicException
-    {
-        return new LogicException(
-            'Instance of ' . FormFieldInterface::class . ' must be provided to perform ' . $method . ' operation.'
-        );
     }
 }

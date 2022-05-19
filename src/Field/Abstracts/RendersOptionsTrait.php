@@ -60,4 +60,6 @@ trait RendersOptionsTrait
             $this->defineSelectionValue($selection)
         );
     }
+
+    abstract protected function isSelectionSelected(string $value): bool;
 }

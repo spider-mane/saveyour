@@ -13,4 +13,9 @@ class Datalist extends AbstractHtmlElement
     {
         return $this->tag('datalist', $this->attributes, $this->renderSelection());
     }
+
+    protected function isSelectionSelected(string $value): bool
+    {
+        return false;
+    }
 }

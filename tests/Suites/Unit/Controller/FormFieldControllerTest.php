@@ -2,7 +2,6 @@
 
 namespace Tests\Suites\Unit\Controller;
 
-use LogicException;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ServerRequestInterface;
 use Tests\Support\UnitTestCase;
@@ -13,6 +12,7 @@ use WebTheory\Saveyour\Contracts\Formatting\DataFormatterInterface;
 use WebTheory\Saveyour\Contracts\Report\ValidationReportInterface;
 use WebTheory\Saveyour\Contracts\Validation\ValidatorInterface;
 use WebTheory\Saveyour\Controller\FormFieldController;
+use WebTheory\Saveyour\Field\DataOnly;
 
 class FormFieldControllerTest extends UnitTestCase
 {
@@ -161,38 +161,8 @@ class FormFieldControllerTest extends UnitTestCase
     {
         return [
             'with form field' => [$this->createMock(FormFieldInterface::class)],
-            'no form field' => [null],
+            'no form field' => [$this->createMock(DataOnly::class)],
         ];
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_a_logic_exception_if_compose_is_called_in_absence_of_form_field()
-    {
-        # Arrange
-        $sut = new FormFieldController($this->fake->slug);
-
-        # Expect
-        $this->expectException(LogicException::class);
-
-        # Act
-        $sut->compose($this->mockRequest);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_a_logic_exception_if_render_is_called_in_absence_of_form_field()
-    {
-        # Arrange
-        $sut = new FormFieldController($this->fake->slug);
-
-        # Expect
-        $this->expectException(LogicException::class);
-
-        # Act
-        $sut->render($this->mockRequest);
     }
 
     /**
