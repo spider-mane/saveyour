@@ -42,9 +42,9 @@ abstract class AbstractFormField extends AbstractHtmlElement implements FormFiel
      *
      * @param string  $name
      *
-     * @return self
+     * @return $this
      */
-    public function setName(string $name)
+    public function setName(string $name): AbstractFormField
     {
         $this->name = $name;
 
@@ -66,9 +66,9 @@ abstract class AbstractFormField extends AbstractHtmlElement implements FormFiel
      *
      * @param mixed  $value
      *
-     * @return self
+     * @return $this
      */
-    public function setValue($value)
+    public function setValue($value): AbstractFormField
     {
         $this->value = $value;
 
@@ -90,9 +90,9 @@ abstract class AbstractFormField extends AbstractHtmlElement implements FormFiel
      *
      * @param string $label
      *
-     * @return self
+     * @return $this
      */
-    public function setLabel(string $label)
+    public function setLabel(string $label): AbstractFormField
     {
         $this->label = $label;
 
@@ -114,9 +114,9 @@ abstract class AbstractFormField extends AbstractHtmlElement implements FormFiel
      *
      * @param bool $required
      *
-     * @return self
+     * @return $this
      */
-    public function setRequired(bool $required)
+    public function setRequired(bool $required): AbstractFormField
     {
         $this->required = $required;
 
@@ -138,9 +138,9 @@ abstract class AbstractFormField extends AbstractHtmlElement implements FormFiel
      *
      * @param bool $disabled
      *
-     * @return self
+     * @return $this
      */
-    public function setDisabled(bool $disabled)
+    public function setDisabled(bool $disabled): AbstractFormField
     {
         $this->disabled = $disabled;
 
@@ -162,9 +162,9 @@ abstract class AbstractFormField extends AbstractHtmlElement implements FormFiel
      *
      * @param bool $readonly
      *
-     * @return self
+     * @return $this
      */
-    public function setReadOnly(bool $readonly)
+    public function setReadOnly(bool $readonly): AbstractFormField
     {
         $this->readonly = $readonly;
 
@@ -186,9 +186,9 @@ abstract class AbstractFormField extends AbstractHtmlElement implements FormFiel
      *
      * @param string $placeholder
      *
-     * @return self
+     * @return $this
      */
-    public function setPlaceholder(string $placeholder)
+    public function setPlaceholder(string $placeholder): AbstractFormField
     {
         $this->placeholder = $placeholder;
 

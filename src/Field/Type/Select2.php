@@ -49,9 +49,9 @@ class Select2 extends Select implements FormFieldInterface
      *
      * @param string $width
      *
-     * @return self
+     * @return $this
      */
-    public function setWidth(string $width)
+    public function setWidth(string $width): Select2
     {
         $this->width = $width;
 
@@ -73,9 +73,9 @@ class Select2 extends Select implements FormFieldInterface
      *
      * @param string $theme
      *
-     * @return self
+     * @return $this
      */
-    public function setTheme(string $theme)
+    public function setTheme(string $theme): Select2
     {
         $this->theme = $theme;
 

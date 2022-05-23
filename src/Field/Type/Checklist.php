@@ -36,9 +36,9 @@ class Checklist extends AbstractCompositeSelectionField implements FormFieldInte
      *
      * @param ChecklistItemsProviderInterface $selectionProvider
      *
-     * @return self
+     * @return $this
      */
-    public function setSelectionProvider(ChecklistItemsProviderInterface $selectionProvider)
+    public function setSelectionProvider(ChecklistItemsProviderInterface $selectionProvider): Checklist
     {
         $this->selectionProvider = $selectionProvider;
 

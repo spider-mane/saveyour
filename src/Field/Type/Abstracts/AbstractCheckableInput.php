@@ -24,7 +24,7 @@ abstract class AbstractCheckableInput extends AbstractInput implements Checkable
      *
      * @param bool $checked
      *
-     * @return self
+     * @return $this
      */
     public function setChecked(bool $checked): CheckableFieldInterface
     {

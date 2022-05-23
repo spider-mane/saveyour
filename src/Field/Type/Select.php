@@ -58,9 +58,9 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
      *
      * @param bool $multiple
      *
-     * @return self
+     * @return $this
      */
-    public function setMultiple(bool $multiple)
+    public function setMultiple(bool $multiple): Select
     {
         $this->multiple = $multiple;
 
@@ -82,9 +82,9 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
      *
      * @param int $size
      *
-     * @return self
+     * @return $this
      */
-    public function setSize(int $size)
+    public function setSize(int $size): Select
     {
         $this->size = $size;
 

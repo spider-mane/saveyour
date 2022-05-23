@@ -33,9 +33,9 @@ class RadioGroup extends AbstractCompositeSelectionField implements FormFieldInt
      *
      * @param bool $isInline
      *
-     * @return self
+     * @return $this
      */
-    public function setIsInline(bool $isInline)
+    public function setIsInline(bool $isInline): RadioGroup
     {
         $this->isInline = $isInline;
 
@@ -57,9 +57,9 @@ class RadioGroup extends AbstractCompositeSelectionField implements FormFieldInt
      *
      * @param RadioGroupSelectionInterface $selectionProvider
      *
-     * @return self
+     * @return $this
      */
-    public function setSelectionProvider(RadioGroupSelectionInterface $selectionProvider)
+    public function setSelectionProvider(RadioGroupSelectionInterface $selectionProvider): RadioGroup
     {
         $this->selectionProvider = $selectionProvider;
 

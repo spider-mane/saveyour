@@ -57,9 +57,9 @@ class Option extends AbstractHtmlElement
      *
      * @param bool $selected
      *
-     * @return self
+     * @return $this
      */
-    public function setSelected(bool $selected)
+    public function setSelected(bool $selected): Option
     {
         $this->selected = $selected;
 
@@ -81,9 +81,9 @@ class Option extends AbstractHtmlElement
      *
      * @param bool $disabled
      *
-     * @return self
+     * @return $this
      */
-    public function setDisabled(bool $disabled)
+    public function setDisabled(bool $disabled): Option
     {
         $this->disabled = $disabled;
 

@@ -42,9 +42,9 @@ class Label extends AbstractHtmlElement
      *
      * @param mixed $for
      *
-     * @return self
+     * @return $this
      */
-    public function setFor($for)
+    public function setFor($for): Label
     {
         $this->for = $for;
 

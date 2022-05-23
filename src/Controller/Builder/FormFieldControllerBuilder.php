@@ -33,6 +33,9 @@ class FormFieldControllerBuilder
         $requestVar && $this->requestVar = $requestVar;
     }
 
+    /**
+     * @return $this
+     */
     public function requestVar(string $requestVar): FormFieldControllerBuilder
     {
         $this->requestVar = $requestVar;
@@ -40,6 +43,9 @@ class FormFieldControllerBuilder
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function formField(?FormFieldInterface $formField): FormFieldControllerBuilder
     {
         $this->formField = $formField;
@@ -47,6 +53,9 @@ class FormFieldControllerBuilder
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function dataManager(?FieldDataManagerInterface $dataManager): FormFieldControllerBuilder
     {
         $this->dataManager = $dataManager;
@@ -54,6 +63,9 @@ class FormFieldControllerBuilder
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function validator(?ValidatorInterface $validator): FormFieldControllerBuilder
     {
         $this->validator = $validator;
@@ -61,6 +73,9 @@ class FormFieldControllerBuilder
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function formatter(?DataFormatterInterface $formatter): FormFieldControllerBuilder
     {
         $this->formatter = $formatter;
@@ -68,6 +83,9 @@ class FormFieldControllerBuilder
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function canProcess(bool $processingDisabled): FormFieldControllerBuilder
     {
         $this->isPermittedToProcess = $processingDisabled;
@@ -75,6 +93,9 @@ class FormFieldControllerBuilder
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function awaitAll(array $fields): FormFieldControllerBuilder
     {
         array_map([$this, 'await'], $fields);
@@ -82,6 +103,9 @@ class FormFieldControllerBuilder
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function await(string $field): FormFieldControllerBuilder
     {
         $this->mustAwait[] = $field;

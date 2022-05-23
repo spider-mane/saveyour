@@ -20,6 +20,9 @@ class FormShieldReportBuilder implements FormShieldReportBuilderInterface
         }
     }
 
+    /**
+     * @return $this
+     */
     public function withVerificationStatus(bool $status): FormShieldReportBuilderInterface
     {
         $this->status = $status;
@@ -27,6 +30,9 @@ class FormShieldReportBuilder implements FormShieldReportBuilderInterface
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function withRuleViolation(string $name): FormShieldReportBuilderInterface
     {
         $this->violations[] = $name;
@@ -34,6 +40,9 @@ class FormShieldReportBuilder implements FormShieldReportBuilderInterface
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function withRuleViolations(array $violations): FormShieldReportBuilderInterface
     {
         $this->violations = $violations;

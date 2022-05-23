@@ -12,6 +12,9 @@ class ValidationReportBuilder implements ValidationReportBuilderInterface
 
     protected array $ruleViolations = [];
 
+    /**
+     * @return $this
+     */
     public function withValidationStatus(bool $status): ValidationReportBuilderInterface
     {
         $this->validationStatus = $status;
@@ -19,6 +22,9 @@ class ValidationReportBuilder implements ValidationReportBuilderInterface
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function withRuleViolation(string $violation): ValidationReportBuilderInterface
     {
         $this->ruleViolations[] = $violation;
@@ -26,6 +32,9 @@ class ValidationReportBuilder implements ValidationReportBuilderInterface
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function withRuleViolations(array $violations): ValidationReportBuilderInterface
     {
         array_map([$this, 'withRuleViolation'], $violations);

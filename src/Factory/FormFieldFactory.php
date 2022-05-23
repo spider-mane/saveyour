@@ -50,16 +50,19 @@ class FormFieldFactory implements FormFieldResolverFactoryInterface
      *
      * @param mixed $managers
      *
-     * @return self
+     * @return $this
      */
-    public function addField(string $arg, string $field)
+    public function addField(string $arg, string $field): FormFieldFactory
     {
         $this->fields[$arg] = $field;
 
         return $this;
     }
 
-    public function addFields(array $fields)
+    /**
+     * @return $this
+     */
+    public function addFields(array $fields): FormFieldFactory
     {
         $this->fields = $fields + $this->fields;
 

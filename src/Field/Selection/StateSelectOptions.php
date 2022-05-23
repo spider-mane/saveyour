@@ -100,7 +100,10 @@ class StateSelectOptions implements OptionsProviderInterface
         $this->reSort = $reSort;
     }
 
-    protected function setGroups(array $groups)
+    /**
+     * @return $this
+     */
+    protected function setGroups(array $groups): StateSelectOptions
     {
         foreach ($groups as $group) {
             if (!in_array($group, static::ALLOWED_GROUPS)) {
@@ -116,7 +119,10 @@ class StateSelectOptions implements OptionsProviderInterface
         return $this;
     }
 
-    protected function setText(string $text)
+    /**
+     * @return $this
+     */
+    protected function setText(string $text): StateSelectOptions
     {
         if (!in_array($text, static::ALLOWED_TEXT)) {
             $valid = implode(', ', static::ALLOWED_TEXT);

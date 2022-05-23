@@ -26,6 +26,9 @@ class ProcessedFormReportBuilder implements ProcessedFormReportBuilderInterface
         }
     }
 
+    /**
+     * @return $this
+     */
     public function withShieldReport(FormShieldReportInterface $report): ProcessedFormReportBuilderInterface
     {
         $this->shieldReport = $report;
@@ -33,6 +36,9 @@ class ProcessedFormReportBuilder implements ProcessedFormReportBuilderInterface
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function withInputReport(string $input, ProcessedInputReportInterface $report): ProcessedFormReportBuilderInterface
     {
         $this->inputReports[$input] = $report;
@@ -40,6 +46,9 @@ class ProcessedFormReportBuilder implements ProcessedFormReportBuilderInterface
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function withProcessReport(string $process, FormProcessReportInterface $report): ProcessedFormReportBuilderInterface
     {
         $this->processReports[$process] = $report;

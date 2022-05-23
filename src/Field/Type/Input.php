@@ -12,9 +12,9 @@ class Input extends AbstractInput implements FormFieldInterface
      *
      * @param string  $type
      *
-     * @return self
+     * @return $this
      */
-    public function setType(string $type)
+    public function setType(string $type): Input
     {
         $this->type = $type;
 

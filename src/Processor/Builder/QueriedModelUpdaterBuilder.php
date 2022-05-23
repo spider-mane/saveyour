@@ -23,21 +23,30 @@ class QueriedModelUpdaterBuilder extends AbstractModelUpdaterBuilder
      */
     protected ServerRequestLocation $location;
 
-    public function withQueryMethod(string $queryMethod): self
+    /**
+     * @return $this
+     */
+    public function withQueryMethod(string $queryMethod): QueriedModelUpdaterBuilder
     {
         $this->queryMethod = $queryMethod;
 
         return $this;
     }
 
-    public function withLookup(string $lookup): self
+    /**
+     * @return $this
+     */
+    public function withLookup(string $lookup): QueriedModelUpdaterBuilder
     {
         $this->lookup = $lookup;
 
         return $this;
     }
 
-    public function withLocation(?ServerRequestLocation $location): self
+    /**
+     * @return $this
+     */
+    public function withLocation(?ServerRequestLocation $location): QueriedModelUpdaterBuilder
     {
         $this->location = $location;
 

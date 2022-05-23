@@ -9,7 +9,10 @@ class ModelUpdaterBuilder extends AbstractModelUpdaterBuilder
 {
     protected object $model;
 
-    public function withModel(object $model): self
+    /**
+     * @return $this
+     */
+    public function withModel(object $model): ModelUpdaterBuilder
     {
         $this->model = $model;
 

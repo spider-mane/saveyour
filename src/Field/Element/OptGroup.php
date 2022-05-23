@@ -39,9 +39,9 @@ class OptGroup extends AbstractHtmlElement
      *
      * @param bool $disabled
      *
-     * @return self
+     * @return $this
      */
-    public function setDisabled(bool $disabled)
+    public function setDisabled(bool $disabled): OptGroup
     {
         $this->disabled = $disabled;
 

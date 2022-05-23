@@ -2,9 +2,7 @@
 
 namespace WebTheory\Saveyour\Report\Builder;
 
-use WebTheory\Saveyour\Contracts\Report\Builder\ProcessedFieldReportBuilderInterface;
 use WebTheory\Saveyour\Contracts\Report\Builder\ProcessedInputReportBuilderInterface;
-use WebTheory\Saveyour\Contracts\Report\Builder\ValidationReportBuilderInterface;
 use WebTheory\Saveyour\Contracts\Report\ProcessedInputReportInterface;
 use WebTheory\Saveyour\Report\ProcessedInputReport;
 
@@ -31,13 +29,19 @@ class ProcessedInputReportBuilder extends ProcessedFieldReportBuilder implements
         }
     }
 
-    public function withRequestVarPresent(bool $result): ProcessedFieldReportBuilderInterface
+    /**
+     * @return $this
+     */
+    public function withRequestVarPresent(bool $result): ProcessedInputReportBuilderInterface
     {
         $this->requestVarPresent = $result;
 
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function withRawInputValue(string $value): ProcessedInputReportBuilderInterface
     {
         $this->rawInputValue = $value;
@@ -45,6 +49,9 @@ class ProcessedInputReportBuilder extends ProcessedFieldReportBuilder implements
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function withValidationStatus(bool $result): ProcessedInputReportBuilderInterface
     {
         $this->validationStatus = $result;
@@ -52,6 +59,9 @@ class ProcessedInputReportBuilder extends ProcessedFieldReportBuilder implements
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function withRuleViolations(array $violations): ProcessedInputReportBuilderInterface
     {
         $this->ruleViolations = $violations;
@@ -59,7 +69,10 @@ class ProcessedInputReportBuilder extends ProcessedFieldReportBuilder implements
         return $this;
     }
 
-    public function withRuleViolation(string $violation): ValidationReportBuilderInterface
+    /**
+     * @return $this
+     */
+    public function withRuleViolation(string $violation): ProcessedInputReportBuilderInterface
     {
         $this->ruleViolations[] = $violation;
 

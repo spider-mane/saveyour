@@ -17,6 +17,9 @@ class FormProcessReportBuilder implements FormProcessReportBuilderInterface
         }
     }
 
+    /**
+     * @return $this
+     */
     public function withProcessResult(string $process, $result): FormProcessReportBuilderInterface
     {
         $this->results[$process] = $result;

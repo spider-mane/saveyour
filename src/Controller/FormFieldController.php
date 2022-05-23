@@ -35,7 +35,7 @@ class FormFieldController implements FormFieldControllerInterface
     protected bool $isPermittedToProcess = true;
 
     /**
-     * @var array<int,string>
+     * @var array<string>
      */
     protected array $mustAwait = [];
 
@@ -85,9 +85,9 @@ class FormFieldController implements FormFieldControllerInterface
      *
      * @param string[] $mustAwait
      *
-     * @return self
+     * @return $this
      */
-    protected function setMustAwait(string ...$fields)
+    protected function setMustAwait(string ...$fields): FormFieldController
     {
         $this->mustAwait = $fields;
 
@@ -131,14 +131,20 @@ class FormFieldController implements FormFieldControllerInterface
         return $this->cacheBuilder->build();
     }
 
-    protected function initCacheBuilder()
+    /**
+     * @return $this
+     */
+    protected function initCacheBuilder(): FormFieldController
     {
         $this->cacheBuilder = new ProcessedFieldReportBuilder();
 
         return $this;
     }
 
-    protected function processData(ServerRequestInterface $request)
+    /**
+     * @return $this
+     */
+    protected function processData(ServerRequestInterface $request): FormFieldController
     {
         $filteredInput = $this->getUpdatedValue($request);
 
@@ -203,6 +209,9 @@ class FormFieldController implements FormFieldControllerInterface
         return $this->setFormFieldName()->setFormFieldValue($request);
     }
 
+    /**
+     * @return $this
+     */
     protected function setFormFieldName(): FormFieldController
     {
         $this->formField->setName($this->getRequestVar());
@@ -210,6 +219,9 @@ class FormFieldController implements FormFieldControllerInterface
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function setFormFieldValue(ServerRequestInterface $request): FormFieldController
     {
         $this->formField->setValue($this->getPresetValue($request));

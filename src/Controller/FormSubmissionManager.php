@@ -182,7 +182,10 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
         );
     }
 
-    protected function runProcessors(ServerRequestInterface $request, array $fields)
+    /**
+     * @return $this
+     */
+    protected function runProcessors(ServerRequestInterface $request, array $fields): FormSubmissionManager
     {
         $all = array_keys($fields);
 

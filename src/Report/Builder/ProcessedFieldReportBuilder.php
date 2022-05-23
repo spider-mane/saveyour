@@ -23,6 +23,9 @@ class ProcessedFieldReportBuilder implements ProcessedFieldReportBuilderInterfac
         }
     }
 
+    /**
+     * @return $this
+     */
     public function withSanitizedInputValue($value): ProcessedFieldReportBuilder
     {
         $this->sanitizedInputValue = $value;
@@ -30,6 +33,9 @@ class ProcessedFieldReportBuilder implements ProcessedFieldReportBuilderInterfac
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function withUpdateAttempted(bool $result): ProcessedFieldReportBuilder
     {
         $this->updateAttempted = $result;
@@ -37,6 +43,9 @@ class ProcessedFieldReportBuilder implements ProcessedFieldReportBuilderInterfac
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function withUpdateSuccessful(bool $result): ProcessedFieldReportBuilder
     {
         $this->updateSuccessful = $result;

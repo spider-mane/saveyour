@@ -36,9 +36,9 @@ abstract class AbstractBuilderField
      *
      * @param bool $processingDisabled
      *
-     * @return self
+     * @return $this
      */
-    public function setProcessingDisabled(bool $processingDisabled)
+    public function setProcessingDisabled(bool $processingDisabled): AbstractBuilderField
     {
         $this->processingDisabled = $processingDisabled;
 
@@ -60,9 +60,9 @@ abstract class AbstractBuilderField
      *
      * @param array $mustAwait
      *
-     * @return self
+     * @return $this
      */
-    public function setMustAwait(array $mustAwait)
+    public function setMustAwait(array $mustAwait): AbstractBuilderField
     {
         $this->mustAwait = $mustAwait;
 

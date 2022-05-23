@@ -14,24 +14,15 @@ abstract class AbstractCompositeSelectionField extends AbstractFormField impleme
 
     protected array $labelOptions = [];
 
-    /**
-     * Get the value of labelOptions
-     *
-     * @return array
-     */
     public function getLabelOptions(): array
     {
         return $this->labelOptions;
     }
 
     /**
-     * Set the value of labelOptions
-     *
-     * @param array $labelOptions
-     *
-     * @return self
+     * @return $this
      */
-    public function setLabelOptions(array $labelOptions)
+    public function setLabelOptions(array $labelOptions): AbstractCompositeSelectionField
     {
         $this->labelOptions = $labelOptions;
 

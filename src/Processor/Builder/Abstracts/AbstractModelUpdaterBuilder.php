@@ -23,35 +23,50 @@ class AbstractModelUpdaterBuilder
      */
     protected ?string $commitMethod = null;
 
-    public function withName(string $name): self
+    /**
+     * @return $this
+     */
+    public function withName(string $name): AbstractModelUpdaterBuilder
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function withFields(?array $fields): self
+    /**
+     * @return $this
+     */
+    public function withFields(?array $fields): AbstractModelUpdaterBuilder
     {
         $this->fields = $fields;
 
         return $this;
     }
 
-    public function withRepository(object $repository): self
+    /**
+     * @return $this
+     */
+    public function withRepository(object $repository): AbstractModelUpdaterBuilder
     {
         $this->repository = $repository;
 
         return $this;
     }
 
-    public function withUpdateMethod(?string $updateMethod): self
+    /**
+     * @return $this
+     */
+    public function withUpdateMethod(?string $updateMethod): AbstractModelUpdaterBuilder
     {
         $this->updateMethod = $updateMethod;
 
         return $this;
     }
 
-    public function withCommitMethod(?string $commitMethod): self
+    /**
+     * @return $this
+     */
+    public function withCommitMethod(?string $commitMethod): AbstractModelUpdaterBuilder
     {
         $this->commitMethod = $commitMethod;
 

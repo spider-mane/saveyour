@@ -25,9 +25,9 @@ class Textarea extends AbstractStandardFormControl implements FormFieldInterface
      *
      * @param int $rows
      *
-     * @return self
+     * @return $this
      */
-    public function setRows(int $rows)
+    public function setRows(int $rows): Textarea
     {
         $this->rows = $rows;
 

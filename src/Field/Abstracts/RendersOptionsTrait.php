@@ -26,7 +26,7 @@ trait RendersOptionsTrait
      *
      * @param OptionsProviderInterface $selectionProvider
      *
-     * @return self
+     * @return $this
      */
     public function setSelectionProvider(OptionsProviderInterface $selectionProvider)
     {
