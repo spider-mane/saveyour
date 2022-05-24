@@ -35,21 +35,12 @@ class FormFieldFactory implements FormFieldResolverFactoryInterface
         $this->fields = $fields + static::FIELDS;
     }
 
-    /**
-     * Get the value of managers
-     *
-     * @return mixed
-     */
     public function getFields()
     {
         return $this->fields;
     }
 
     /**
-     * Set the value of managers
-     *
-     * @param mixed $managers
-     *
      * @return $this
      */
     public function addField(string $arg, string $field): FormFieldFactory

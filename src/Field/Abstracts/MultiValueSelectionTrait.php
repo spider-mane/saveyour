@@ -2,7 +2,7 @@
 
 namespace WebTheory\Saveyour\Field\Abstracts;
 
-use WebTheory\Saveyour\Field\Type\Abstracts\AbstractCompositeSelectionField;
+use WebTheory\Saveyour\Field\Abstracts\AbstractValuableElement;
 use WebTheory\Saveyour\Field\Type\Hidden;
 
 trait MultiValueSelectionTrait
@@ -15,7 +15,7 @@ trait MultiValueSelectionTrait
     /**
      * @return $this
      */
-    public function setValue($value): AbstractCompositeSelectionField
+    public function setValue($value): AbstractValuableElement
     {
         $this->value = (array) $value;
 

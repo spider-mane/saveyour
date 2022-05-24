@@ -90,7 +90,7 @@ class Option extends AbstractHtmlElement
         return $this;
     }
 
-    protected function resolveAttributes(): AbstractHtmlElement
+    protected function resolveAttributes(): Option
     {
         return parent::resolveAttributes()
             ->addAttribute('value', $this->value)

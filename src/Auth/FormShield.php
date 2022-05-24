@@ -11,7 +11,7 @@ use WebTheory\Saveyour\Report\Builder\FormShieldReportBuilder;
 class FormShield implements FormShieldInterface
 {
     /**
-     * @var array<int,ServerRequestPolicyInterface>
+     * @var array<string,ServerRequestPolicyInterface>
      */
     protected array $policies = [];
 

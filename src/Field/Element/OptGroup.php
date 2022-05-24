@@ -2,16 +2,16 @@
 
 namespace WebTheory\Saveyour\Field\Element;
 
-use WebTheory\Html\AbstractHtmlElement;
+use WebTheory\Saveyour\Field\Abstracts\AbstractValuableElement;
 use WebTheory\Saveyour\Field\Abstracts\MultiValueSelectionTrait;
 use WebTheory\Saveyour\Field\Abstracts\RendersOptionsTrait;
 
-class OptGroup extends AbstractHtmlElement
+class OptGroup extends AbstractValuableElement
 {
     use MultiValueSelectionTrait;
     use RendersOptionsTrait;
 
-    protected array $value = [];
+    protected $value = [];
 
     protected string $label;
 
@@ -24,21 +24,12 @@ class OptGroup extends AbstractHtmlElement
         parent::__construct();
     }
 
-    /**
-     * Get the value of disabled
-     *
-     * @return bool
-     */
     public function isDisabled(): bool
     {
         return $this->disabled;
     }
 
     /**
-     * Set the value of disabled
-     *
-     * @param bool $disabled
-     *
      * @return $this
      */
     public function setDisabled(bool $disabled): OptGroup
@@ -48,7 +39,7 @@ class OptGroup extends AbstractHtmlElement
         return $this;
     }
 
-    protected function resolveAttributes(): AbstractHtmlElement
+    protected function resolveAttributes(): OptGroup
     {
         return parent::resolveAttributes()
             ->addAttribute('label', $this->label)

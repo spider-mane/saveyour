@@ -34,21 +34,12 @@ class DataManagerFactory implements FieldDataManagerResolverFactoryInterface
         $this->managers = $managers + static::MANAGERS;
     }
 
-    /**
-     * Get the value of managers
-     *
-     * @return mixed
-     */
     public function getManagers()
     {
         return $this->managers;
     }
 
     /**
-     * Set the value of managers
-     *
-     * @param mixed $managers
-     *
      * @return $this
      */
     public function addManager(string $arg, string $manager): DataManagerFactory

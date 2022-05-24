@@ -11,4 +11,12 @@ class DataOnly extends AbstractFormField implements FormFieldInterface
     {
         return '';
     }
+
+    public static function for(string $name): FormFieldInterface
+    {
+        $data = new static();
+        $data->setName($name);
+
+        return $data;
+    }
 }

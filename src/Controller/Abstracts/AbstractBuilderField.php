@@ -7,12 +7,13 @@ use WebTheory\Saveyour\Contracts\Data\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
 use WebTheory\Saveyour\Contracts\Formatting\DataFormatterInterface;
 use WebTheory\Saveyour\Controller\FormFieldController;
+use WebTheory\Saveyour\Validation\Validator;
 
 abstract class AbstractBuilderField
 {
     protected string $requestVar;
 
-    protected bool $processingDisabled = false;
+    protected bool $isPermittedToProcess = false;
 
     protected array $mustAwait = [];
 
@@ -28,7 +29,7 @@ abstract class AbstractBuilderField
      */
     public function getProcessingDisabled(): bool
     {
-        return $this->processingDisabled;
+        return $this->isPermittedToProcess;
     }
 
     /**
@@ -40,7 +41,7 @@ abstract class AbstractBuilderField
      */
     public function setProcessingDisabled(bool $processingDisabled): AbstractBuilderField
     {
-        $this->processingDisabled = $processingDisabled;
+        $this->isPermittedToProcess = $processingDisabled;
 
         return $this;
     }
@@ -75,12 +76,10 @@ abstract class AbstractBuilderField
             $this->defineRequestVar(),
             $this->defineFormField(),
             $this->defineDataManager(),
+            $this->defineValidator(),
             $this->defineDataFormatter(),
-            $this->defineFilters(),
-            $this->defineRules(),
-            $this->defineEscaper(),
-            $this->defineProcessingDisabled(),
-            $this->defineMustAwait()
+            $this->definePermissionProcessStatus(),
+            $this->defineMustAwait(),
         );
     }
 
@@ -104,24 +103,14 @@ abstract class AbstractBuilderField
         return null;
     }
 
-    protected function defineFilters(): ?array
+    protected function defineValidator(): ?Validator
     {
         return null;
     }
 
-    protected function defineRules(): ?array
+    protected function definePermissionProcessStatus(): ?bool
     {
-        return null;
-    }
-
-    protected function defineEscaper(): ?callable
-    {
-        return null;
-    }
-
-    protected function defineProcessingDisabled(): ?bool
-    {
-        return $this->processingDisabled;
+        return $this->isPermittedToProcess;
     }
 
     protected function defineMustAwait(): ?array

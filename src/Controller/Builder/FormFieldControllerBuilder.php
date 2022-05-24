@@ -30,7 +30,7 @@ class FormFieldControllerBuilder
 
     public function __construct(string $requestVar = null)
     {
-        $requestVar && $this->requestVar = $requestVar;
+        $this->requestVar = $requestVar ?? $this->requestVar;
     }
 
     /**

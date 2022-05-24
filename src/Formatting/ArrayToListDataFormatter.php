@@ -10,7 +10,7 @@ class ArrayToListDataFormatter implements DataFormatterInterface
 
     public function __construct(?string $delimiter = null)
     {
-        $delimiter && $this->delimiter = $delimiter;
+        $this->delimiter = $delimiter ?? $this->delimiter;
     }
 
     public function formatData($value)

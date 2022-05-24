@@ -57,7 +57,9 @@ class FormFieldController implements FormFieldControllerInterface
 
         $this->isPermittedToProcess = $processingEnabled ?? $this->isPermittedToProcess;
 
-        $await && $this->setMustAwait(...$await);
+        if ($await) {
+            $this->setMustAwait(...$await);
+        }
     }
 
     public function getRequestVar(): string
@@ -71,9 +73,7 @@ class FormFieldController implements FormFieldControllerInterface
     }
 
     /**
-     * Get the value of mustAwait
-     *
-     * @return string[]
+     * {@inheritDoc}
      */
     public function mustAwait(): array
     {
@@ -81,10 +81,6 @@ class FormFieldController implements FormFieldControllerInterface
     }
 
     /**
-     * Set the value of mustAwait
-     *
-     * @param string[] $mustAwait
-     *
      * @return $this
      */
     protected function setMustAwait(string ...$fields): FormFieldController
@@ -95,8 +91,6 @@ class FormFieldController implements FormFieldControllerInterface
     }
 
     /**
-     * Get the value of savingDisabled
-     *
      * @return bool
      */
     public function isPermittedToProcess(): bool

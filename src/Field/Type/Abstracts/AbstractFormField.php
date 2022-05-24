@@ -2,18 +2,13 @@
 
 namespace WebTheory\Saveyour\Field\Type\Abstracts;
 
-use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
+use WebTheory\Saveyour\Field\Abstracts\AbstractValuableElement;
 use WebTheory\Saveyour\Field\Element\Label;
 
-abstract class AbstractFormField extends AbstractHtmlElement implements FormFieldInterface
+abstract class AbstractFormField extends AbstractValuableElement implements FormFieldInterface
 {
     protected string $name = '';
-
-    /**
-     * @var mixed
-     */
-    protected $value;
 
     protected string $label = '';
 
@@ -47,30 +42,6 @@ abstract class AbstractFormField extends AbstractHtmlElement implements FormFiel
     public function setName(string $name): AbstractFormField
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of value
-     *
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * Set the value of value
-     *
-     * @param mixed  $value
-     *
-     * @return $this
-     */
-    public function setValue($value): AbstractFormField
-    {
-        $this->value = $value;
 
         return $this;
     }
