@@ -37,7 +37,9 @@ abstract class AbstractCheckableInput extends AbstractInput implements Checkable
      */
     protected function resolveAttributes(): AbstractCheckableInput
     {
-        return parent::resolveAttributes()
+        parent::resolveAttributes()
             ->addAttribute('checked', $this->checked);
+
+        return $this;
     }
 }

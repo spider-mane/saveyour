@@ -95,10 +95,12 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
      */
     protected function resolveAttributes(): Select
     {
-        return parent::resolveAttributes()
+        parent::resolveAttributes()
             ->addAttribute('name', $this->resolveNameAttribute())
             ->addAttribute('multiple', $this->multiple)
             ->addAttribute('size', $this->size);
+
+        return $this;
     }
 
     protected function resolveNameAttribute()

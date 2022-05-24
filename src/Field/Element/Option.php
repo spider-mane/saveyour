@@ -95,10 +95,12 @@ class Option extends AbstractHtmlElement
      */
     protected function resolveAttributes(): Option
     {
-        return parent::resolveAttributes()
+        parent::resolveAttributes()
             ->addAttribute('value', $this->value)
             ->addAttribute('selected', $this->selected)
             ->addAttribute('disabled', $this->disabled);
+
+        return $this;
     }
 
     protected function renderHtmlMarkup(): string

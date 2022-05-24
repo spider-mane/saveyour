@@ -11,12 +11,14 @@ abstract class AbstractStandardFormControl extends AbstractFormField implements 
      */
     protected function resolveAttributes(): AbstractStandardFormControl
     {
-        return parent::resolveAttributes()
+        parent::resolveAttributes()
             ->addAttribute('name', $this->name)
             ->addAttribute('form', $this->form)
             ->addAttribute('disabled', $this->disabled)
             ->addAttribute('readonly', $this->readonly)
             ->addAttribute('required', $this->required)
             ->addAttribute('placeholder', $this->placeholder);
+
+        return $this;
     }
 }

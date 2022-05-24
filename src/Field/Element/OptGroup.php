@@ -44,9 +44,11 @@ class OptGroup extends AbstractValuableElement
      */
     protected function resolveAttributes(): OptGroup
     {
-        return parent::resolveAttributes()
+        parent::resolveAttributes()
             ->addAttribute('label', $this->label)
             ->addAttribute('disabled', $this->disabled);
+
+        return $this;
     }
 
     protected function renderHtmlMarkup(): string

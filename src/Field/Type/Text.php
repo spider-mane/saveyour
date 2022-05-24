@@ -16,7 +16,9 @@ class Text extends AbstractInput implements FormFieldInterface
      */
     protected function resolveAttributes(): Text
     {
-        return parent::resolveAttributes()
+        parent::resolveAttributes()
             ->addAttribute('pattern', $this->pattern);
+
+        return $this;
     }
 }

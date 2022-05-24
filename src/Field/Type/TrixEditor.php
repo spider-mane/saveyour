@@ -31,8 +31,10 @@ class TrixEditor extends AbstractFormField implements FormFieldInterface
      */
     protected function resolveAttributes(): TrixEditor
     {
-        return parent::resolveAttributes()
+        parent::resolveAttributes()
             ->addAttribute('input', $this->controlId);
+
+        return $this;
     }
 
     protected function renderHtmlMarkup(): string

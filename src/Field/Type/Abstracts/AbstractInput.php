@@ -25,10 +25,12 @@ abstract class AbstractInput extends AbstractStandardFormControl implements Form
      */
     protected function resolveAttributes(): AbstractInput
     {
-        return parent::resolveAttributes()
+        parent::resolveAttributes()
             ->addAttribute('type', $this->type)
             ->addAttribute('value', $this->value)
             ->addAttribute('datalist', $this->dataList);
+
+        return $this;
     }
 
     protected function renderHtmlMarkup(): string

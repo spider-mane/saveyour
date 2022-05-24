@@ -38,8 +38,10 @@ class Textarea extends AbstractStandardFormControl implements FormFieldInterface
      */
     protected function resolveAttributes(): Textarea
     {
-        return parent::resolveAttributes()
+        parent::resolveAttributes()
             ->addAttribute('rows', $this->rows);
+
+        return $this;
     }
 
     protected function renderHtmlMarkup(): string

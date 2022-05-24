@@ -86,15 +86,19 @@ class Select2 extends Select implements FormFieldInterface
      */
     protected function resolveAttributes(): Select2
     {
-        $this->addClass(static::EXPECTED_CLASS);
+        parent::resolveAttributes()
+            ->addAttribute(static::EXPECTED_DATA_KEY, $this->getConfiguration())
+            ->addClass(static::EXPECTED_CLASS);
 
-        return parent::resolveAttributes()
-            ->addAttribute(static::EXPECTED_DATA_KEY, $this->getConfiguration());
+        return $this;
     }
 
     protected function getConfiguration(): string
     {
-        return json_encode($this->resolveConfiguration() + $this->config, JSON_THROW_ON_ERROR);
+        return json_encode(
+            $this->resolveConfiguration() + $this->config,
+            JSON_THROW_ON_ERROR
+        );
     }
 
     protected function resolveConfiguration(): array
