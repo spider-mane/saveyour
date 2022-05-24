@@ -2,7 +2,6 @@
 
 namespace WebTheory\Saveyour\Field\Type\Abstracts;
 
-use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\Field\CheckableFieldInterface;
 
 abstract class AbstractCheckableInput extends AbstractInput implements CheckableFieldInterface
@@ -34,9 +33,9 @@ abstract class AbstractCheckableInput extends AbstractInput implements Checkable
     }
 
     /**
-     * {@inheritDoc}
+     * @return $this
      */
-    protected function resolveAttributes(): AbstractHtmlElement
+    protected function resolveAttributes(): AbstractCheckableInput
     {
         return parent::resolveAttributes()
             ->addAttribute('checked', $this->checked);

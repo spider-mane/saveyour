@@ -2,7 +2,6 @@
 
 namespace WebTheory\Saveyour\Field\Type;
 
-use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
 use WebTheory\Saveyour\Field\Abstracts\MultiValueSelectionTrait;
 use WebTheory\Saveyour\Field\Abstracts\RendersOptionsTrait;
@@ -91,7 +90,10 @@ class Select extends AbstractStandardFormControl implements FormFieldInterface
         return $this;
     }
 
-    protected function resolveAttributes(): AbstractHtmlElement
+    /**
+     * @return $this
+     */
+    protected function resolveAttributes(): Select
     {
         return parent::resolveAttributes()
             ->addAttribute('name', $this->resolveNameAttribute())

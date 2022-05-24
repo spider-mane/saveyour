@@ -2,7 +2,6 @@
 
 namespace WebTheory\Saveyour\Field\Type;
 
-use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
 use WebTheory\Saveyour\Field\Type\Abstracts\AbstractStandardFormControl;
 
@@ -34,7 +33,10 @@ class Textarea extends AbstractStandardFormControl implements FormFieldInterface
         return $this;
     }
 
-    protected function resolveAttributes(): AbstractHtmlElement
+    /**
+     * @return $this
+     */
+    protected function resolveAttributes(): Textarea
     {
         return parent::resolveAttributes()
             ->addAttribute('rows', $this->rows);

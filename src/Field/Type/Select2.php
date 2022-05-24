@@ -2,7 +2,6 @@
 
 namespace WebTheory\Saveyour\Field\Type;
 
-use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
 
 class Select2 extends Select implements FormFieldInterface
@@ -82,7 +81,10 @@ class Select2 extends Select implements FormFieldInterface
         return $this;
     }
 
-    protected function resolveAttributes(): AbstractHtmlElement
+    /**
+     * @return $this
+     */
+    protected function resolveAttributes(): Select2
     {
         $this->addClass(static::EXPECTED_CLASS);
 

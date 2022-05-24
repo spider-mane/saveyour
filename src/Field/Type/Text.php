@@ -2,7 +2,6 @@
 
 namespace WebTheory\Saveyour\Field\Type;
 
-use WebTheory\Html\AbstractHtmlElement;
 use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
 use WebTheory\Saveyour\Field\Type\Abstracts\AbstractInput;
 
@@ -12,7 +11,10 @@ class Text extends AbstractInput implements FormFieldInterface
 
     protected ?string $pattern = null;
 
-    protected function resolveAttributes(): AbstractHtmlElement
+    /**
+     * @return $this
+     */
+    protected function resolveAttributes(): Text
     {
         return parent::resolveAttributes()
             ->addAttribute('pattern', $this->pattern);

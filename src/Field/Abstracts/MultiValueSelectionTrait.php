@@ -2,7 +2,6 @@
 
 namespace WebTheory\Saveyour\Field\Abstracts;
 
-use WebTheory\Saveyour\Field\Abstracts\AbstractValuableElement;
 use WebTheory\Saveyour\Field\Type\Hidden;
 
 trait MultiValueSelectionTrait

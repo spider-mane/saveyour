@@ -51,7 +51,10 @@ class Label extends AbstractHtmlElement
         return $this;
     }
 
-    protected function resolveAttributes(): AbstractHtmlElement
+    /**
+     * @return $this
+     */
+    protected function resolveAttributes(): Label
     {
         return parent::resolveAttributes()
             ->addAttribute('for', $this->for);

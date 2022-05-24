@@ -39,6 +39,9 @@ class OptGroup extends AbstractValuableElement
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     protected function resolveAttributes(): OptGroup
     {
         return parent::resolveAttributes()
