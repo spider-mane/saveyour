@@ -6,8 +6,14 @@ use WebTheory\Saveyour\Contracts\Report\FormProcessReportInterface;
 
 class FormProcessReport implements FormProcessReportInterface
 {
+    /**
+     * @var array<string,mixed>
+     */
     protected array $results = [];
 
+    /**
+     * @param array<string,mixed> $results
+     */
     public function __construct(array $results = [])
     {
         $this->results = $results;

@@ -183,6 +183,9 @@ class FormSubmissionManager implements FormSubmissionManagerInterface
     }
 
     /**
+     * @param ServerRequestInterface $request
+     * @param array<string,ProcessedInputReportInterface> $fields
+     *
      * @return $this
      */
     protected function runProcessors(ServerRequestInterface $request, array $fields): FormSubmissionManager
