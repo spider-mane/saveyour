@@ -2,31 +2,53 @@
 
 declare(strict_types=1);
 
-use Rector\Core\Configuration\Option;
+use Rector\CodingStyle\Rector\Class_\AddArrayDefaultToArrayPropertyRector;
+use Rector\Config\RectorConfig;
+use Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector;
 use Rector\Php70\Rector\MethodCall\ThisCallOnStaticMethodToStaticCallRector;
+use Rector\Php71\Rector\FuncCall\CountOnNullRector;
+use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector;
+use Rector\Php74\Rector\Property\RestoreDefaultNullToNullableTypePropertyRector;
 use Rector\Php74\Rector\Property\TypedPropertyRector;
 use Rector\Set\ValueObject\LevelSetList;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Rector\Transform\Rector\ClassMethod\ReturnTypeWillChangeRector;
 
-return static function (ContainerConfigurator $loader): void {
-    $rules = $loader->services();
-    $options = $loader->parameters();
-
+return static function (RectorConfig $config): void {
     # Options
-    $options->set(Option::PATHS, [
+    $config->importNames();
+    $config->importShortClasses();
+
+    # Paths
+    $config->paths([
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ]);
-    $options->set(Option::AUTO_IMPORT_NAMES, true);
 
-    # PHP Rules
-    $loader->import(LevelSetList::UP_TO_PHP_74);
+    # Sets
+    $config->sets([LevelSetList::UP_TO_PHP_74]);
 
-    $rules->remove(AddLiteralSeparatorToNumberRector::class);
-    $rules->remove(ThisCallOnStaticMethodToStaticCallRector::class);
+    # Disabled
+    $config->skip([
+        # From PHP
+        AddDefaultValueForUndefinedVariableRector::class,
+        AddLiteralSeparatorToNumberRector::class,
+        ClosureToArrowFunctionRector::class,
+        CountOnNullRector::class,
+        RestoreDefaultNullToNullableTypePropertyRector::class,
+        ThisCallOnStaticMethodToStaticCallRector::class,
+    ]);
 
-    $rules->set(TypedPropertyRector::class)->configure([
-        TypedPropertyRector::INLINE_PUBLIC => true
+    # PHP
+    $config->ruleWithConfiguration(TypedPropertyRector::class, [
+        TypedPropertyRector::INLINE_PUBLIC => true,
+    ]);
+
+    # Coding Style
+    $config->rule(AddArrayDefaultToArrayPropertyRector::class);
+
+    # Transform
+    $config->ruleWithConfiguration(ReturnTypeWillChangeRector::class, [
+        // methods
     ]);
 };
