@@ -46,10 +46,12 @@ class FailedValidationSimpleCache extends AbstractFormDataProcessor implements F
             }
         }
 
-        $status = $this->cache->set($this->key, $violations, $this->ttl);
+        if ($violations) {
+            $status = $this->cache->set($this->key, $violations, $this->ttl);
+        }
 
         return new FormProcessReport([
-            'successful' => $status,
+            'successful' => $status ?? null,
             'violations' => $violations,
         ]);
     }
