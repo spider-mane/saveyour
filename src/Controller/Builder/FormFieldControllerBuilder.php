@@ -21,7 +21,7 @@ class FormFieldControllerBuilder
 
     protected ?ValidatorInterface $validator = null;
 
-    protected ?bool $isPermittedToProcess = false;
+    protected ?bool $isPermittedToProcess = true;
 
     /**
      * @var null|string[]
