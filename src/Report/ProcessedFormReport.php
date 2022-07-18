@@ -34,4 +34,15 @@ class ProcessedFormReport implements ProcessedFormReportInterface
     {
         return $this->processReports;
     }
+
+    public function submissionIsValid(): bool
+    {
+        foreach ($this->inputReports as $report) {
+            if (!$report->submissionIsValid()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

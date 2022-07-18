@@ -15,4 +15,6 @@ interface ProcessedFormReportInterface
      * @return array<string,FormProcessReportInterface>
      */
     public function processReports(): array;
+
+    public function submissionIsValid(): bool;
 }
