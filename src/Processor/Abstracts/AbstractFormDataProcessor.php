@@ -76,7 +76,7 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
      */
     protected function allFieldsPresent(array $results): bool
     {
-        foreach ($this->fields as $field) {
+        foreach ($this->fields ?? array_keys($results) as $field) {
             $field = $results[$field] ?? null;
 
             if (!$field || !$this->fieldIsPresentAndValid($field)) {
@@ -102,6 +102,20 @@ abstract class AbstractFormDataProcessor implements FormDataProcessorInterface
 
         foreach ($results as $id => $report) {
             $values[$keys[$id]] = $report->rawInputValue();
+        }
+
+        return $values;
+    }
+
+    /**
+     * @param array<string,ProcessedInputReportInterface> $results
+     */
+    protected function mappedValues(array $results)
+    {
+        $values = [];
+
+        foreach ($results as $field => $report) {
+            $values[$field] = $report->rawInputValue();
         }
 
         return $values;
