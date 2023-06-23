@@ -69,6 +69,8 @@
     "vimeo/psalm": "^4.7",
     "vlucas/phpdotenv": "^5.3",
     "webtheory/exterminate": "@stable",
+    "webtheory/path-builder": "@stable",
+    "webtheory/playground": "@stable",
     "willdurand/geocoder": "^4.5"
   },
   "suggest": {
@@ -116,8 +118,8 @@
     "setup": [
       "composer install",
       "cp -n .env.example .env",
-      "bin/build-paths",
-      "bin/make-playground"
+      "vendor/bin/build-paths",
+      "vendor/bin/make-playground"
     ],
     "style": [
       "vendor/bin/php-cs-fixer fix --verbose",
@@ -140,10 +142,19 @@
     ],
     "build-paths": {
       "build": {
-        "phpunit": {},
-        "php-cs-fixer": {}
+        "php-cs-fixer": {},
+        "phpstan": {},
+        "phpunit": {}
       },
       "logs": {}
+    },
+    "playground": {
+      "contexts": [
+        "console",
+        "browser"
+      ],
+      "web-root": "tests/runtime",
+      "bootstrap": "tests/bootstrap.php"
     }
   }
 }
