@@ -1,0 +1,11 @@
+// For format details, see https://aka.ms/devcontainer.json.
+{
+  "name": "Saveyour",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "../docker-compose.override.yml"
+  ],
+  "service": "app",
+  "workspaceFolder": "/app",
+  "shutdownAction": "none"
+}

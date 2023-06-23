@@ -1,0 +1,51 @@
+services:
+  app:
+    build:
+      target: app-interactive
+      args:
+        LANG: "${LANG}"
+        TZ:
+        UNMINIMIZE: true
+        GIT_USER:
+        GIT_EMAIL:
+        GIT_DEFAULT_BRANCH: "master"
+        GIT_INSTALL_GCM: false
+    environment:
+      TERM: "${TERM}"
+      HOST_USER: "${USER}"
+      ZSH_THEME: "powerlevel10k/powerlevel10k"
+    volumes:
+      # Source
+      - ".:/app"
+      # Dependencies
+      - "app.composer:/app/vendor"
+      - "app.npm:/app/assets/node_modules"
+      # Build files
+      - "app.logs:/app/logs"
+      - "app.build:/app/build"
+      # Vscode server
+      - "vscode:/root/.vscode-server"
+
+  webserver:
+    ports:
+      - "${SERVER_PORT:-80}:${SERVER_PORT:-80}"
+    environment:
+      TERM: "${TERM}"
+    volumes:
+      - ".:/app:ro"
+
+  selenium:
+    environment:
+      TERM: "${TERM}"
+
+volumes:
+  app.composer:
+    driver: local
+  app.npm:
+    driver: local
+  app.logs:
+    driver: local
+  app.build:
+    driver: local
+  vscode:
+    driver: local

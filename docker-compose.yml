@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+  app:
+    build:
+      dockerfile: ./docker/php/Dockerfile
+      target: app
+      args:
+        PHP_VERSION: "8.0"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - app
+    environment:
+      COMPOSER_ENTRYPOINT_SCRIPT: setup
+      XDEBUG_CONFIG: "${XDEBUG_CONFIG:-client_host=host.docker.internal}"
+      XDEBUG_MODE: "${XDEBUG_MODE:-develop,debug,coverage,trace}"
+    depends_on:
+      - selenium
+
+  webserver:
+    build:
+      dockerfile: ./docker/nginx/Dockerfile
+    extra_hosts:
+      - "host.docker.interal:host-gateway"
+    networks:
+      - app
+    environment:
+      SERVER_NAME: "${SERVER_NAME:-localhost}"
+      SERVER_PORT: "${SERVER_PORT:-80}"
+      APP_NAME: "app"
+      APP_PORT: 9000
+      WEB_ROOT: "/app/tests/Suites/Visual"
+    depends_on:
+      - app
+
+  selenium:
+    image: "selenium/standalone-chrome"
+    networks:
+      - app
+    volumes:
+      - "/dev/shm:/dev/shm"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  app:
+    driver: bridge
