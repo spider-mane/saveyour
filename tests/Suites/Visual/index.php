@@ -17,29 +17,32 @@ use WebTheory\Saveyour\Field\Type\TrixEditor;
 # bootstrap
 ################################################################################
 
-$root = dirname(__DIR__, 3);
+$path = dirname(__FILE__);
+$root = dirname($path, 3);
+$time = time();
 
-require $root . "tests/bootstrap.php";
+require $root . "/tests/bootstrap.php";
 
-// symlink assets
-// call_user_func(function () use ($root) {
-//     require $root . '/bin/symlink-assets';
-// });
 ################################################################################
 # start
 ################################################################################
 
-echo '
+echo <<<HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Saveyour Field Tests</title>
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-  <link rel="stylesheet" type="text/css" href="assets/lib/trix.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saveyour Field Tests</title>
+
+    <!-- select2 -->
+    <link href="assets/lib/select2/css/select2.css" rel="stylesheet" />
+
+    <!-- trix -->
+    <link href="assets/lib/trix/trix.css" rel="stylesheet" type="text/css">
 </head>
-<body>';
+<body>
+HTML;
 
 echo "<h1>Visual Field Tests</h1><hr>";
 echo Html::open('form', ['method' => 'post']);
@@ -51,7 +54,8 @@ echo '<hr>';
 ################################################################################
 echo '<h2>RadioGroup Test</h2>';
 
-$provider = new class () implements RadioGroupSelectionInterface {
+$provider = new class() implements RadioGroupSelectionInterface
+{
     public function provideSelectionsData(): array
     {
         return [
@@ -109,7 +113,8 @@ echo '<hr>';
 ################################################################################
 echo '<h2>Checklist Test</h2>';
 
-$provider = new class () implements ChecklistItemsProviderInterface {
+$provider = new class() implements ChecklistItemsProviderInterface
+{
     public function provideSelectionsData(): array
     {
         return [
@@ -158,7 +163,8 @@ echo '<h2>Select Test</h2>';
 
 $select = new Select();
 
-$provider1 = new class () implements OptionsProviderInterface {
+$provider1 = new class() implements OptionsProviderInterface
+{
     public function provideSelectionsData(): array
     {
         return [
@@ -197,7 +203,8 @@ echo str_repeat('<br>', 2);
 
 echo '<h3>Multi-Value with optgroups</h3>';
 
-$provider2 = new class () implements OptionsProviderInterface {
+$provider2 = new class() implements OptionsProviderInterface
+{
     public function provideSelectionsData(): array
     {
         return [
@@ -223,7 +230,8 @@ $provider2 = new class () implements OptionsProviderInterface {
     }
 };
 
-$provider3 = new class () implements OptionsProviderInterface {
+$provider3 = new class() implements OptionsProviderInterface
+{
     public function provideSelectionsData(): array
     {
         return [
@@ -341,10 +349,20 @@ echo $trix;
 echo '<br><hr>';
 echo new Submit();
 echo Html::close('form');
-echo '
-  <script type="text/javascript" src="assets/lib/trix.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-  <script src="assets/saveyour.js" ver="' . time() . '"></script>
+echo "\n";
+
+echo <<<HTML
+    <!-- jquery -->
+    <script src="assets/lib/jquery/jquery.js"></script>
+
+    <!-- select2 -->
+    <script src="assets/lib/select2/js/select2.js"></script>
+
+    <!-- trix -->
+    <script src="assets/lib/trix/trix.js" type="text/javascript"></script>
+
+    <!-- saveyour -->
+    <script src="assets/saveyour.js" ver="{$time}"></script>
 </body>
-</html>';
+</html>
+HTML;

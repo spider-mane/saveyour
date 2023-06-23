@@ -3,7 +3,10 @@
 
 $root = dirname(__DIR__, 1);
 $assets = "$root/assets/dist";
-$link = "$root/tests/suites/visual/assets";
+$link = "$root/tests/Suites/Visual/assets";
 
-shell_exec("rm -f $link");
-symlink($assets, $link); // running this on windows requires administrator permissions
+if (file_exists($link)) {
+  unlink($link);
+}
+
+symlink($assets, $link);

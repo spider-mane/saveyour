@@ -1,5 +1,6 @@
 # Development
-# /dist/
+/dist/*
+!/dist/saveyour.js
 /build/
 
 # NPM/ Yarn

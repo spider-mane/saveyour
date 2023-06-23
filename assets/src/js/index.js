@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   executeCodeIfAssetsPresent();
 });
 
@@ -26,7 +26,7 @@ function maybeInitJQueryPlugins() {
  *
  */
 function maybeInitSelect2() {
-  let fields = document.querySelectorAll(".saveyour--select2");
+  let fields = document.querySelectorAll('.saveyour--select2');
 
   if (fields) {
     initSelect2(fields);
@@ -37,7 +37,7 @@ function maybeInitSelect2() {
  *
  */
 function initSelect2(fields) {
-  Array.from(fields).forEach((select) => {
+  Array.from(fields).forEach(select => {
     let config = JSON.parse(select.dataset.saveyour__select2);
 
     jQuery(select).select2(config);
