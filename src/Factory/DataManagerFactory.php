@@ -2,75 +2,69 @@
 
 namespace WebTheory\Saveyour\Factory;
 
-use Exception;
-use WebTheory\Factory\Traits\ClassResolverTrait;
-use WebTheory\Factory\Traits\SmartFactoryTrait;
+use InvalidArgumentException;
+use WebTheory\Factory\Core\CoreEngine;
+use WebTheory\Factory\Core\FlexFactoryCore;
+use WebTheory\Factory\Engine\FactoryEngine;
+use WebTheory\Factory\Interfaces\FlexFactoryCoreInterface;
+use WebTheory\Factory\Repository\EmptyFlexFactoryRepository;
+use WebTheory\Factory\Repository\FixedFactoryRepository;
+use WebTheory\Factory\Resolver\ClassResolver;
 use WebTheory\Saveyour\Contracts\Data\FieldDataManagerInterface;
 use WebTheory\Saveyour\Contracts\Factory\FieldDataManagerResolverFactoryInterface;
 use WebTheory\Saveyour\Data\FieldDataManagerCallback;
+use WebTheory\Saveyour\Factory\Core\CoreInputResolver;
 
 class DataManagerFactory implements FieldDataManagerResolverFactoryInterface
 {
-    use SmartFactoryTrait;
-    use ClassResolverTrait;
-
-    private array $managers = [];
-
-    protected array $namespaces = [];
-
-    public const NAMESPACES = [
-        'webtheory.saveyour' => "WebTheory\\Saveyour\\Managers",
-    ];
-
-    public const MANAGERS = [
+    public const MANAGER_MAP = [
         'callback' => FieldDataManagerCallback::class,
     ];
 
-    protected const CONVENTION = '%sFieldDataManager';
+    public const MANAGERS = [];
 
-    public function __construct(array $namespaces = [], array $managers = [])
-    {
-        $this->namespaces = $namespaces + static::NAMESPACES;
-        $this->managers = $managers + static::MANAGERS;
-    }
+    public const NAMESPACES = [
+        "WebTheory\\Saveyour\\Data",
+    ];
 
-    public function getManagers()
-    {
-        return $this->managers;
-    }
+    public const CONVENTION = '%sDataManager';
+
+    protected FlexFactoryCoreInterface $core;
 
     /**
-     * @return $this
+     * @param array<string,class-string<FieldDataManagerInterface>> $map
+     * @param list<class-string<FieldDataManagerInterface>> $fields
+     * @param list<string> $namespaces
+     * @param array<string,FixedFactoryInterface> $factories
      */
-    public function addManager(string $arg, string $manager): DataManagerFactory
+    public function __construct(array $map = [], array $managers = [], array $namespaces = [], array $factories = [])
     {
-        $this->managers[$arg] = $manager;
+        $resolver = new ClassResolver(
+            $map + static::MANAGER_MAP,
+            [...$managers, ...static::MANAGERS],
+            [...$namespaces, static::NAMESPACES],
+            static::CONVENTION
+        );
 
-        return $this;
-    }
+        $engine = new FactoryEngine();
 
-    /**
-     * @return $this
-     */
-    public function addManagers(array $managers): DataManagerFactory
-    {
-        $this->managers = $managers + $this->managers;
+        $repository = $factories
+            ? new FixedFactoryRepository($factories)
+            : new EmptyFlexFactoryRepository();
 
-        return $this;
+        $this->core = new FlexFactoryCore($resolver, $engine, $repository);
     }
 
     public function create(string $manager, array $args = []): FieldDataManagerInterface
     {
-        $manager = $this->managers[$manager] ?? null;
+        return $this->core->process($manager, $args)
+            ?: throw $this->exception($manager);
+    }
 
-        if (isset($manager)) {
-            $manager = $this->build($manager, $args);
-        } elseif ($class = $this->getClass($manager)) {
-            $manager = $this->build($class, $args);
-        } else {
-            throw new Exception("{$manager} is not a recognized data manager");
-        }
-
-        return $manager;
+    protected function exception(string $manager): InvalidArgumentException
+    {
+        return new InvalidArgumentException(
+            "{$manager} is not a recognized data manager."
+        );
     }
 }

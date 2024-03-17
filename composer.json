@@ -18,31 +18,32 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": "^7.4 || ^8.0",
+    "php": "^8.0",
     "jawira/case-converter": "^3.4",
     "myclabs/php-enum": "^1.7",
-    "psr/http-message": "^1.0",
-    "symfony/polyfill-php80": "^1.23",
+    "psr/http-message": "^1.0 || ^2.0",
     "symfony/polyfill-php81": "^1.23",
-    "webtheory/factoryfactory": "@stable",
-    "webtheory/html": "@stable",
-    "webtheory/http-policy": "@stable"
+    "symfony/polyfill-php82": "^1.23",
+    "webtheory/factoryfactory": "@dev",
+    "webtheory/html": "@dev",
+    "webtheory/http-policy": "@dev"
   },
   "require-dev": {
     "captainhook/captainhook": "^5.10",
     "commerceguys/addressing": "^1.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
     "egulias/email-validator": "^3.1",
     "fakerphp/faker": "^1.19",
-    "friendsofphp/php-cs-fixer": "3.4",
+    "friendsofphp/php-cs-fixer": "^3.23",
     "giggsey/libphonenumber-for-php": "^8.12",
     "google/recaptcha": "^1.2",
     "guzzlehttp/guzzle": "^7.4",
     "guzzlehttp/psr7": "^2.1",
-    "hubspot/hubspot-php": "^3.2",
-    "league/fractal": "^0.19",
+    "hubspot/hubspot-php": "^5.1",
+    "league/fractal": "^0.20",
     "masterminds/html5": "^2.7",
     "mockery/mockery": "^1.2",
-    "moneyphp/money": "^3.2",
+    "moneyphp/money": "^4.2",
     "nesbot/carbon": "^2.46",
     "oscarotero/env": "^2.1",
     "php-http/guzzle7-adapter": "^1.0",
@@ -62,15 +63,16 @@
     "roave/security-advisories": "dev-latest",
     "spatie/phpunit-watcher": "^1.12",
     "squizlabs/php_codesniffer": "^3.0",
+    "suin/phpcs-psr4-sniff": "^3.0",
     "symfony/dependency-injection": "^5.4",
     "symfony/mailer": "^5.4",
     "symfony/thanks": "^1.1",
     "symfony/validator": "^5.4",
-    "vimeo/psalm": "^4.7",
     "vlucas/phpdotenv": "^5.3",
     "webtheory/exterminate": "@stable",
     "webtheory/path-builder": "@stable",
     "webtheory/playground": "@stable",
+    "webtheory/unit-utils": "@dev",
     "willdurand/geocoder": "^4.5"
   },
   "suggest": {
@@ -110,10 +112,13 @@
     "test:unit": "@test --testsuite unit",
     "watch": "vendor/bin/phpunit-watcher",
     "build": [
-      "@style",
       "@check",
       "@inspect",
       "@test"
+    ],
+    "build:fix": [
+      "@style",
+      "@build"
     ],
     "setup": [
       "composer install",
@@ -123,8 +128,7 @@
     ],
     "style": [
       "vendor/bin/php-cs-fixer fix --verbose",
-      "vendor/bin/phpcbf",
-      "@check"
+      "vendor/bin/phpcbf"
     ]
   },
   "config": {
@@ -133,7 +137,8 @@
     "process-timeout": 0,
     "allow-plugins": {
       "composer/package-versions-deprecated": true,
-      "symfony/thanks": true
+      "symfony/thanks": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   },
   "extra": {
@@ -143,6 +148,7 @@
     "build-paths": {
       "build": {
         "php-cs-fixer": {},
+        "phpcs": {},
         "phpstan": {},
         "phpunit": {}
       },

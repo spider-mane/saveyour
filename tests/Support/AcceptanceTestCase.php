@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
-abstract class AcceptanceTestCase extends TestCase
+abstract class AcceptanceTestCase extends BaseTestCase
 {
     protected function setUp(): void
     {

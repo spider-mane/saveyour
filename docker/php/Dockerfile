@@ -1,11 +1,13 @@
 FROM ubuntu:22.04 as app
 
+EXPOSE 9000
+
 COPY --from=spidermane/trunk * /trunk
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV COMPOSER_ALLOW_SUPERUSER=1
-ENV APP=/app
 
+ENV APP=/app
+VOLUME [ "$APP" ]
 WORKDIR "$APP"
 
 ARG TZ="UTC"
@@ -15,6 +17,9 @@ RUN /trunk/setups/timezone
 ARG LANG="en_US.UTF-8"
 ENV LANG="$LANG"
 RUN /trunk/setups/language
+
+ENV TRUNK_USER=saveyour
+RUN /trunk/setups/user
 
 ARG NODE_VERSION=18
 RUN /trunk/provisions/node --version "$NODE_VERSION"
@@ -26,7 +31,8 @@ RUN /trunk/setups/entrypoint web
 RUN /trunk/provisions/supervisor --php-version "$PHP_VERSION"
 ENTRYPOINT [ "docker-entrypoint" ]
 
-EXPOSE 9000
+RUN /trunk/setups/healthcheck
+HEALTHCHECK CMD [ "docker-healthcheck" ] --interval=1s --timeout=1s
 
 RUN /trunk/actions/cleanup
 
@@ -46,9 +52,10 @@ ARG GIT_EMAIL
 ARG GIT_DEFAULT_BRANCH=master
 ARG GIT_INSTALL_GCM=false
 RUN /trunk/provisions/git --user "$GIT_USER" --email "$GIT_EMAIL" --default-branch "$GIT_DEFAULT_BRANCH" --install-gcm "$GIT_INSTALL_GCM"
-
-RUN /trunk/bundles/shell
 RUN /trunk/provisions/github
+
+ENV ZSH=/usr/lib/omz
+RUN /trunk/bundles/shell
 
 RUN npm install -g npm-check-updates
 

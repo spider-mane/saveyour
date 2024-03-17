@@ -54,8 +54,7 @@ echo '<hr>';
 ################################################################################
 echo '<h2>RadioGroup Test</h2>';
 
-$provider = new class() implements RadioGroupSelectionInterface
-{
+$provider = new class () implements RadioGroupSelectionInterface {
     public function provideSelectionsData(): array
     {
         return [
@@ -113,8 +112,7 @@ echo '<hr>';
 ################################################################################
 echo '<h2>Checklist Test</h2>';
 
-$provider = new class() implements ChecklistItemsProviderInterface
-{
+$provider = new class () implements ChecklistItemsProviderInterface {
     public function provideSelectionsData(): array
     {
         return [
@@ -163,8 +161,7 @@ echo '<h2>Select Test</h2>';
 
 $select = new Select();
 
-$provider1 = new class() implements OptionsProviderInterface
-{
+$provider1 = new class () implements OptionsProviderInterface {
     public function provideSelectionsData(): array
     {
         return [
@@ -203,8 +200,7 @@ echo str_repeat('<br>', 2);
 
 echo '<h3>Multi-Value with optgroups</h3>';
 
-$provider2 = new class() implements OptionsProviderInterface
-{
+$provider2 = new class () implements OptionsProviderInterface {
     public function provideSelectionsData(): array
     {
         return [
@@ -230,8 +226,7 @@ $provider2 = new class() implements OptionsProviderInterface
     }
 };
 
-$provider3 = new class() implements OptionsProviderInterface
-{
+$provider3 = new class () implements OptionsProviderInterface {
     public function provideSelectionsData(): array
     {
         return [

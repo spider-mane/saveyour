@@ -2,75 +2,74 @@
 
 namespace WebTheory\Saveyour\Factory;
 
-use WebTheory\Factory\Traits\SmartFactoryTrait;
+use InvalidArgumentException;
+use WebTheory\Factory\Core\FlexFactoryCore;
+use WebTheory\Factory\Engine\FactoryEngine;
+use WebTheory\Factory\Interfaces\FlexFactoryCoreInterface;
+use WebTheory\Factory\Repository\EmptyFlexFactoryRepository;
+use WebTheory\Factory\Repository\FixedFactoryRepository;
+use WebTheory\Factory\Resolver\ClassResolver;
 use WebTheory\Saveyour\Contracts\Controller\FormFieldControllerInterface;
-use WebTheory\Saveyour\Contracts\Data\FieldDataManagerInterface;
-use WebTheory\Saveyour\Contracts\Factory\FieldDataManagerResolverFactoryInterface as iDataManagerFactory;
-use WebTheory\Saveyour\Contracts\Factory\FormFieldResolverFactoryInterface as iFormFieldFactory;
-use WebTheory\Saveyour\Contracts\Field\FormFieldInterface;
+use WebTheory\Saveyour\Contracts\Factory\FormFieldControllerFactoryInterface;
+use WebTheory\Saveyour\Contracts\Factory\FormFieldControllerFlexFactoryInterface;
 use WebTheory\Saveyour\Controller\FormFieldController;
 
-class FieldFactory
+class FieldFactory implements FormFieldControllerFlexFactoryInterface
 {
-    use SmartFactoryTrait;
+    public const CONTROLLER_MAP = [];
 
-    protected iFormFieldFactory $formFieldFactory;
+    public const CONTROLLERS = [];
 
-    protected iDataManagerFactory $dataManagerFactory;
+    public const NAMESPACES = [];
 
-    protected $controller = FormFieldController::class;
+    public const CONVENTION = null;
 
-    public function __construct(iFormFieldFactory $formFieldFactory, iDataManagerFactory $dataManagerFactory, ?string $controller = null)
+    protected FlexFactoryCoreInterface $core;
+
+    /**
+     * @param array<string,class-string<FormFieldControllerFactoryInterface>> $map
+     * @param list<class-string<FormFieldControllerFactoryInterface>> $controllers
+     * @param list<string> $namespaces
+     * @param array<string,FormFieldControllerFactoryInterface> $factories
+     */
+    public function __construct(array $map = [], array $controllers = [], array $namespaces = [], array $factories = [])
     {
-        $this->formFieldFactory = $formFieldFactory;
-        $this->dataManagerFactory = $dataManagerFactory;
+        $resolver = new ClassResolver(
+            $map + static::CONTROLLER_MAP,
+            [...$controllers, ...static::CONTROLLERS],
+            [...$namespaces, static::NAMESPACES],
+            static::CONVENTION
+        );
 
-        if (isset($controller)) {
-            $this->controller = $controller;
-        }
+        $engine = new FactoryEngine();
+
+        $repository = new FixedFactoryRepository(
+            $factories + $this->defaultFactories()
+        );
+
+        $this->core = new FlexFactoryCore($resolver, $engine, $repository);
     }
 
-    public function create(array $args): FormFieldControllerInterface
+    public function create(string $manager, array $args = []): FormFieldControllerInterface
     {
-        if (isset($args['type'])) {
-            $args['form_field'] = $this->createFormField($args['type']);
-        }
-
-        if (isset($args['data'])) {
-            $args['data_manager'] = $this->createDataManager($args['data']);
-        }
-
-        unset($args['type'], $args['data']);
-
-        return $this->createController($args);
+        return $this->core->process($manager, $args)
+            ?: throw $this->exception($manager);
     }
 
-    protected function createController(array $args): FormFieldControllerInterface
+    protected function exception(string $manager): InvalidArgumentException
     {
-        return $this->build($this->controller, $args);
+        return new InvalidArgumentException(
+            "{$manager} is not a recognized data manager."
+        );
     }
 
-    protected function createFormField(array $args): FormFieldInterface
+    protected function defaultFactories(): array
     {
-        $type = $args['@create'];
-        unset($args['@create']);
-
-        return $this->formFieldFactory->create($type, $args);
-    }
-
-    protected function createDataManager(array $args): FieldDataManagerInterface
-    {
-        $manager = $args['@create'];
-        unset($args['@create']);
-
-        return $this->dataManagerFactory->create($manager, $args);
-    }
-
-    public function __call($name, $args)
-    {
-        $args = $args[0];
-        $args['type']['@create'] = $this->getArg($name);
-
-        return $this->create($args);
+        return [
+            'custom' => new FormFieldControllerFactory(
+                new FormFieldFactory(),
+                new DataManagerFactory(),
+            )
+        ];
     }
 }

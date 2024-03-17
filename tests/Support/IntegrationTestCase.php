@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
-abstract class IntegrationTestCase extends TestCase
+abstract class IntegrationTestCase extends BaseTestCase
 {
     protected function setUp(): void
     {

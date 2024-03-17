@@ -4,5 +4,5 @@ namespace WebTheory\Saveyour\Contracts\Controller;
 
 interface InputPurifierInterface
 {
-    public function handleInput($input);
+    public function handleInput(mixed $input): mixed;
 }
