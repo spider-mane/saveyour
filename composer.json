@@ -18,15 +18,15 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": "^8.0",
+    "php": "^8.1",
     "jawira/case-converter": "^3.4",
     "myclabs/php-enum": "^1.7",
     "psr/http-message": "^1.0 || ^2.0",
-    "symfony/polyfill-php81": "^1.23",
-    "symfony/polyfill-php82": "^1.23",
-    "webtheory/factoryfactory": "@dev",
-    "webtheory/html": "@dev",
-    "webtheory/http-policy": "@dev"
+    "symfony/polyfill-php82": "^1.26",
+    "symfony/polyfill-php83": "^1.27",
+    "webtheory/factoryfactory": "@stable",
+    "webtheory/html": "@stable",
+    "webtheory/http-policy": "@stable"
   },
   "require-dev": {
     "captainhook/captainhook": "^5.10",
@@ -56,7 +56,7 @@
     "phpunit/phpunit-selenium": "^9.0",
     "psr/http-client": "^1.0",
     "psr/http-factory": "^1.0",
-    "psr/simple-cache": "^1.0||^2.0||^3.0",
+    "psr/simple-cache": "^1.0 || ^2.0 || ^3.0",
     "psy/psysh": "^0.11",
     "rector/rector": "@stable",
     "respect/validation": "^2.2",
@@ -65,12 +65,13 @@
     "squizlabs/php_codesniffer": "^3.0",
     "suin/phpcs-psr4-sniff": "^3.0",
     "symfony/dependency-injection": "^5.4",
-    "symfony/mailer": "^5.4",
+    "symfony/mailer": "^5.4 || ^6.0 || ^7.0",
     "symfony/thanks": "^1.1",
-    "symfony/validator": "^5.4",
+    "symfony/validator": "^5.4 || ^6.0 || ^7.0",
     "vlucas/phpdotenv": "^5.3",
     "webtheory/exterminate": "@stable",
     "webtheory/path-builder": "@stable",
+    "webtheory/pathagist": "@dev",
     "webtheory/playground": "@stable",
     "webtheory/unit-utils": "@dev",
     "willdurand/geocoder": "^4.5"
@@ -138,7 +139,8 @@
     "allow-plugins": {
       "composer/package-versions-deprecated": true,
       "symfony/thanks": true,
-      "dealerdirect/phpcodesniffer-composer-installer": true
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "webtheory/pathagist": true
     }
   },
   "extra": {
