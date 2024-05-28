@@ -1,17 +1,17 @@
 # Local development files
+*.cache
 /build/
 /cache/
 /dist/
 /logs/
 /temp/
-/tests/Suites/Visual/assets
-*.cache
+/browser/assets
 @playground*
 
 # Composer
 /vendor/
 composer.lock
-/studio.json
+/pathagist.json
 captainhook.config.json
 cghooks.lock
 

@@ -1,12 +1,12 @@
 // For format details, see https://aka.ms/devcontainer.json.
 {
-  "name": "saveyour",
+  "name": "Saveyour",
   "dockerComposeFile": [
     "../docker-compose.yml",
     "../docker-compose.override.yml"
   ],
   "service": "app",
   "remoteUser": "saveyour",
-  "workspaceFolder": "/app",
+  "workspaceFolder": "/var/www/html",
   "shutdownAction": "none"
 }

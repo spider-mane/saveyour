@@ -3,7 +3,7 @@
 
 $root = dirname(__DIR__, 1);
 $assets = "$root/assets/dist";
-$link = "$root/tests/Suites/Visual/assets";
+$link = "$root/browser/assets";
 
 if (file_exists($link)) {
   unlink($link);

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+readonly root="$(dirname $(dirname $(realpath $0)))"
 readonly user="saveyour"
 readonly default_shell="zsh"
 
@@ -24,5 +25,7 @@ if [ -n "$1" ]; then
   evaluate_shell_arg "$1"
 fi
 
+shell="${shell:-$default_shell}"
+
 docker compose up -d --wait &&
-  docker compose exec -u "$user" app "${shell:-$default_shell}" -il
+  docker compose exec -u "$user" app "$shell" -il
